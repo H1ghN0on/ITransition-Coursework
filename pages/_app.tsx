@@ -5,7 +5,7 @@ import { messages } from "@locales/messages";
 import { LOCALES } from "@locales/locales";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const locale = LOCALES.ENGLISH;
+  const locale = LOCALES.RUSSIAN;
 
   return (
     <IntlProvider

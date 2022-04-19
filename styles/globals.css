@@ -6,6 +6,11 @@ html {
   font-weight: normal;
   font-size: 1rem;
   font-family: "Roboto", sans-serif;
+  color: #7c7c7c;
+}
+
+body {
+  background-color: #f7f8f8;
 }
 
 html,
