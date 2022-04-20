@@ -18,6 +18,9 @@ export const messages = {
     case_validation: "Uppercase and lowercase",
     username_title: "Introduce yourself",
     choose_the_avatar: "Choose the avatar",
+    search: "Search",
+    recently_added: "Recently added",
+    added_to: "added to",
   },
   [LOCALES.RUSSIAN]: {
     //Auth
@@ -36,5 +39,8 @@ export const messages = {
     case_validation: "Заглавные и строчные буквы",
     username_title: "Представьтесь",
     choose_the_avatar: "Выберите аватар",
+    search: "Поиск",
+    recently_added: "Недавно добавленные",
+    added_to: "добавлен в",
   },
 };

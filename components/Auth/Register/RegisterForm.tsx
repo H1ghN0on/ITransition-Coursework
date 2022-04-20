@@ -44,7 +44,6 @@ const RegisterForm = () => {
           <span>
             <FormattedMessage id="sign_in_with" />
           </span>
-          <Facebook className="text-base md:text-xl lg:text-2xl ml-4" />
         </Button>
 
         <div className="border-b-2 border-b-gray-200 w-full my-3 lg:my-[50px]"></div>

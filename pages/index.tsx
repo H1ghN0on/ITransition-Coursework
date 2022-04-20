@@ -1,12 +1,13 @@
+import { AddedItem, Collection } from "@components/Main/";
 import type { NextPage } from "next";
-import { FormattedMessage } from "react-intl";
+import React from "react";
 
-const Home: NextPage = () => {
+const Main: NextPage = () => {
   return (
     <div className="flex flex-col items-center justify-center w-screen h-screen">
-      <FormattedMessage id="username" />
+      <AddedItem />
     </div>
   );
 };
 
-export default Home;
+export default Main;

@@ -20,7 +20,8 @@
       "@styles/*": ["styles/*"],
       "@locales/*": ["i18n/*"],
       "@hooks": ["hooks"],
-      "@contexts/*": ["contexts/*"]
+      "@contexts/*": ["contexts/*"],
+ 
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
