@@ -54,6 +54,7 @@ const Input: React.FC<Input> = ({
         value={value}
         className={className}
         type={type}
+        name={name}
       />
     </div>
   );

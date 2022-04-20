@@ -10,13 +10,17 @@ const Password = () => {
   const chooseAvatarIntl = intl.formatMessage({ id: "choose_the_avatar" });
   const usernameIntl = intl.formatMessage({ id: "username" });
 
-  const [inputValue, setInputValue] = React.useState<string>("");
+  const [usernameValue, setUsernameValue] = React.useState<string>("");
 
   const isMounted = useHasMounted();
 
   if (!isMounted) {
     return null;
   }
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target);
+  };
   return (
     <div className="flex flex-col items-center justify-center w-11/12 lg:w-7/12">
       <AuthTitle className="text-3xl md:text-5xl md-5 md:mb-10">
@@ -27,14 +31,15 @@ const Password = () => {
         height={150}
         imgClassName="w-2/3 h-2/3 sm:w-full h-full"
         label={chooseAvatarIntl}
+        onChange={handleImageChange}
       />
       <Input
         blockClassName="m-5 w-11/12 sm:w-9/12 lg:w-5/6"
         name={"username"}
         label={usernameIntl}
-        value={inputValue}
+        value={usernameValue}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-          setInputValue(e.target.value);
+          setUsernameValue(e.target.value);
         }}
         className="text-base lg:text-xl"
         placeholder={usernameIntl}
@@ -42,7 +47,7 @@ const Password = () => {
       />
 
       <Button
-        disabled
+        disabled={!usernameValue}
         onClick={() => {
           console.log("Hi");
         }}

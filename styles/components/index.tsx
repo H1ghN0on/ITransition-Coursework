@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const SubmitButton = styled.button`
   background-color: ${(props) => props.theme.bg};
+  transition: 0.3s;
   &:disabled {
     background-color: #c7c7c7;
   }

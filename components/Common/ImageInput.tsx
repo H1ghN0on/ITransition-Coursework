@@ -22,6 +22,7 @@ interface ImageInputProps {
   width: number;
   height: number;
   label?: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const ImageInput: React.FC<ImageInputProps> = ({
@@ -29,7 +30,17 @@ const ImageInput: React.FC<ImageInputProps> = ({
   width,
   height,
   label,
+  onChange,
 }) => {
+  const [src, setSrc] = React.useState<string>("/Skittle.jpg");
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onChange(e);
+    if (e.target.files) {
+      const img = URL.createObjectURL(e.target.files[0]);
+      setSrc(img);
+    }
+  };
+
   return (
     <div>
       <AvatarLabel
@@ -41,7 +52,7 @@ const ImageInput: React.FC<ImageInputProps> = ({
             width={width}
             height={height}
             className={`rounded-full`}
-            src="/Skittle.jpg"
+            src={src}
             alt="avatar"
           />
         </div>
@@ -49,7 +60,7 @@ const ImageInput: React.FC<ImageInputProps> = ({
           <span className="text-xs md:text-base">{label}</span>
         </Sign>
       </AvatarLabel>
-      <Upload id="upload" type="file" name="avatar" />
+      <Upload onChange={handleChange} id="upload" type="file" name="avatar" />
     </div>
   );
 };

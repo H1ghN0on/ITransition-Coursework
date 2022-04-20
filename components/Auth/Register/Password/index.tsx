@@ -10,7 +10,7 @@ const Password = () => {
 
   const passwordIntl = intl.formatMessage({ id: "password" });
 
-  const [inputValue, setInputValue] = React.useState<string>("");
+  const [passwordValue, setPasswordValue] = React.useState<string>("");
   const [correct, setCorrect] = React.useState<boolean>(false);
 
   const isMounted = useHasMounted();
@@ -27,15 +27,15 @@ const Password = () => {
         blockClassName="m-5 w-11/12 sm:w-9/12 lg:w-5/6"
         name="password"
         label={passwordIntl}
-        value={inputValue}
+        value={passwordValue}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-          setInputValue(e.target.value);
+          setPasswordValue(e.target.value);
         }}
         className="text-base lg:text-xl"
         placeholder={passwordIntl}
         type="password"
       />
-      <PasswordValidation value={inputValue} handleChange={setCorrect} />
+      <PasswordValidation value={passwordValue} handleChange={setCorrect} />
       <Button
         disabled={!correct}
         onClick={() => {
