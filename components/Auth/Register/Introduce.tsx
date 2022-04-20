@@ -3,14 +3,17 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { useHasMounted } from "@hooks";
 import { Button, ImageInput, Input } from "@components/Common";
 import { AuthTitle } from "@styles/components";
+import { NewUserContext } from "@contexts/NewUserContext";
 
 const Password = () => {
   const intl = useIntl();
+  const newUserContext = React.useContext(NewUserContext);
 
   const chooseAvatarIntl = intl.formatMessage({ id: "choose_the_avatar" });
   const usernameIntl = intl.formatMessage({ id: "username" });
 
   const [usernameValue, setUsernameValue] = React.useState<string>("");
+  const [imageValue, setImageValue] = React.useState<null | File>(null);
 
   const isMounted = useHasMounted();
 
@@ -19,8 +22,26 @@ const Password = () => {
   }
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target);
+    if (e.target.files) {
+      setImageValue(e.target.files[0]);
+    }
   };
+
+  const createUser = async () => {
+    console.log("Hello, world");
+  };
+
+  const handleSubmitClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    newUserContext.setContext({
+      ...newUserContext,
+      username: usernameValue,
+      image: imageValue,
+    });
+
+    await createUser();
+  };
+
   return (
     <div className="flex flex-col items-center justify-center w-11/12 lg:w-7/12">
       <AuthTitle className="text-3xl md:text-5xl md-5 md:mb-10">
@@ -48,9 +69,7 @@ const Password = () => {
 
       <Button
         disabled={!usernameValue.trim()}
-        onClick={() => {
-          console.log("Hi");
-        }}
+        onClick={handleSubmitClick}
         className="my-5 w-2/3 lg:w-1/2"
       >
         <FormattedMessage id="continue" />

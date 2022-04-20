@@ -6,7 +6,6 @@ import { FormattedMessage, useIntl } from "react-intl";
 
 const LoginForm = () => {
   const intl = useIntl();
-
   const usernameIntl = intl.formatMessage({ id: "username" });
   const passwordIntl = intl.formatMessage({ id: "password" });
 
@@ -19,11 +18,19 @@ const LoginForm = () => {
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target);
     setInput({
       ...input,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const handleSubmitClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    await loginUser();
+  };
+
+  const loginUser = async () => {
+    console.log("Hello, world");
   };
 
   return (
@@ -69,9 +76,7 @@ const LoginForm = () => {
 
         <Button
           disabled={!input.username.trim() || !input.password.trim()}
-          onClick={() => {
-            console.log("Hi");
-          }}
+          onClick={handleSubmitClick}
           className="my-5 w-11/12 sm:w-9/12 lg:w-4/6"
         >
           <FormattedMessage id="sign_in" />

@@ -4,9 +4,11 @@ import { PasswordValidation } from "@components/Auth";
 import { useHasMounted } from "@hooks";
 import { Button, Input } from "@components/Common";
 import { AuthTitle } from "@styles/components";
+import { NewUserContext } from "@contexts/NewUserContext";
 
 const Password = () => {
   const intl = useIntl();
+  const newUserContext = React.useContext(NewUserContext);
 
   const passwordIntl = intl.formatMessage({ id: "password" });
 
@@ -18,6 +20,17 @@ const Password = () => {
   if (!isMounted) {
     return null;
   }
+
+  const handleSubmitClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const currentFragment = newUserContext.currentFragment;
+    e.preventDefault();
+    newUserContext.setContext({
+      ...newUserContext,
+      password: passwordValue,
+      currentFragment: currentFragment + 1,
+    });
+  };
+
   return (
     <div className="flex flex-col items-center justify-center w-11/12 lg:w-7/12">
       <AuthTitle className="text-3xl md:text-5xl md-5 md:mb-10">
@@ -38,9 +51,7 @@ const Password = () => {
       <PasswordValidation value={passwordValue} handleChange={setCorrect} />
       <Button
         disabled={!correct}
-        onClick={() => {
-          console.log("Hi");
-        }}
+        onClick={handleSubmitClick}
         className="my-5 w-2/3 lg:w-1/2"
       >
         <FormattedMessage id="continue" />

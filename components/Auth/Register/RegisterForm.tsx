@@ -3,9 +3,11 @@ import { FormFooter } from "@components/Auth";
 import React from "react";
 import { Facebook } from "react-bootstrap-icons";
 import { FormattedMessage, useIntl } from "react-intl";
+import { NewUserContext } from "@contexts/NewUserContext";
 
 const RegisterForm = () => {
   const intl = useIntl();
+  const newUserContext = React.useContext(NewUserContext);
 
   const emailIntl = intl.formatMessage({ id: "email" });
 
@@ -16,6 +18,16 @@ const RegisterForm = () => {
 
   const checkEmailValidation = (value: string) => {
     setEmailValidated(emailPattern.test(value));
+  };
+
+  const handleSubmitClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const currentFragment = newUserContext.currentFragment;
+    e.preventDefault();
+    newUserContext.setContext({
+      ...newUserContext,
+      email: emailValue,
+      currentFragment: currentFragment + 1,
+    });
   };
 
   return (
@@ -53,9 +65,7 @@ const RegisterForm = () => {
 
         <Button
           disabled={!emailValidated}
-          onClick={() => {
-            console.log("Hi");
-          }}
+          onClick={handleSubmitClick}
           className="my-5 w-11/12 sm:w-9/12 lg:w-4/6"
         >
           <FormattedMessage id="sign_up" />
