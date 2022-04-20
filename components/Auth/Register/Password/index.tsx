@@ -11,6 +11,7 @@ const Password = () => {
   const passwordIntl = intl.formatMessage({ id: "password" });
 
   const [inputValue, setInputValue] = React.useState<string>("");
+  const [correct, setCorrect] = React.useState<boolean>(false);
 
   const isMounted = useHasMounted();
 
@@ -34,9 +35,9 @@ const Password = () => {
         placeholder={passwordIntl}
         type="password"
       />
-      <PasswordValidation />
+      <PasswordValidation value={inputValue} handleChange={setCorrect} />
       <Button
-        disabled
+        disabled={!correct}
         onClick={() => {
           console.log("Hi");
         }}

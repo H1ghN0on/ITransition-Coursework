@@ -10,7 +10,7 @@ import React from "react";
 const Register: NextPage = () => {
   return (
     <div className="flex flex-col items-center justify-center h-screen w-screen">
-      <Introduce />
+      <Password />
       {/* <FormFooter signUp /> */}
     </div>
   );
