@@ -68,7 +68,7 @@ const LoginForm = () => {
         />
 
         <Button
-          disabled={!input.username || !input.password}
+          disabled={!input.username.trim() || !input.password.trim()}
           onClick={() => {
             console.log("Hi");
           }}

@@ -14,8 +14,8 @@ const RegisterForm = () => {
   const [emailValidated, setEmailValidated] = React.useState<boolean>(false);
   const emailPattern: RegExp = /^\S+@\S+\.\S+$/;
 
-  const checkEmailValidation = () => {
-    setEmailValidated(emailPattern.test(emailValue));
+  const checkEmailValidation = (value: string) => {
+    setEmailValidated(emailPattern.test(value));
   };
 
   return (
@@ -44,7 +44,7 @@ const RegisterForm = () => {
           value={emailValue}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setEmailValue(e.target.value);
-            checkEmailValidation();
+            checkEmailValidation(e.target.value);
           }}
           className="text-base lg:text-xl"
           placeholder={emailIntl}

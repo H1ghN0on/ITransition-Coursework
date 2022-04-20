@@ -29,7 +29,7 @@ const Password = () => {
         label={passwordIntl}
         value={passwordValue}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-          setPasswordValue(e.target.value);
+          setPasswordValue(e.target.value.replace(" ", ""));
         }}
         className="text-base lg:text-xl"
         placeholder={passwordIntl}

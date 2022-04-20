@@ -47,7 +47,7 @@ const Password = () => {
       />
 
       <Button
-        disabled={!usernameValue}
+        disabled={!usernameValue.trim()}
         onClick={() => {
           console.log("Hi");
         }}

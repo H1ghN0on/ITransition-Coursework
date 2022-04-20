@@ -18,34 +18,33 @@ const PasswordValidation: React.FC<PasswordValidationProps> = ({
   const passwordSymbolsPattern: RegExp = /(?=.*[@_*!])/;
   const passwordLetterCasePattern: RegExp = /(?=.*[a-z])(?=.*[A-Z])/;
 
-  const checkLetterValidation = (): boolean => {
+  const checkLetterValidation = (value: string): boolean => {
     const status = value.length >= 5 && value.length <= 15;
     setLetterValidated(status);
     return status;
   };
 
-  const checkSymbolValidation = (): boolean => {
+  const checkSymbolValidation = (value: string): boolean => {
     const status = passwordSymbolsPattern.test(value);
     setSymbolValidated(status);
     return status;
   };
 
-  const checkCaseValidation = (): boolean => {
+  const checkCaseValidation = (value: string): boolean => {
     const status = passwordLetterCasePattern.test(value);
     setCaseValidated(status);
     return status;
   };
 
-  const validate = () => {
-    const status =
-      checkLetterValidation() &&
-      checkSymbolValidation() &&
-      checkCaseValidation();
-    handleChange(status);
+  const validate = (value: string) => {
+    const letterVal = checkLetterValidation(value);
+    const symbolVal = checkSymbolValidation(value);
+    const caseVal = checkCaseValidation(value);
+    handleChange(letterVal && symbolVal && caseVal);
   };
 
   React.useEffect(() => {
-    validate();
+    validate(value.trim());
   }, [value]);
 
   return (
