@@ -1,7 +1,6 @@
 import { IconSpan } from "@components/Common";
 import React from "react";
 import { CircleFill } from "react-bootstrap-icons";
-import Topics from "@static/topics";
 
 interface TopicBarProps {
   topics: string[];
