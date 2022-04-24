@@ -48,6 +48,7 @@ const Password = () => {
         <FormattedMessage id="username_title" />
       </AuthTitle>
       <ImageInput
+        rounded
         width={150}
         height={150}
         imgClassName="w-2/3 h-2/3 sm:w-full h-full"

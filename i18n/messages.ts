@@ -21,6 +21,13 @@ export const messages = {
     search: "Search",
     recently_added: "Recently added",
     added_to: "added to",
+    add_collection: "Add the collection",
+    add: "Add",
+    name: "Name",
+    description: "Description",
+    topics: "Topics",
+    add_topic: "Add topic",
+    no_topics: "No topics",
   },
   [LOCALES.RUSSIAN]: {
     //Auth
@@ -42,5 +49,12 @@ export const messages = {
     search: "Поиск",
     recently_added: "Недавно добавленные",
     added_to: "добавлен в",
+    add_collection: "Добавить коллекцию",
+    add: "Добавить",
+    name: "Название",
+    description: "Описание",
+    topics: "Темы",
+    add_topic: "Добавить тему",
+    no_topics: "Нет тем",
   },
 };

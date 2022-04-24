@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import styled from "styled-components";
+import { useHasMounted } from "@hooks";
 
 const AvatarLabel = styled.label`
   cursor: pointer;
@@ -23,6 +24,7 @@ interface ImageInputProps {
   height: number;
   label?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  rounded?: boolean;
 }
 
 const ImageInput: React.FC<ImageInputProps> = ({
@@ -31,8 +33,15 @@ const ImageInput: React.FC<ImageInputProps> = ({
   height,
   label,
   onChange,
+  rounded,
 }) => {
   const [src, setSrc] = React.useState<string>("/Skittle.jpg");
+  const isMounted = useHasMounted();
+
+  if (!isMounted) {
+    return null;
+  }
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e);
     if (e.target.files) {
@@ -51,13 +60,13 @@ const ImageInput: React.FC<ImageInputProps> = ({
           <Image
             width={width}
             height={height}
-            className={`rounded-full`}
+            className={rounded ? "rounded-full" : ""}
             src={src}
             alt="avatar"
           />
         </div>
         <Sign>
-          <span className="text-xs md:text-base">{label}</span>
+          <span className="text-xs md:text-base text-center">{label}</span>
         </Sign>
       </AvatarLabel>
       <Upload onChange={handleChange} id="upload" type="file" name="avatar" />

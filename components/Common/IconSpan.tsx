@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import React from "react";
 import { Icon } from "react-bootstrap-icons";
 
@@ -7,6 +8,7 @@ interface IconSpanProps {
   iconClassName?: string;
   textClassName?: string;
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
+  pointer?: boolean;
 }
 
 const IconSpan: React.FC<IconSpanProps> = ({
@@ -15,9 +17,15 @@ const IconSpan: React.FC<IconSpanProps> = ({
   iconClassName,
   textClassName,
   onClick,
+  pointer,
 }) => {
   return (
-    <div onClick={onClick} className="flex items-center">
+    <div
+      onClick={onClick}
+      className={clsx("flex items-center", {
+        ["cursor-pointer"]: pointer,
+      })}
+    >
       {React.createElement(icon, {
         className: `${iconClassName} mr-1 md:mr-2`,
       })}

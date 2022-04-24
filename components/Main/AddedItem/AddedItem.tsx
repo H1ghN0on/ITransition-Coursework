@@ -1,11 +1,11 @@
 import React from "react";
-import Image from "next/image";
+
 import { InfoBar, Title } from "@components/Main/Collection";
 import TagList from "./TagList";
 
 const AddedItem = () => {
   return (
-    <div className="flex items-center w-2/5 bg-white rounded shadow-inner-md p-5">
+    <div className="flex items-center  bg-white rounded shadow-inner-md p-5 ">
       <div className="flex flex-col space-y-3 w-full">
         <TagList tags={["Lag", "Train", "Holy", "東京"]} />
         <Title text="Interesting Book" />
