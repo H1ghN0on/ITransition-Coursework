@@ -7,6 +7,7 @@ interface IconSpanProps {
   icon: Icon;
   iconClassName?: string;
   textClassName?: string;
+  className?: string;
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
   pointer?: boolean;
 }
@@ -17,12 +18,13 @@ const IconSpan: React.FC<IconSpanProps> = ({
   iconClassName,
   textClassName,
   onClick,
+  className,
   pointer,
 }) => {
   return (
     <div
       onClick={onClick}
-      className={clsx("flex items-center", {
+      className={clsx("flex items-center", className, {
         ["cursor-pointer"]: pointer,
       })}
     >

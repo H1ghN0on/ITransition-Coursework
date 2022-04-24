@@ -19,7 +19,7 @@ const InfoBar: React.FC<InfoBarProps> = ({
   const textClassName = "text-xs lg:text-sm";
   return (
     <div
-      className={`flex space-x-2 md:space-x-5 justify-center md:justify-${position}`}
+      className={`flex flex-col items-center xs:flex-row space-x-2 md:space-x-5 justify-center md:justify-${position} truncate`}
     >
       {quantity && (
         <IconSpan
