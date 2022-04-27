@@ -6,3 +6,4 @@ export { default as Toolbar } from "./Toolbar";
 export { default as ProfileBrief } from "./ProfileBrief";
 export { default as Mask } from "./Mask";
 export { default as Modal } from "./Modal";
+export { default as CustomDropdown } from "./Dropdown";

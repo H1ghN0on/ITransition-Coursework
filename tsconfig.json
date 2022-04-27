@@ -21,6 +21,8 @@
       "@locales/*": ["i18n/*"],
       "@hooks": ["hooks"],
       "@contexts/*": ["contexts/*"],
+      "@redux/*": ["redux/*"],
+      "@utils/*": ["utils/*"],
  
     }
   },
