@@ -94,7 +94,7 @@ const ItemTable = () => {
                 <tr {...row.getRowProps()}>
                   {row.cells.map((cell) => (
                     <td
-                      className="text-center text-xs px-6 py-4 whitespace-nowrap border-r border-gray last:border-0"
+                      className="text-center truncate text-xs px-6 py-4 whitespace-nowrap border-r border-gray last:border-0"
                       {...cell.getCellProps()}
                     >
                       {cell.render("Cell")}
@@ -108,7 +108,7 @@ const ItemTable = () => {
       </div>
       <div
         onClick={handleAddClick}
-        className="flex justify-center items-center  cursor-pointer p-3"
+        className="flex justify-center items-center cursor-pointer p-3"
       >
         <div className="flex">
           <IconSpan

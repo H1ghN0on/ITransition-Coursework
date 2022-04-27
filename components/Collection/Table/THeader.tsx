@@ -111,7 +111,7 @@ const THeader: React.FC<THeaderProps> = ({ currentColumns, data }) => {
       Header: <EditableColumn name={obj.name} />,
       accessor: obj.name.toLowerCase(),
       minWidth: 250,
-      width: 2 * obj.name.length,
+      width: 10 * obj.name.length,
       type: obj.type,
 
       Cell: () => <span>{obj.init}</span>,
