@@ -1,78 +1,139 @@
-/* eslint-disable react/jsx-key */
 import { IconSpan } from "@components/Common";
-import { THeader } from "@components/Collection";
-import { insert } from "@utils/index";
+
 import React from "react";
 import { PencilFill, Plus, TrashFill } from "react-bootstrap-icons";
 
-import { useFlexLayout, useTable } from "react-table";
+import {
+  useFlexLayout,
+  useRowSelect,
+  useRowState,
+  useTable,
+} from "react-table";
 
-import { TableContext } from "@contexts/TableContext";
-import { EditableColumn } from "./THeader";
+import { TBody, THeader } from "@components/Collection/Table";
+import { ColumnData } from "@components/Collection/Table/THeader";
+import { useAppDispatch, useAppSelector } from "@redux/hooks";
+import {
+  addColumnToEnd,
+  clearTable,
+  removeRow,
+  setAdditiveColumns,
+  setColumnModalActive,
+  setData,
+  setItemModalActive,
+  setRowForEdit,
+} from "@redux/tableSlice";
+
+const additiveColumns: ColumnData[] = [
+  {
+    name: "Memes",
+    accessor: "memes",
+    width: 200,
+    type: "text",
+  },
+  {
+    name: "True",
+    accessor: "true",
+    width: 200,
+    type: "checkbox",
+  },
+];
+
+const data = [
+  {
+    id: "1488229",
+    name: "Как стать богатым и счастливым",
+    tags: ["lol", "okay"],
+    memes: "Nooo",
+    true: "No",
+  },
+  {
+    id: "1488227",
+    name: "Как стать богатым и счастливым",
+    tags: ["lol", "okay"],
+    memes: "Nooo",
+    true: "Yes",
+  },
+  {
+    id: "1488228",
+    name: "Как стать богатым и счастливым",
+    tags: ["lol", "okay", "no", "no", "nooooo", "no", "no"],
+    memes: "Nooo",
+    true: "Yes",
+  },
+];
 
 const ItemTable = () => {
-  const [data, setData] = React.useState([
-    {
-      id: "1488228",
-      name: "Как стать богатым и счастливым",
-      tags: ["lol", "okay"],
-      memes: "Nooo",
-      true: "No",
-    },
-    {
-      id: "1488228",
-      name: "Как стать богатым и счастливым",
-      tags: ["lol", "okay"],
-      memes: "Nooo",
-      true: "Yes",
-    },
-    {
-      id: "1488228",
-      name: "Как стать богатым и счастливым",
-      tags: ["lol", "okay", "no", "no", "nooooo", "no", "no"],
-      memes: "Nooo",
-      true: "Yes",
-    },
-  ]);
-  const tableData = React.useContext(TableContext);
+  const tData = useAppSelector((state) => state.tableSlice);
+  const dispatch = useAppDispatch();
 
   const handleAddClick = () => {
-    console.log("add");
+    dispatch(setItemModalActive(true));
   };
+
+  React.useEffect(() => {
+    dispatch(setData(data));
+    dispatch(setAdditiveColumns(additiveColumns));
+    dispatch(
+      addColumnToEnd({
+        name: "add",
+        accessor: "add",
+        Header: () => (
+          <IconSpan
+            pointer
+            className="justify-center"
+            onClick={() => {
+              dispatch(setColumnModalActive(true));
+            }}
+            icon={Plus}
+            text="New column"
+          />
+        ),
+        Cell: ({ row }) => (
+          <div className="flex justify-center">
+            <div className="space-y-1">
+              <IconSpan
+                onClick={() => {
+                  console.log(row);
+                  dispatch(setRowForEdit(row.original));
+                  dispatch(setItemModalActive(true));
+                }}
+                pointer
+                icon={PencilFill}
+                text="Edit"
+              />
+              <IconSpan
+                onClick={() => {
+                  if (confirm("Are you sure you want to delete row?")) {
+                    dispatch(removeRow(row.original.id));
+                  }
+                }}
+                pointer
+                icon={TrashFill}
+                text="Delete"
+              />
+            </div>
+          </div>
+        ),
+        width: 200,
+        type: "checkbox",
+      })
+    );
+    return () => {
+      dispatch(clearTable());
+    };
+  }, []);
+
+  React.useEffect(() => {
+    console.log(tData.data);
+  }, [tData.data]);
+
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable<any>(
-      { columns: tableData.columns, data },
+      { columns: tData.columns, data: tData.data },
       useFlexLayout,
-      (hooks) => {
-        hooks.visibleColumns.push((columns) => [
-          ...columns,
-          {
-            id: "add",
-            Header: () => (
-              <IconSpan
-                pointer
-                className="justify-center"
-                onClick={() => {
-                  tableData.setContext({
-                    ...tableData,
-                    isColumnModalActive: true,
-                  });
-                }}
-                icon={Plus}
-                text="New column"
-              />
-            ),
-            Cell: () => (
-              <div className="flex justify-center">
-                <div className="space-y-1">
-                  <IconSpan pointer icon={PencilFill} text="Edit" />
-                  <IconSpan pointer icon={TrashFill} text="Delete" />
-                </div>
-              </div>
-            ),
-          },
-        ]);
-      }
+      useRowSelect,
+      useRowState
     );
 
   return (
@@ -82,28 +143,9 @@ const ItemTable = () => {
           className="w-full divide-y divide-gray-200 border border-gray"
           {...getTableProps()}
         >
-          <THeader currentColumns={tableData.columns} data={headerGroups} />
+          <THeader data={headerGroups} />
 
-          <tbody
-            className="bg-white divide-y divide-gray-200"
-            {...getTableBodyProps()}
-          >
-            {rows.map((row) => {
-              prepareRow(row);
-              return (
-                <tr {...row.getRowProps()}>
-                  {row.cells.map((cell) => (
-                    <td
-                      className="text-center truncate text-xs px-6 py-4 whitespace-nowrap border-r border-gray last:border-0"
-                      {...cell.getCellProps()}
-                    >
-                      {cell.render("Cell")}
-                    </td>
-                  ))}
-                </tr>
-              );
-            })}
-          </tbody>
+          <TBody tData={{ getTableBodyProps, rows, prepareRow }} />
         </table>
       </div>
       <div

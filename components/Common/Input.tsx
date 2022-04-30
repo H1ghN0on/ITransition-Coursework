@@ -24,8 +24,7 @@ export const InputLabel = styled.label`
 interface Input {
   value: string;
   placeholder?: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onTextareaChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onChange?: (e: React.ChangeEvent<any>) => void;
   name: string;
   label?: string;
   width?: string;
@@ -33,6 +32,7 @@ interface Input {
   className?: string;
   blockClassName?: string;
   textarea?: boolean;
+  checked?: boolean;
   type: "password" | "text" | "number" | "checkbox" | "date" | "number";
 }
 
@@ -46,7 +46,7 @@ const Input: React.FC<Input> = ({
   className,
   textarea,
   type,
-  onTextareaChange,
+  checked,
 }) => {
   const isMounted = useHasMounted();
 
@@ -59,7 +59,7 @@ const Input: React.FC<Input> = ({
       {label && <InputLabel htmlFor={name}>{label}</InputLabel>}
       {textarea ? (
         <textarea
-          onChange={onTextareaChange}
+          onChange={onChange}
           placeholder={placeholder}
           id={name}
           value={value}
@@ -73,6 +73,7 @@ const Input: React.FC<Input> = ({
           placeholder={placeholder}
           id={name}
           value={value}
+          checked={checked}
           type={type}
           name={name}
         />

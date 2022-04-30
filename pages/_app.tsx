@@ -1,5 +1,6 @@
 import type { AppProps } from "next/app";
 import "@styles/globals.css";
+import "@styles/tags.css";
 import { IntlProvider } from "react-intl";
 import { messages } from "@locales/messages";
 import { LOCALES } from "@locales/locales";

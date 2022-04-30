@@ -1,10 +1,15 @@
-import { insert } from "@utils/index";
 import React from "react";
 import { TrashFill } from "react-bootstrap-icons";
-import { ModalColumn } from "../ColumnModal";
 
-import AddColumnModal from "../ColumnModal";
-import { TableContext } from "@contexts/TableContext";
+import { ColumnModal } from "@components/Collection/Table";
+import { ModalColumn } from "@components/Collection/Table/ColumnModal";
+import { useAppDispatch, useAppSelector } from "@redux/hooks";
+import {
+  addColumn,
+  addColumnInData,
+  removeColumn,
+  setColumnModalActive,
+} from "@redux/tableSlice";
 
 export interface ColumnData {
   name: string;
@@ -13,6 +18,7 @@ export interface ColumnData {
   maxWidth?: number;
   minWidth?: number;
   type: "text" | "checkbox" | "date" | "number" | "textarea";
+  init?: any;
 }
 
 export interface Column extends ColumnData {
@@ -22,38 +28,15 @@ export interface Column extends ColumnData {
 
 interface THeaderProps {
   data: any[];
-  currentColumns: any[];
 }
 
 interface EditableColumnProps {
   name: string;
 }
 
-const additiveColumns: ColumnData[] = [
-  {
-    name: "Memes",
-    accessor: "memes",
-    width: 200,
-    type: "text",
-  },
-  {
-    name: "True",
-    accessor: "true",
-    width: 200,
-    type: "checkbox",
-  },
-];
-
 export const EditableColumn: React.FC<EditableColumnProps> = ({ name }) => {
-  const tableData = React.useContext(TableContext);
-  const deleteSelf = () => {
-    tableData.setContext({
-      ...tableData,
-      columns: tableData.columns.filter(
-        (column) => column.accessor != name.toLowerCase()
-      ),
-    });
-  };
+  const dispatch = useAppDispatch();
+
   return (
     <div className="flex justify-center items-center space-x-2">
       <span>{name}</span>
@@ -62,7 +45,7 @@ export const EditableColumn: React.FC<EditableColumnProps> = ({ name }) => {
         className="cursor-pointer"
         onClick={() => {
           if (confirm(`Do you want to delete ${name}`)) {
-            deleteSelf();
+            dispatch(removeColumn(name));
           }
         }}
       />
@@ -70,60 +53,35 @@ export const EditableColumn: React.FC<EditableColumnProps> = ({ name }) => {
   );
 };
 
-const THeader: React.FC<THeaderProps> = ({ currentColumns, data }) => {
-  const [columns, setColumns] = React.useState<Column[]>(currentColumns);
-  const tableData = React.useContext(TableContext);
+const THeader: React.FC<THeaderProps> = ({ data }) => {
+  // const tableData = React.useContext(TableContext);
+  const dispatch = useAppDispatch();
+  const tData = useAppSelector((state) => state.tableSlice);
 
-  React.useEffect(() => {
-    setColumns(currentColumns);
-  }, [currentColumns]);
-  React.useEffect(() => {
-    tableData.setContext({
-      ...tableData,
-      columns: columns,
-    });
-  }, [columns]);
-  React.useEffect(() => {
-    tableData.setContext({
-      ...tableData,
-      columns: [
-        ...tableData.columns.slice(0, -1),
-        ...additiveColumns.map((column: ColumnData) => ({
-          ...column,
-          Header: () => <EditableColumn name={column.name} />,
-          Cell: ({ value }: any) => <span>{value}</span>,
-        })),
-        tableData.columns[tableData.columns.length - 1],
-      ],
-    });
-  }, []);
   const closeModal = () => {
-    tableData.setContext({
-      ...tableData,
-      isColumnModalActive: false,
-      columns: columns,
-    });
+    dispatch(setColumnModalActive(false));
   };
 
   const handleColumnSubmitClick = (obj: ModalColumn) => {
-    const column = {
+    const column: Column = {
       name: obj.name,
-      Header: <EditableColumn name={obj.name} />,
+      Header: () => <EditableColumn name={obj.name} />,
       accessor: obj.name.toLowerCase(),
       minWidth: 250,
       width: 10 * obj.name.length,
       type: obj.type,
-
+      init: obj.init,
       Cell: () => <span>{obj.init}</span>,
     };
 
-    setColumns(insert(columns, columns.length - 1, column));
+    dispatch(addColumn(column));
+    dispatch(addColumnInData(column));
   };
 
   return (
     <>
-      {tableData.isColumnModalActive && (
-        <AddColumnModal
+      {tData.isColumnModalActive && (
+        <ColumnModal
           onSubmit={handleColumnSubmitClick}
           closeModal={closeModal}
         />

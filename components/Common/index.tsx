@@ -7,3 +7,4 @@ export { default as ProfileBrief } from "./ProfileBrief";
 export { default as Mask } from "./Mask";
 export { default as Modal } from "./Modal";
 export { default as CustomDropdown } from "./Dropdown";
+export { default as TagInput } from "./TagInput";
