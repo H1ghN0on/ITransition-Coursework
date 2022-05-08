@@ -48,6 +48,7 @@ export const messages = {
     processing: "Processing",
     username_exists: "This username is already used. Try another one",
     email_exists: "This email is already used. Try another one",
+    user_not_found: "User was not found",
   },
   [LOCALES.RUSSIAN]: {
     //Auth
@@ -96,5 +97,6 @@ export const messages = {
     processing: "Регистрируем",
     username_exists: "Это имя пользователя уже занято",
     email_exists: "Эта почта уже зарегистрирована",
+    user_not_found: "Пользователь не был найден",
   },
 };
