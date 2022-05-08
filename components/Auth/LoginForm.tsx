@@ -4,6 +4,7 @@ import React from "react";
 import { Facebook } from "react-bootstrap-icons";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Axios } from "core/axios";
+import Cookies from "js-cookie";
 
 const LoginForm = () => {
   const intl = useIntl();
@@ -43,6 +44,8 @@ const LoginForm = () => {
       const { data } = await Axios.post("/login", { email, password });
       if (data.status == "Error") {
         setError(true);
+      } else {
+        Cookies.set("token", data.token);
       }
     } catch (error) {
       console.log(error);
@@ -66,7 +69,11 @@ const LoginForm = () => {
 
   const vkAuth = (event: MessageEvent) => {
     const user: string = event.data;
-    console.log(user);
+    if (typeof user === "string" && user.includes("password")) {
+      const json = JSON.parse(user);
+
+      Cookies.set("token", json.token);
+    }
   };
 
   React.useEffect(() => {

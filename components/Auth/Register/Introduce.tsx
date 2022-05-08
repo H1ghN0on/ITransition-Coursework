@@ -5,6 +5,7 @@ import { Button, ImageInput, Input } from "@components/Common";
 import { AuthTitle } from "@styles/components";
 import { NewUserContext } from "@contexts/NewUserContext";
 import { Axios } from "core/axios";
+import Cookies from "js-cookie";
 
 const Password = () => {
   const intl = useIntl();
@@ -40,6 +41,8 @@ const Password = () => {
       const { data } = await Axios.post("/create-user", formData);
       if (data.status === "Error") {
         setError(true);
+      } else {
+        Cookies.set("token", data.token);
       }
     } catch (error) {
       console.log(error);

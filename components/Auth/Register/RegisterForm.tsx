@@ -4,6 +4,7 @@ import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { NewUserContext } from "@contexts/NewUserContext";
 import { Axios } from "core/axios";
+import Cookies from "js-cookie";
 
 const RegisterForm = () => {
   const intl = useIntl();
@@ -75,7 +76,11 @@ const RegisterForm = () => {
 
   const vkAuth = (event: MessageEvent) => {
     const user: string = event.data;
-    console.log(user);
+    if (typeof user === "string" && user.includes("password")) {
+      const json = JSON.parse(user);
+
+      Cookies.set("token", json.token);
+    }
   };
 
   React.useEffect(() => {
