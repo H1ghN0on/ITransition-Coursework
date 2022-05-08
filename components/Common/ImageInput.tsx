@@ -25,7 +25,7 @@ interface ImageInputProps {
   label?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   rounded?: boolean;
-  name: string;
+  name?: string;
 }
 
 const ImageInput: React.FC<ImageInputProps> = ({
