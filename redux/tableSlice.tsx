@@ -13,52 +13,11 @@ interface TableState {
   isForEdit: any;
 }
 
-const initialColumns: Column[] = [
-  {
-    name: "ID",
-    Header: "ID",
-    accessor: "id",
-    width: 100,
-    type: "number",
-  },
-  {
-    name: "Name",
-    Header: "Name",
-    accessor: "name",
-    minWidth: 200,
-    width: 300,
-    type: "text",
-  },
-
-  {
-    Header: "Tags",
-    accessor: "tags",
-    width: 350,
-    minWidth: 200,
-    type: "text",
-    name: "Tags",
-    Cell: ({ value }: any) => (
-      <div className="overflow-y-auto flex flex-wrap space-y-1">
-        <div className="hidden"></div>
-        {value &&
-          value.map((tag: string, index: number) => (
-            <span
-              key={index}
-              className="text-xs md:text-xs mr-3 cursor-pointer border border-[#d8d8d8] rounded-full bg-white px-4 py-1"
-            >
-              {tag}
-            </span>
-          ))}
-      </div>
-    ),
-  },
-];
-
 const initialState = {
   isColumnModalActive: false,
   isItemModalActive: false,
   isForEdit: null,
-  columns: initialColumns,
+  columns: [],
   data: [],
 } as TableState;
 
@@ -69,10 +28,13 @@ const tableSlice = createSlice({
     setData(state, action: PayloadAction<any[]>) {
       state.data = state.data.concat(action.payload);
     },
-    setAdditiveColumns(state, action: PayloadAction<ColumnData[]>) {
+    setAdditiveColumns(
+      state,
+      action: PayloadAction<{ init: Column[]; add: ColumnData[] }>
+    ) {
       state.columns = [
-        ...state.columns,
-        ...action.payload.map((column) => ({
+        ...action.payload.init,
+        ...action.payload.add.map((column) => ({
           ...column,
           id: column.name,
           Header: () => <EditableColumn name={column.name} />,
@@ -140,7 +102,7 @@ const tableSlice = createSlice({
       state.isForEdit = action.payload;
     },
     clearTable(state) {
-      state.columns = initialColumns;
+      state.columns = [];
       state.isForEdit = null;
       state.isItemModalActive = false;
       state.isColumnModalActive = false;

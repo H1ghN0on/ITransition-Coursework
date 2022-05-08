@@ -25,6 +25,7 @@ interface ImageInputProps {
   label?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   rounded?: boolean;
+  name: string;
 }
 
 const ImageInput: React.FC<ImageInputProps> = ({
@@ -34,6 +35,7 @@ const ImageInput: React.FC<ImageInputProps> = ({
   label,
   onChange,
   rounded,
+  name,
 }) => {
   const [src, setSrc] = React.useState<string>("/Skittle.jpg");
   const isMounted = useHasMounted();
@@ -69,7 +71,7 @@ const ImageInput: React.FC<ImageInputProps> = ({
           <span className="text-xs md:text-base text-center">{label}</span>
         </Sign>
       </AvatarLabel>
-      <Upload onChange={handleChange} id="upload" type="file" name="avatar" />
+      <Upload onChange={handleChange} id="upload" type="file" name={name} />
     </div>
   );
 };

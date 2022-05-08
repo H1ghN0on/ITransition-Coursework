@@ -2,6 +2,7 @@ import React from "react";
 import { InputLabel } from "./Input";
 
 import { Tag, WithContext as ReactTags } from "react-tag-input";
+import { FormattedMessage, useIntl } from "react-intl";
 
 // const suggestions = COUNTRIES.map((country) => {
 //   return {
@@ -31,9 +32,14 @@ const TagInput: React.FC<TagInputProps> = ({
   tags,
   blockClassName,
 }) => {
+  const intl = useIntl();
+
+  const tagsPlaceholderIntl = intl.formatMessage({ id: "tags_placeholder" });
   return (
     <div className={`flex flex-col ${blockClassName}`}>
-      <InputLabel htmlFor="tags">Тэги</InputLabel>
+      <InputLabel htmlFor="tags">
+        <FormattedMessage id="item_tags" />
+      </InputLabel>
       <ReactTags
         name="tags"
         tags={tags}
@@ -43,6 +49,7 @@ const TagInput: React.FC<TagInputProps> = ({
         handleAddition={onAdd}
         inputFieldPosition="bottom"
         autocomplete
+        placeholder={tagsPlaceholderIntl}
         inline
       />
     </div>

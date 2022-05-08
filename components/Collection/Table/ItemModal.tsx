@@ -2,15 +2,18 @@ import { Button, Input, Modal, TagInput } from "@components/Common";
 import { useAppSelector } from "@redux/hooks";
 import React from "react";
 import { Tag } from "react-tag-input";
-
+import { FormattedMessage, useIntl } from "react-intl";
 interface ItemModalProps {
   closeModal: () => void;
   onSubmit: (obj: any) => void;
 }
 
 const ItemModal: React.FC<ItemModalProps> = ({ closeModal, onSubmit }) => {
-  const { isForEdit, columns } = useAppSelector((state) => state.tableSlice);
+  const intl = useIntl();
 
+  const { isForEdit, columns } = useAppSelector((state) => state.tableSlice);
+  const noIntl = intl.formatMessage({ id: "no" });
+  const yesIntl = intl.formatMessage({ id: "yes" });
   const [tags, setTags] = React.useState<Tag[]>(
     isForEdit
       ? isForEdit.tags.map((tag: Tag) => ({
@@ -28,7 +31,7 @@ const ItemModal: React.FC<ItemModalProps> = ({ closeModal, onSubmit }) => {
         value: isForEdit
           ? isForEdit[obj.accessor]
           : obj.type === "checkbox"
-          ? "No"
+          ? noIntl
           : "",
         type: obj.type,
       }))
@@ -45,7 +48,7 @@ const ItemModal: React.FC<ItemModalProps> = ({ closeModal, onSubmit }) => {
       inputValue.map((input: any) => {
         if (input.accessor == e.target.name) {
           if (input.type === "checkbox") {
-            input.value = e.target.checked ? "Yes" : "No";
+            input.value = e.target.checked ? yesIntl : noIntl;
           } else {
             input.value = e.target.value;
           }
@@ -81,11 +84,16 @@ const ItemModal: React.FC<ItemModalProps> = ({ closeModal, onSubmit }) => {
   return (
     <Modal
       closeModal={closeModal}
-      className="flex flex-col w-[80vw] md:w-[60vw] max-h-[95vh] py-10 justify-center  overflow-x-hidden"
+      className="flex flex-col w-[80vw] md:w-[60vw] max-h-[95vh] py-10 justify-center overflow-x-hidden"
     >
       <h1 className="text-3xl text-black font-bold self-center">
-        {isForEdit ? "Edit column" : "New column"}
+        {isForEdit ? (
+          <FormattedMessage id="edit_item" />
+        ) : (
+          <FormattedMessage id="add_item" />
+        )}
       </h1>
+
       <div className="flex flex-col items-center">
         <form className="flex flex-col w-3/5 mt-3 space-y-3">
           {inputValue &&
@@ -97,8 +105,12 @@ const ItemModal: React.FC<ItemModalProps> = ({ closeModal, onSubmit }) => {
                 onChange={handleTextChange}
                 value={input.value}
                 name={input.accessor}
-                checked={input.type === "checkbox" && input.value === "Yes"}
-                label={input.name}
+                checked={input.type === "checkbox" && input.value === yesIntl}
+                label={
+                  input.accessor == "name"
+                    ? intl.formatMessage({ id: "name" })
+                    : input.name
+                }
                 type={input.type === "textarea" ? "text" : input.type}
               />
             ))}
@@ -112,7 +124,11 @@ const ItemModal: React.FC<ItemModalProps> = ({ closeModal, onSubmit }) => {
             className="w-2/3 self-center"
             onClick={handleSubmitClick}
           >
-            {isForEdit ? "Edit" : "Add"}
+            {isForEdit ? (
+              <FormattedMessage id="edit" />
+            ) : (
+              <FormattedMessage id="add" />
+            )}
           </Button>
         </form>
       </div>

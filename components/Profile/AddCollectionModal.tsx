@@ -92,7 +92,7 @@ const AddCollectionModal: React.FC<ModalProps> = ({ closeModal }) => {
               type="text"
               label={descriptionIntl}
               value={inputValue.description}
-              onTextareaChange={handleTextChange}
+              onChange={handleTextChange}
             />
             <Topics
               onTopicClick={handleTopicChoose}

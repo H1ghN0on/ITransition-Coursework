@@ -28,7 +28,6 @@ const Fragment: React.FC<{ fragment: number }> = ({ fragment }) => {
 
 const FragmentSwitcher = () => {
   const userData = React.useContext(NewUserContext);
-  console.log(userData);
   return <Fragment fragment={userData.currentFragment} />;
 };
 

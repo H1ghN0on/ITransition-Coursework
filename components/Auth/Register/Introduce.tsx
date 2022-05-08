@@ -4,6 +4,7 @@ import { useHasMounted } from "@hooks";
 import { Button, ImageInput, Input } from "@components/Common";
 import { AuthTitle } from "@styles/components";
 import { NewUserContext } from "@contexts/NewUserContext";
+import { Axios } from "core/axios";
 
 const Password = () => {
   const intl = useIntl();
@@ -12,6 +13,7 @@ const Password = () => {
   const chooseAvatarIntl = intl.formatMessage({ id: "choose_the_avatar" });
   const usernameIntl = intl.formatMessage({ id: "username" });
 
+  const [error, setError] = React.useState<boolean>(false);
   const [usernameValue, setUsernameValue] = React.useState<string>("");
   const [imageValue, setImageValue] = React.useState<null | File>(null);
 
@@ -28,18 +30,37 @@ const Password = () => {
   };
 
   const createUser = async () => {
-    console.log("Hello, world");
+    const formData = new FormData();
+    formData.append("username", usernameValue);
+    formData.append("password", newUserContext.password);
+    formData.append("email", newUserContext.email);
+    formData.append("avatar", imageValue ?? "");
+
+    try {
+      const { data } = await Axios.post("/create-user", formData);
+      if (data.status === "Error") {
+        setError(true);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleSubmitClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    setError(false);
     e.preventDefault();
     newUserContext.setContext({
       ...newUserContext,
       username: usernameValue,
       image: imageValue,
+      isLoading: true,
     });
 
     await createUser();
+    newUserContext.setContext({
+      ...newUserContext,
+      isLoading: false,
+    });
   };
 
   return (
@@ -47,6 +68,11 @@ const Password = () => {
       <AuthTitle className="text-3xl md:text-5xl md-5 md:mb-10">
         <FormattedMessage id="username_title" />
       </AuthTitle>
+      {error && (
+        <span className="text-sm text-red-600">
+          <FormattedMessage id="username_exists" />
+        </span>
+      )}
       <ImageInput
         rounded
         width={150}
@@ -54,6 +80,7 @@ const Password = () => {
         imgClassName="w-2/3 h-2/3 sm:w-full h-full"
         label={chooseAvatarIntl}
         onChange={handleImageChange}
+        name="avatar"
       />
       <Input
         blockClassName="m-5 w-11/12 sm:w-9/12 lg:w-5/6"
@@ -69,11 +96,15 @@ const Password = () => {
       />
 
       <Button
-        disabled={!usernameValue.trim()}
+        disabled={!usernameValue.trim() || newUserContext.isLoading}
         onClick={handleSubmitClick}
         className="my-5 w-2/3 lg:w-1/2"
       >
-        <FormattedMessage id="continue" />
+        {newUserContext.isLoading ? (
+          <FormattedMessage id="processing" />
+        ) : (
+          <FormattedMessage id="continue" />
+        )}
       </Button>
     </div>
   );

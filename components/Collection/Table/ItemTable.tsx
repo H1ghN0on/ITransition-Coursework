@@ -11,7 +11,7 @@ import {
 } from "react-table";
 
 import { TBody, THeader } from "@components/Collection/Table";
-import { ColumnData } from "@components/Collection/Table/THeader";
+import { Column, ColumnData } from "@components/Collection/Table/THeader";
 import { useAppDispatch, useAppSelector } from "@redux/hooks";
 import {
   addColumnToEnd,
@@ -23,6 +23,7 @@ import {
   setItemModalActive,
   setRowForEdit,
 } from "@redux/tableSlice";
+import { useIntl } from "react-intl";
 
 const additiveColumns: ColumnData[] = [
   {
@@ -64,6 +65,58 @@ const data = [
 ];
 
 const ItemTable = () => {
+  const intl = useIntl();
+
+  const nameIntl = intl.formatMessage({ id: "name" });
+  const tagsIntl = intl.formatMessage({ id: "item_tags" });
+
+  const initialColumns: Column[] = [
+    {
+      name: "ID",
+      Header: "ID",
+      accessor: "id",
+      width: 100,
+      type: "number",
+    },
+    {
+      name: "Name",
+      Header: nameIntl,
+      accessor: "name",
+      minWidth: 200,
+      width: 300,
+      type: "text",
+    },
+
+    {
+      Header: tagsIntl,
+      accessor: "tags",
+      width: 350,
+      minWidth: 200,
+      type: "text",
+      name: "Tags",
+      Cell: ({ value }: any) => (
+        <div className="overflow-y-auto flex flex-wrap space-y-1">
+          <div className="hidden"></div>
+          {value &&
+            value.map((tag: string, index: number) => (
+              <span
+                key={index}
+                className="text-xs md:text-xs mr-3 cursor-pointer border border-[#d8d8d8] rounded-full bg-white px-4 py-1"
+              >
+                {tag}
+              </span>
+            ))}
+        </div>
+      ),
+    },
+  ];
+
+  const addItemIntl = intl.formatMessage({ id: "add_item" });
+  const newColumnIntl = intl.formatMessage({ id: "new_column" });
+  const editIntl = intl.formatMessage({ id: "edit" });
+  const deleteIntl = intl.formatMessage({ id: "delete" });
+  const deleteWarningIntl = intl.formatMessage({ id: "delete_warning" });
+
   const tData = useAppSelector((state) => state.tableSlice);
   const dispatch = useAppDispatch();
 
@@ -73,7 +126,9 @@ const ItemTable = () => {
 
   React.useEffect(() => {
     dispatch(setData(data));
-    dispatch(setAdditiveColumns(additiveColumns));
+    dispatch(
+      setAdditiveColumns({ init: initialColumns, add: additiveColumns })
+    );
     dispatch(
       addColumnToEnd({
         name: "add",
@@ -86,7 +141,7 @@ const ItemTable = () => {
               dispatch(setColumnModalActive(true));
             }}
             icon={Plus}
-            text="New column"
+            text={newColumnIntl}
           />
         ),
         Cell: ({ row }) => (
@@ -100,17 +155,19 @@ const ItemTable = () => {
                 }}
                 pointer
                 icon={PencilFill}
-                text="Edit"
+                text={editIntl}
               />
               <IconSpan
                 onClick={() => {
-                  if (confirm("Are you sure you want to delete row?")) {
+                  if (
+                    confirm(deleteWarningIntl + " '" + row.original.name + "'?")
+                  ) {
                     dispatch(removeRow(row.original.id));
                   }
                 }}
                 pointer
                 icon={TrashFill}
-                text="Delete"
+                text={deleteIntl}
               />
             </div>
           </div>
@@ -124,10 +181,6 @@ const ItemTable = () => {
     };
   }, []);
 
-  React.useEffect(() => {
-    console.log(tData.data);
-  }, [tData.data]);
-
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable<any>(
       { columns: tData.columns, data: tData.data },
@@ -140,7 +193,7 @@ const ItemTable = () => {
     <>
       <div className="overflow-x-auto ">
         <table
-          className="w-full divide-y divide-gray-200 border border-gray"
+          className="w-full divide-gray-200 border border-gray"
           {...getTableProps()}
         >
           <THeader data={headerGroups} />
@@ -156,7 +209,7 @@ const ItemTable = () => {
           <IconSpan
             iconClassName="font-bold text-2xl md:text-3xl "
             textClassName="font-bold text-base md:text-lg"
-            text="Add item"
+            text={addItemIntl}
             icon={Plus}
           />
         </div>

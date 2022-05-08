@@ -1,9 +1,9 @@
 import { Button, Input } from "@components/Common";
 import { FormFooter } from "@components/Auth";
 import React from "react";
-import { Facebook } from "react-bootstrap-icons";
 import { FormattedMessage, useIntl } from "react-intl";
 import { NewUserContext } from "@contexts/NewUserContext";
+import { Axios } from "core/axios";
 
 const RegisterForm = () => {
   const intl = useIntl();
@@ -11,6 +11,7 @@ const RegisterForm = () => {
 
   const emailIntl = intl.formatMessage({ id: "email" });
 
+  const [error, setError] = React.useState<boolean>(false);
   const [emailValue, setEmailValue] = React.useState<string>("");
 
   const [emailValidated, setEmailValidated] = React.useState<boolean>(false);
@@ -20,14 +21,41 @@ const RegisterForm = () => {
     setEmailValidated(emailPattern.test(value));
   };
 
-  const handleSubmitClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const currentFragment = newUserContext.currentFragment;
-    e.preventDefault();
+  const checkEmailExistence = async (email: string) => {
+    const { data } = await Axios.post("/check-email", {
+      email: emailValue,
+    });
+    if (data.status === "Error") {
+      setError(true);
+    }
+
+    return data.status !== "Error";
+  };
+
+  const handleSubmitClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     newUserContext.setContext({
       ...newUserContext,
-      email: emailValue,
-      currentFragment: currentFragment + 1,
+      isLoading: true,
     });
+
+    const currentFragment = newUserContext.currentFragment;
+    setError(false);
+    e.preventDefault();
+
+    const status = await checkEmailExistence(emailValue);
+    if (status) {
+      newUserContext.setContext({
+        ...newUserContext,
+        email: emailValue,
+        currentFragment: currentFragment + 1,
+        isLoading: false,
+      });
+    } else {
+      newUserContext.setContext({
+        ...newUserContext,
+        isLoading: false,
+      });
+    }
   };
 
   return (
@@ -47,7 +75,11 @@ const RegisterForm = () => {
         </Button>
 
         <div className="border-b-2 border-b-gray-200 w-full my-3 lg:my-[50px]"></div>
-
+        {error && (
+          <span className="text-sm text-red-600">
+            <FormattedMessage id="email_exists" />
+          </span>
+        )}
         <Input
           blockClassName="m-5 w-11/12 sm:w-9/12 lg:w-5/6"
           name="email"
@@ -63,11 +95,15 @@ const RegisterForm = () => {
         />
 
         <Button
-          disabled={!emailValidated}
+          disabled={!emailValidated || newUserContext.isLoading}
           onClick={handleSubmitClick}
           className="my-5 w-11/12 sm:w-9/12 lg:w-4/6"
         >
-          <FormattedMessage id="sign_up" />
+          {newUserContext.isLoading ? (
+            <FormattedMessage id="processing" />
+          ) : (
+            <FormattedMessage id="sign_up" />
+          )}
         </Button>
       </form>
       <FormFooter signUp />

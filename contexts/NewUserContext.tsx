@@ -10,6 +10,7 @@ type Context = {
   password: string;
   email: string;
   image: File | null;
+  isLoading: boolean;
   setContext: React.Dispatch<React.SetStateAction<Context>>;
 };
 
@@ -19,6 +20,7 @@ const initialContext: Context = {
   password: "",
   email: "",
   image: null,
+  isLoading: false,
   setContext: (): void => {
     throw new Error("setContext function must be overridden");
   },

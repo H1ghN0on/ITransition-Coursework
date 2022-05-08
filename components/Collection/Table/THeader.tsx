@@ -10,6 +10,7 @@ import {
   removeColumn,
   setColumnModalActive,
 } from "@redux/tableSlice";
+import { useIntl } from "react-intl";
 
 export interface ColumnData {
   name: string;
@@ -36,7 +37,9 @@ interface EditableColumnProps {
 
 export const EditableColumn: React.FC<EditableColumnProps> = ({ name }) => {
   const dispatch = useAppDispatch();
+  const intl = useIntl();
 
+  const deleteWarningIntl = intl.formatMessage({ id: "delete_warning" });
   return (
     <div className="flex justify-center items-center space-x-2">
       <span>{name}</span>
@@ -44,7 +47,7 @@ export const EditableColumn: React.FC<EditableColumnProps> = ({ name }) => {
       <TrashFill
         className="cursor-pointer"
         onClick={() => {
-          if (confirm(`Do you want to delete ${name}`)) {
+          if (confirm(`${deleteWarningIntl} ${name}?`)) {
             dispatch(removeColumn(name));
           }
         }}

@@ -1,28 +1,6 @@
 import { Button, CustomDropdown, Input, Modal } from "@components/Common";
 import React from "react";
-
-const types = [
-  {
-    label: "Checkbox",
-    value: "checkbox",
-  },
-  {
-    label: "Date",
-    value: "date",
-  },
-  {
-    label: "Text",
-    value: "textarea",
-  },
-  {
-    label: "String",
-    value: "text",
-  },
-  {
-    label: "Number",
-    value: "number",
-  },
-];
+import { FormattedMessage, useIntl } from "react-intl";
 
 export type ModalColumn = {
   name: string;
@@ -36,6 +14,42 @@ interface ColumnModalProps {
 }
 
 const ColumnModal: React.FC<ColumnModalProps> = ({ closeModal, onSubmit }) => {
+  const intl = useIntl();
+
+  const itemCheckboxIntl = intl.formatMessage({ id: "column_checkbox" });
+  const itemTextIntl = intl.formatMessage({ id: "column_text" });
+  const itemStringIntl = intl.formatMessage({ id: "column_string" });
+  const itemNumberIntl = intl.formatMessage({ id: "column_number" });
+  const itemDateIntl = intl.formatMessage({ id: "column_date" });
+  const itemTypeIntl = intl.formatMessage({ id: "column_type" });
+  const itemInitValueIntl = intl.formatMessage({ id: "column_init_value" });
+  const itemNameIntl = intl.formatMessage({ id: "name" });
+  const yesIntl = intl.formatMessage({ id: "yes" });
+  const noIntl = intl.formatMessage({ id: "no" });
+
+  const types = [
+    {
+      label: itemCheckboxIntl,
+      value: "checkbox",
+    },
+    {
+      label: itemDateIntl,
+      value: "date",
+    },
+    {
+      label: itemNumberIntl,
+      value: "textarea",
+    },
+    {
+      label: itemStringIntl,
+      value: "text",
+    },
+    {
+      label: itemTextIntl,
+      value: "number",
+    },
+  ];
+
   const [inputValue, setInputValue] = React.useState<ModalColumn>({
     init: "",
     type: "text",
@@ -49,8 +63,8 @@ const ColumnModal: React.FC<ColumnModalProps> = ({ closeModal, onSubmit }) => {
         e.target.name === "init"
           ? inputValue.type === "checkbox"
             ? e.target.checked
-              ? "Yes"
-              : "No"
+              ? yesIntl
+              : noIntl
             : e.target.value
           : e.target.value,
     });
@@ -72,9 +86,11 @@ const ColumnModal: React.FC<ColumnModalProps> = ({ closeModal, onSubmit }) => {
   return (
     <Modal
       closeModal={closeModal}
-      className="flex flex-col w-[80vw] md:w-[60vw] max-h-[95vh] py-10 justify-center  overflow-x-hidden"
+      className="flex flex-col w-[80vw] md:w-[60vw] max-h-[95vh] py-10 justify-center overflow-x-hidden"
     >
-      <h1 className="text-3xl text-black font-bold self-center">New column</h1>
+      <h1 className="text-3xl text-black font-bold self-center">
+        <FormattedMessage id="new_column" />
+      </h1>
       <div className="flex flex-col items-center">
         <form className="flex flex-col w-3/5 mt-3 space-y-3">
           <Input
@@ -82,7 +98,7 @@ const ColumnModal: React.FC<ColumnModalProps> = ({ closeModal, onSubmit }) => {
             onChange={handleTextChange}
             value={inputValue.name}
             name="name"
-            label="Name"
+            label={itemNameIntl}
             type="text"
           />
 
@@ -92,12 +108,12 @@ const ColumnModal: React.FC<ColumnModalProps> = ({ closeModal, onSubmit }) => {
             onChange={handleTextChange}
             value={inputValue.init}
             name="init"
-            label="Initial value"
+            label={itemInitValueIntl}
             type={inputValue.type === "textarea" ? "text" : inputValue.type}
           />
 
           <CustomDropdown
-            label="Type"
+            label={itemTypeIntl}
             list={types}
             name="type"
             onChange={handleDropdownChange}
@@ -108,7 +124,7 @@ const ColumnModal: React.FC<ColumnModalProps> = ({ closeModal, onSubmit }) => {
             className="w-2/3 self-center"
             onClick={handleSubmitClick}
           >
-            Add
+            <FormattedMessage id="add" />
           </Button>
         </form>
       </div>

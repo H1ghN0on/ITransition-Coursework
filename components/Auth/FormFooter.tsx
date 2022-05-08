@@ -8,15 +8,15 @@ interface FormFooter {
 
 const FormFooter: React.FC<FormFooter> = ({ signUp }) => {
   return (
-    <div className="flex">
-      <span className="text-xs md:text-base">
+    <div className="flex items-center">
+      <span className="text-sm md:text-base">
         <FormattedMessage
           id={signUp ? "already_have_an_account" : "dont_have_an_account"}
         />
       </span>
       <Link href={signUp ? "/auth/login" : "/auth/register"}>
         <a>
-          <span className="ml-2 underline underline-offset-3 text-xs md:text-base">
+          <span className="ml-2 underline underline-offset-3 text-sm md:text-base">
             <FormattedMessage id={signUp ? "sign_in" : "sign_up"} />
           </span>
         </a>
