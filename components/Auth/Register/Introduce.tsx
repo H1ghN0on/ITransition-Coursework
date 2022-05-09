@@ -6,6 +6,7 @@ import { AuthTitle } from "@styles/components";
 import { NewUserContext } from "@contexts/NewUserContext";
 import { Axios } from "core/axios";
 import Cookies from "js-cookie";
+import router from "next/router";
 
 const Password = () => {
   const intl = useIntl();
@@ -43,6 +44,7 @@ const Password = () => {
         setError(true);
       } else {
         Cookies.set("token", data.token);
+        router.push("/");
       }
     } catch (error) {
       console.log(error);

@@ -1,4 +1,5 @@
 import { IconSpan } from "@components/Common";
+import { formatDate } from "@utils";
 import React from "react";
 import { CardText, ClockFill, PersonFill } from "react-bootstrap-icons";
 
@@ -33,7 +34,7 @@ const InfoBar: React.FC<InfoBarProps> = ({
         <IconSpan
           iconClassName={iconClassName}
           textClassName={textClassName}
-          text={date}
+          text={formatDate(date)}
           icon={ClockFill}
         />
       )}

@@ -1,3 +1,4 @@
+import { Api } from "@api";
 import { Button, ImageInput, Input, Modal } from "@components/Common";
 import { Topics } from "@components/Profile";
 import React from "react";
@@ -14,6 +15,7 @@ const AddCollectionModal: React.FC<ModalProps> = ({ closeModal }) => {
   const nameIntl = intl.formatMessage({ id: "name" });
   const descriptionIntl = intl.formatMessage({ id: "description" });
 
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [inputValue, setInputValue] = React.useState<{
     name: string;
     description: string;
@@ -41,8 +43,17 @@ const AddCollectionModal: React.FC<ModalProps> = ({ closeModal }) => {
     });
   };
 
-  const handleSubmitClick = () => {
-    console.log(inputValue);
+  const handleSubmitClick = async () => {
+    setIsLoading(true);
+    const { name, description, topics, imageValue } = inputValue;
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("description", description);
+    formData.append("topics", JSON.stringify(topics));
+    formData.append("avatar", imageValue ?? "");
+    const status = await Api().createCollection(formData);
+    console.log(status);
+    setIsLoading(false);
     closeModal();
   };
 
@@ -73,6 +84,7 @@ const AddCollectionModal: React.FC<ModalProps> = ({ closeModal }) => {
               height={200}
               label={chooseAvatarIntl}
               onChange={handleImageChange}
+              name="avatar"
             />
           </div>
           <form className="flex flex-col md:w-3/4 space-y-3 px-20">
@@ -106,7 +118,8 @@ const AddCollectionModal: React.FC<ModalProps> = ({ closeModal }) => {
             disabled={
               inputValue.name == "" ||
               inputValue.description == "" ||
-              inputValue.topics.length == 0
+              inputValue.topics.length == 0 ||
+              isLoading
             }
             className="mt-5 "
             onClick={handleSubmitClick}

@@ -1,9 +1,11 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { tableSlice } from "@redux/reducers";
+import { tableSlice, userSlice } from "@redux/reducers";
 import { useDispatch } from "react-redux";
+import { Context, createWrapper } from "next-redux-wrapper";
 
 const rootReducer = combineReducers({
   tableSlice,
+  userSlice,
 });
 
 const store = configureStore({
@@ -13,6 +15,10 @@ const store = configureStore({
       serializableCheck: false,
     }),
 });
+
+const makeStore = (context: Context) => store;
+export const wrapper = createWrapper(makeStore, { debug: false });
+
 export type AppState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 export const useAppDispatch = () => useDispatch<AppDispatch>();

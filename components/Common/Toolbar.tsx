@@ -3,7 +3,10 @@ import React from "react";
 import { Search, DoorOpen, BrightnessHighFill } from "react-bootstrap-icons";
 import { useIntl } from "react-intl";
 import { IconSpan } from "@components/Common";
+import { useAppSelector } from "@redux/hooks";
 const Toolbar = () => {
+  const userData = useAppSelector((state) => state.userSlice);
+
   const intl = useIntl();
   const signInIntl = intl.formatMessage({ id: "sign_in" });
   const searchIntl = intl.formatMessage({ id: "search" });
@@ -12,6 +15,25 @@ const Toolbar = () => {
   const textClassName = "text-base sm:text-lg text-black  font-bold";
   return (
     <div className="flex space-x-5 items-center">
+      {userData && userData.id != -1 ? (
+        <Link href={`/profile/${userData.id}`}>
+          <a>
+            <span className={textClassName}>{userData.username}</span>
+          </a>
+        </Link>
+      ) : (
+        <Link href="/auth/login">
+          <a>
+            <IconSpan
+              textClassName={textClassName}
+              text={signInIntl}
+              icon={DoorOpen}
+              iconClassName={iconClassName}
+            />
+          </a>
+        </Link>
+      )}
+
       <IconSpan
         onClick={() => {
           console.log("Search!");
@@ -21,16 +43,6 @@ const Toolbar = () => {
         textClassName={textClassName}
         iconClassName={iconClassName}
       />
-      <Link href="/auth/login">
-        <a>
-          <IconSpan
-            textClassName={textClassName}
-            text={signInIntl}
-            icon={DoorOpen}
-            iconClassName={iconClassName}
-          />
-        </a>
-      </Link>
 
       <BrightnessHighFill className={iconClassName} fill="#FFC700" />
       <object

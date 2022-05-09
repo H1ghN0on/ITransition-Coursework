@@ -5,7 +5,7 @@ import { IntlProvider } from "react-intl";
 import { messages } from "@locales/messages";
 import { LOCALES } from "@locales/locales";
 import { Provider } from "react-redux";
-import store from "redux/store";
+import store, { wrapper } from "@redux/store";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const locale = LOCALES.RUSSIAN;
@@ -23,4 +23,4 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
 }
 
-export default MyApp;
+export default wrapper.withRedux(MyApp);

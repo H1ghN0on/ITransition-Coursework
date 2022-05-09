@@ -5,6 +5,7 @@ import { Facebook } from "react-bootstrap-icons";
 import { FormattedMessage, useIntl } from "react-intl";
 import { Axios } from "core/axios";
 import Cookies from "js-cookie";
+import router from "next/router";
 
 const LoginForm = () => {
   const intl = useIntl();
@@ -46,6 +47,7 @@ const LoginForm = () => {
         setError(true);
       } else {
         Cookies.set("token", data.token);
+        router.push("/");
       }
     } catch (error) {
       console.log(error);
@@ -73,6 +75,7 @@ const LoginForm = () => {
       const json = JSON.parse(user);
 
       Cookies.set("token", json.token);
+      router.push("/");
     }
   };
 

@@ -22,7 +22,9 @@
       "@hooks": ["hooks"],
       "@contexts/*": ["contexts/*"],
       "@redux/*": ["redux/*"],
-      "@utils/*": ["utils/*"],
+      "@utils": ["utils"],
+      "@api": ["api"],
+      "@types": ["types"],
  
     }
   },
