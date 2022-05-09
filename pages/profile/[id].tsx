@@ -5,33 +5,36 @@ import { Plus } from "react-bootstrap-icons";
 import React from "react";
 import { useIntl } from "react-intl";
 import { AddCollectionModal } from "@components/Profile";
-import { wrapper } from "@redux/store";
+import { useAppDispatch, wrapper } from "@redux/store";
 import { checkUserAuth } from "@utils";
 import { Api } from "@api";
-import { CollectionType } from "@types";
+
+import { setCollections, setModal } from "@redux/collectionsSlice";
+import { useAppSelector } from "@redux/hooks";
 
 interface ProfileProps {
-  isEditable: boolean;
-  collections: CollectionType[];
+  profileId: number;
 }
 
-const Profile: NextPage<ProfileProps> = ({ isEditable, collections }) => {
-  console.log(collections);
+const Profile: NextPage<ProfileProps> = ({ profileId }) => {
+  const collectionsData = useAppSelector((state) => state.collectionsSlice);
+  const user = useAppSelector((state) => state.userSlice);
+  const isEditable = user && user.id == profileId;
+  const dispatch = useAppDispatch();
+
   const intl = useIntl();
   const addCollectionIntl = intl.formatMessage({ id: "add_collection" });
 
-  const [isModalActive, setModalActive] = React.useState<boolean>(false);
-
   const handleAddClick = () => {
-    setModalActive(true);
+    dispatch(setModal(true));
   };
 
   return (
     <>
-      {isEditable && isModalActive && (
+      {isEditable && collectionsData.isModalActive && (
         <AddCollectionModal
           closeModal={() => {
-            setModalActive(false);
+            dispatch(setModal(false));
           }}
         />
       )}
@@ -57,7 +60,7 @@ const Profile: NextPage<ProfileProps> = ({ isEditable, collections }) => {
             </div>
           )}
           <List
-            items={collections}
+            items={collectionsData.collections}
             type="collection"
             className="flex flex-col w-2/3"
           />
@@ -69,13 +72,13 @@ const Profile: NextPage<ProfileProps> = ({ isEditable, collections }) => {
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (ctx: GetServerSidePropsContext) => {
-    const user = await checkUserAuth(store, ctx);
+    await checkUserAuth(store, ctx);
 
-    const isEditable = user && user.id == ctx.query.id;
     const collections = await Api(ctx).getUserCollections(+ctx.query.id!);
 
+    store.dispatch(setCollections(collections));
     return {
-      props: { isEditable, collections }, // will be passed to the page component as props
+      props: { profileId: ctx.query.id }, // will be passed to the page component as props
     };
   }
 );

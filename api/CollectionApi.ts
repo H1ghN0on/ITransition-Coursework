@@ -19,7 +19,27 @@ const CollectionApi = (instance: AxiosInstance) => {
         return data.collection;
       } catch (error) {
         console.log(error);
-        return [];
+        return null;
+      }
+    },
+
+    editCollection: async (id: number, obj: FormData) => {
+      try {
+        const { data } = await instance.post(`/edit-collection/${id}`, obj);
+        return data.collection;
+      } catch (error) {
+        console.log(error);
+        return null;
+      }
+    },
+
+    deleteCollection: async (id: number) => {
+      try {
+        const { data } = await instance.delete(`/delete-collection/${id}`);
+        return data;
+      } catch (error) {
+        console.log(error);
+        return null;
       }
     },
   };

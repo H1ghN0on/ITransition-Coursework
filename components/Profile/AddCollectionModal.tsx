@@ -1,8 +1,9 @@
 import { Api } from "@api";
 import { Button, ImageInput, Input, Modal } from "@components/Common";
 import { Topics } from "@components/Profile";
+import { addCollection, editCollection } from "@redux/collectionsSlice";
+import { useAppDispatch, useAppSelector } from "@redux/hooks";
 import React from "react";
-import { XCircle } from "react-bootstrap-icons";
 import { FormattedMessage, useIntl } from "react-intl";
 
 interface ModalProps {
@@ -10,21 +11,26 @@ interface ModalProps {
 }
 
 const AddCollectionModal: React.FC<ModalProps> = ({ closeModal }) => {
+  const forEdit = useAppSelector((state) => state.collectionsSlice.isForEdit);
+  const dispatch = useAppDispatch();
+
   const intl = useIntl();
   const chooseAvatarIntl = intl.formatMessage({ id: "choose_the_avatar" });
   const nameIntl = intl.formatMessage({ id: "name" });
   const descriptionIntl = intl.formatMessage({ id: "description" });
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+
+  //FIX IMAGE VALUE
   const [inputValue, setInputValue] = React.useState<{
     name: string;
     description: string;
     topics: string[];
     imageValue: null | File;
   }>({
-    name: "",
-    description: "",
-    topics: [],
+    name: forEdit ? forEdit.name : "",
+    description: forEdit ? forEdit.description : "",
+    topics: forEdit ? forEdit.topics : [],
     imageValue: null,
   });
 
@@ -45,14 +51,21 @@ const AddCollectionModal: React.FC<ModalProps> = ({ closeModal }) => {
 
   const handleSubmitClick = async () => {
     setIsLoading(true);
+
     const { name, description, topics, imageValue } = inputValue;
     const formData = new FormData();
     formData.append("name", name);
     formData.append("description", description);
     formData.append("topics", JSON.stringify(topics));
     formData.append("avatar", imageValue ?? "");
-    const status = await Api().createCollection(formData);
-    console.log(status);
+    if (!forEdit) {
+      const collection = await Api().createCollection(formData);
+      if (collection) dispatch(addCollection(collection));
+    } else {
+      const collection = await Api().editCollection(+forEdit.id, formData);
+      console.log(collection);
+      if (collection) dispatch(editCollection(collection));
+    }
     setIsLoading(false);
     closeModal();
   };
@@ -124,7 +137,11 @@ const AddCollectionModal: React.FC<ModalProps> = ({ closeModal }) => {
             className="mt-5 "
             onClick={handleSubmitClick}
           >
-            <FormattedMessage id="add" />
+            {forEdit ? (
+              <FormattedMessage id="edit" />
+            ) : (
+              <FormattedMessage id="add" />
+            )}
           </Button>
         </div>
       </Modal>

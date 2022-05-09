@@ -7,12 +7,16 @@ import {
   InfoBar,
 } from "@components/Main/Collection";
 import { CollectionType } from "@types";
+import { useAppSelector } from "@redux/hooks";
 
 interface CollectionProps {
   data: CollectionType;
 }
 //FIX THE INFOBAR QUANTITY
 const Collection: React.FC<CollectionProps> = ({ data }) => {
+  const user = useAppSelector((state) => state.userSlice);
+  const isEditable = user && user.id === data.belongsTo;
+
   return (
     <div className="flex flex-col md:flex-row justify-center items-center  bg-white rounded shadow-inner-md px-3">
       <div className="w-1/3 md:w-1/5">
@@ -28,10 +32,12 @@ const Collection: React.FC<CollectionProps> = ({ data }) => {
         <Description text={data.description} />
         <div className="self-end">
           <InfoBar
+            id={data.id}
             position="end"
-            quantity={data.items}
+            quantity={data.items.toString()}
             owner={data.belongsTo.toString()}
             date={data.createdAt}
+            editable={isEditable}
           />
         </div>
       </div>

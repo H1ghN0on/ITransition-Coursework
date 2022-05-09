@@ -3,6 +3,7 @@ import { LOCALES } from "./locales";
 export const messages = {
   [LOCALES.ENGLISH]: {
     //Auth
+    logout: "Log out",
     sign_up: "Sign up",
     sign_in: "Sign in",
     sign_in_with: "Sign in with",
@@ -52,6 +53,7 @@ export const messages = {
   },
   [LOCALES.RUSSIAN]: {
     //Auth
+    logout: "Выйти",
     sign_up: "Зарегистрироваться",
     sign_in: "Войти",
     sign_in_with: "Войти с помощью",

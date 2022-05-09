@@ -1,11 +1,12 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { tableSlice, userSlice } from "@redux/reducers";
+import { tableSlice, userSlice, collectionsSlice } from "@redux/reducers";
 import { useDispatch } from "react-redux";
 import { Context, createWrapper } from "next-redux-wrapper";
 
 const rootReducer = combineReducers({
   tableSlice,
   userSlice,
+  collectionsSlice,
 });
 
 const store = configureStore({
