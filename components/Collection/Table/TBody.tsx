@@ -10,6 +10,7 @@ import {
   updateRow,
 } from "@redux/tableSlice";
 import { Api } from "@api";
+import { setItemsNumber } from "@redux/collectionSlice";
 
 interface TBodyProps {
   tData: {
@@ -40,6 +41,7 @@ const TBody: React.FC<TBodyProps> = ({ tData }) => {
         ...obj,
         collectionId: id,
       });
+      dispatch(setItemsNumber("inc"));
       dispatch(addRow(item));
     }
   };

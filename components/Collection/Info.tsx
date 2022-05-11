@@ -4,24 +4,29 @@ import {
   Title,
   TopicBar,
 } from "@components/Main/Collection";
+import { useAppSelector } from "@redux/hooks";
 import React from "react";
 
 const Info = () => {
+  const { items, belongsTo, createdAt, name, description, id, topics } =
+    useAppSelector((state) => state.collectionSlice.collection!);
   return (
     <div className="flex flex-col md:justify-center  md:flex-row w-full ">
       <div className="order-last md:order-start flex flex-col justify-center md:ml-2 space-y-2 md:w-3/4 text-left p-5">
-        <TopicBar topics={["Books", "Plans"]} />
+        <TopicBar topics={topics} />
         <div>
-          <Title text="Books, I`d like to read in the nearest future" />
+          <Title text={name} />
         </div>
 
-        <Description text="These books interested me some time in the past" />
+        <Description text={description} />
         <div className="self-center xs:self-start">
           <InfoBar
+            id={id}
+            editable={false}
             position="end"
-            quantity={100}
-            owner="Masekoi"
-            date="17.04.2022"
+            quantity={items.toString()}
+            owner={belongsTo.toString()}
+            date={createdAt}
           />
         </div>
       </div>

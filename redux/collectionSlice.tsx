@@ -17,6 +17,14 @@ const collectionSlice = createSlice({
     setCollection(state, action: PayloadAction<any>) {
       state.collection = action.payload;
     },
+    setItemsNumber(state, action: PayloadAction<"inc" | "dec">) {
+      if (action.payload === "inc") {
+        state.collection!.items++;
+      }
+      if (action.payload === "dec") {
+        state.collection!.items--;
+      }
+    },
   },
   extraReducers: {
     [HYDRATE]: (state, action) => {
@@ -28,5 +36,5 @@ const collectionSlice = createSlice({
   },
 });
 
-export const { setCollection } = collectionSlice.actions;
+export const { setCollection, setItemsNumber } = collectionSlice.actions;
 export default collectionSlice.reducer;

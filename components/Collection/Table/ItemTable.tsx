@@ -26,6 +26,7 @@ import {
 import { useIntl } from "react-intl";
 import { CollectionItemType } from "@types";
 import { Api } from "@api";
+import { setItemsNumber } from "@redux/collectionSlice";
 
 interface ItemTable {
   additiveColumns: ColumnData[];
@@ -130,6 +131,7 @@ const ItemTable: React.FC<ItemTable> = ({ additiveColumns, initItems }) => {
                     confirm(deleteWarningIntl + " '" + row.original.name + "'?")
                   ) {
                     await Api().deleteItem(row.original.id);
+                    dispatch(setItemsNumber("dec"));
                     dispatch(removeRow(row.original.id));
                   }
                 }}
