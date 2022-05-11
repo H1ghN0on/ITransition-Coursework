@@ -2,7 +2,7 @@ import axios from "axios";
 import Cookies from "nookies";
 import cookies from "js-cookie";
 import { GetServerSidePropsContext } from "next";
-import { CollectionApi, CommentApi, ItemApi, UserApi } from "./apis";
+import { CollectionApi, CommentApi, ItemApi, LikeApi, UserApi } from "./apis";
 
 export const Api = (ctx?: GetServerSidePropsContext) => {
   let token;
@@ -26,5 +26,6 @@ export const Api = (ctx?: GetServerSidePropsContext) => {
     ...CollectionApi(instance),
     ...ItemApi(instance),
     ...CommentApi(instance),
+    ...LikeApi(instance),
   };
 };

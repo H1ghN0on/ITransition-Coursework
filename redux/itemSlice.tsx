@@ -23,11 +23,29 @@ const itemSlice = createSlice({
         comments: CommentType[];
       }>
     ) {
-      state.item = action.payload.item;
-      state.comments = action.payload.comments;
+      (state.item = action.payload.item),
+        (state.comments = action.payload.comments);
     },
     addComment(state, action: PayloadAction<CommentType>) {
       state.comments.unshift(action.payload);
+    },
+
+    setLike(
+      state,
+      action: PayloadAction<{ user_id: number; type: "add" | "remove" }>
+    ) {
+      const { user_id, type } = action.payload;
+      if (state.item) {
+        if (type === "add") {
+          state.item.likes.push({ user_id, item_id: state.item.id });
+        }
+        if (type === "remove") {
+          state.item = {
+            ...state.item,
+            likes: state.item.likes.filter((like) => like.user_id !== user_id),
+          };
+        }
+      }
     },
   },
   extraReducers: {
@@ -40,5 +58,5 @@ const itemSlice = createSlice({
   },
 });
 
-export const { setItem, addComment } = itemSlice.actions;
+export const { setItem, addComment, setLike } = itemSlice.actions;
 export default itemSlice.reducer;

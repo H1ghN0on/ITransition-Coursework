@@ -15,6 +15,12 @@ export interface ItemAdditiveType {
   accessor: string;
   value: any;
 }
+
+interface LikeType {
+  item_id: number;
+  user_id: number;
+}
+
 export interface CollectionItemType {
   id: number;
   belongsTo: number;
@@ -22,6 +28,8 @@ export interface CollectionItemType {
   tags: string[];
   createdAt: string;
   info: ItemAdditiveType[];
+  likes: LikeType[];
+  isLiked: boolean;
 }
 
 export interface CommentType {
