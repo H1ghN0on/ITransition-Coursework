@@ -5,7 +5,7 @@ const CollectionApi = (instance: AxiosInstance) => {
   return {
     getItemById: async (id: number) => {
       try {
-        const { data } = await instance.get(`/get-collection-data/${id}`);
+        const { data } = await instance.get(`/get-item/${id}`);
         return data;
       } catch (error) {
         console.log(error);

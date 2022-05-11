@@ -1,7 +1,11 @@
+import { Api } from "@api";
 import { Comments } from "@components/Comments";
 import { ProfileBrief, Toolbar } from "@components/Common";
 import { Info } from "@components/Item";
-import { NextPage } from "next";
+import { setItem } from "@redux/itemSlice";
+import { wrapper } from "@redux/store";
+import { checkUserAuth } from "@utils";
+import { GetServerSidePropsContext, NextPage } from "next";
 import React from "react";
 
 const ItemInfo: NextPage = () => {
@@ -21,23 +25,13 @@ const ItemInfo: NextPage = () => {
   );
 };
 
-// export const getServerSideProps = wrapper.getServerSideProps(
-//   (store) => async (ctx: GetServerSidePropsContext) => {
-//     await checkUserAuth(store, ctx);
-//     const { collection } = await Api(ctx).getCollectionById(+ctx.query.id!);
-//     const { items, columns } = await Api(ctx).getCollectionData(+ctx.query.id!);
-//     store.dispatch(setCollection(collection));
-//     return {
-//       props: {
-//         items,
-//         columns: columns.map((obj: any) => ({
-//           ...obj,
-//           minWidth: 250,
-//           width: 10 * obj.name.length,
-//         })),
-//       }, // will be passed to the page component as props
-//     };
-//   }
-// );
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) => async (ctx: GetServerSidePropsContext) => {
+    await checkUserAuth(store, ctx);
+    const { item } = await Api(ctx).getItemById(+ctx.query.id!);
+    store.dispatch(setItem(item));
+    return { props: {} };
+  }
+);
 
 export default ItemInfo;

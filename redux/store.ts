@@ -4,6 +4,7 @@ import {
   userSlice,
   collectionsSlice,
   collectionSlice,
+  itemSlice,
 } from "@redux/reducers";
 import { useDispatch } from "react-redux";
 import { Context, createWrapper } from "next-redux-wrapper";
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   userSlice,
   collectionsSlice,
   collectionSlice,
+  itemSlice,
 });
 
 const store = configureStore({
