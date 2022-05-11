@@ -23,3 +23,16 @@ export interface CollectionItemType {
   createdAt: string;
   info: ItemAdditiveType[];
 }
+
+export interface CommentType {
+  comment: {
+    id: number;
+    text: string;
+    createdAt: string;
+  };
+  user: {
+    id: number;
+    username: string;
+    avatarURL: string;
+  };
+}

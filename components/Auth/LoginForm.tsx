@@ -1,11 +1,10 @@
 import { Button, Input } from "@components/Common";
 import { FormFooter } from "@components/Auth";
 import React from "react";
-import { Facebook } from "react-bootstrap-icons";
 import { FormattedMessage, useIntl } from "react-intl";
-import { Axios } from "core/axios";
 import Cookies from "js-cookie";
 import router from "next/router";
+import { Api } from "@api";
 
 const LoginForm = () => {
   const intl = useIntl();
@@ -42,11 +41,11 @@ const LoginForm = () => {
   const loginUser = async () => {
     try {
       const { email, password } = input;
-      const { data } = await Axios.post("/login", { email, password });
+      const data = await Api().login({ email, password });
       if (data.status == "Error") {
         setError(true);
       } else {
-        Cookies.set("token", data.token);
+        Cookies.set("token", data.userData.token);
         router.push("/");
       }
     } catch (error) {

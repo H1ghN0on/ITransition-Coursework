@@ -1,5 +1,6 @@
 import { useHasMounted } from "@hooks";
 import React from "react";
+import { Send } from "react-bootstrap-icons";
 import styled from "styled-components";
 
 export const InputLabel = styled.label`
@@ -33,6 +34,9 @@ interface Input {
   blockClassName?: string;
   textarea?: boolean;
   checked?: boolean;
+  iconBtn?: boolean;
+  onIconClick?: (e: React.MouseEvent) => void;
+  iconClassName?: string;
   type: "password" | "text" | "number" | "checkbox" | "date" | "number";
 }
 
@@ -47,6 +51,9 @@ const Input: React.FC<Input> = ({
   textarea,
   type,
   checked,
+  iconBtn,
+  onIconClick,
+  iconClassName,
 }) => {
   const isMounted = useHasMounted();
 
@@ -55,29 +62,32 @@ const Input: React.FC<Input> = ({
   }
 
   return (
-    <div className={`flex flex-col ${blockClassName}`}>
+    <div className={`flex flex-col ${blockClassName} w-full`}>
       {label && <InputLabel htmlFor={name}>{label}</InputLabel>}
-      {textarea ? (
-        <textarea
-          onChange={onChange}
-          placeholder={placeholder}
-          id={name}
-          value={value}
-          className={`border border-[#c7c7c7] outline-none px-[15px] py-[20px] rounded text-black ${className}`}
-          name={name}
-        />
-      ) : (
-        <input
-          className={`border border-[#c7c7c7] outline-none px-[15px] py-[20px] rounded text-black ${className}`}
-          onChange={onChange}
-          placeholder={placeholder}
-          id={name}
-          value={value}
-          checked={checked}
-          type={type}
-          name={name}
-        />
-      )}
+      <div className="flex items-center">
+        {textarea ? (
+          <textarea
+            onChange={onChange}
+            placeholder={placeholder}
+            id={name}
+            value={value}
+            className={`border border-[#c7c7c7] outline-none px-[15px] py-[20px] rounded text-black ${className}`}
+            name={name}
+          />
+        ) : (
+          <input
+            className={`border border-[#c7c7c7] outline-none px-[15px] py-[20px] rounded text-black ${className}`}
+            onChange={onChange}
+            placeholder={placeholder}
+            id={name}
+            value={value}
+            checked={checked}
+            type={type}
+            name={name}
+          />
+        )}
+        {iconBtn && <Send className={iconClassName} onClick={onIconClick} />}
+      </div>
     </div>
   );
 };

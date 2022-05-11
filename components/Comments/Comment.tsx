@@ -1,3 +1,4 @@
+import { formatDate } from "@utils";
 import React from "react";
 
 interface CommentProps {
@@ -17,7 +18,7 @@ const Comment: React.FC<CommentProps> = ({ owner, text, date }) => {
           <div className="flex space-y-1 justify-center flex-col w-[95%] ">
             <div className="flex justify-between">
               <span>{owner}</span>
-              <span>{date}</span>
+              <span>{formatDate(date)}</span>
             </div>
 
             <p className="text-black text-justify">{text}</p>
