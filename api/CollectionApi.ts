@@ -5,7 +5,6 @@ const CollectionApi = (instance: AxiosInstance) => {
     getUserCollections: async (id: number) => {
       try {
         const { data } = await instance.get(`/get-collections/${id}`);
-        console.log(data);
         return data.collections;
       } catch (error) {
         console.log(error);
@@ -36,6 +35,25 @@ const CollectionApi = (instance: AxiosInstance) => {
     deleteCollection: async (id: number) => {
       try {
         const { data } = await instance.delete(`/delete-collection/${id}`);
+        return data;
+      } catch (error) {
+        console.log(error);
+        return null;
+      }
+    },
+
+    getTopCollections: async () => {
+      try {
+        const { data } = await instance.get(`/get-top-collections`);
+        return data.collections;
+      } catch (error) {
+        console.log(error);
+        return null;
+      }
+    },
+    getCollectionById: async (id: number) => {
+      try {
+        const { data } = await instance.get(`/get-collection/${id}`);
         return data;
       } catch (error) {
         console.log(error);

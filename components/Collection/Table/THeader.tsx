@@ -11,6 +11,7 @@ import {
   setColumnModalActive,
 } from "@redux/tableSlice";
 import { useIntl } from "react-intl";
+import { Api } from "@api";
 
 export interface ColumnData {
   name: string;
@@ -18,7 +19,7 @@ export interface ColumnData {
   width: number;
   maxWidth?: number;
   minWidth?: number;
-  type: "text" | "checkbox" | "date" | "number" | "textarea";
+  type: "checkbox" | "date" | "string" | "number" | "text";
   init?: any;
 }
 
@@ -32,23 +33,31 @@ interface THeaderProps {
 }
 
 interface EditableColumnProps {
-  name: string;
+  obj: ModalColumn;
 }
 
-export const EditableColumn: React.FC<EditableColumnProps> = ({ name }) => {
+export const EditableColumn: React.FC<EditableColumnProps> = ({ obj }) => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
 
   const deleteWarningIntl = intl.formatMessage({ id: "delete_warning" });
+  const collectionId = useAppSelector(
+    (state) => state.collectionSlice.collection!.id
+  );
   return (
     <div className="flex justify-center items-center space-x-2">
-      <span>{name}</span>
+      <span>{obj.name}</span>
 
       <TrashFill
         className="cursor-pointer"
-        onClick={() => {
-          if (confirm(`${deleteWarningIntl} ${name}?`)) {
-            dispatch(removeColumn(name));
+        onClick={async () => {
+          if (confirm(`${deleteWarningIntl} ${obj.name}?`)) {
+            await Api().deleteColumn({
+              collectionId,
+              accessor: obj.name.toLowerCase(),
+              type: obj.type,
+            });
+            dispatch(removeColumn(obj.name));
           }
         }}
       />
@@ -60,15 +69,17 @@ const THeader: React.FC<THeaderProps> = ({ data }) => {
   // const tableData = React.useContext(TableContext);
   const dispatch = useAppDispatch();
   const tData = useAppSelector((state) => state.tableSlice);
-
+  const collectionId = useAppSelector(
+    (state) => state.collectionSlice.collection!.id
+  );
   const closeModal = () => {
     dispatch(setColumnModalActive(false));
   };
 
-  const handleColumnSubmitClick = (obj: ModalColumn) => {
+  const handleColumnSubmitClick = async (obj: ModalColumn) => {
     const column: Column = {
       name: obj.name,
-      Header: () => <EditableColumn name={obj.name} />,
+      Header: () => <EditableColumn obj={obj} />,
       accessor: obj.name.toLowerCase(),
       minWidth: 250,
       width: 10 * obj.name.length,
@@ -76,7 +87,14 @@ const THeader: React.FC<THeaderProps> = ({ data }) => {
       init: obj.init,
       Cell: () => <span>{obj.init}</span>,
     };
-
+    const columnToServer = {
+      name: column.name,
+      accessor: column.accessor,
+      initValue: column.init,
+      collectionId,
+      type: column.type,
+    };
+    await Api().addColumn(columnToServer);
     dispatch(addColumn(column));
     dispatch(addColumnInData(column));
   };

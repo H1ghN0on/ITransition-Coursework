@@ -24,47 +24,15 @@ import {
   setRowForEdit,
 } from "@redux/tableSlice";
 import { useIntl } from "react-intl";
+import { CollectionItemType } from "@types";
+import { Api } from "@api";
 
-const additiveColumns: ColumnData[] = [
-  {
-    name: "Memes",
-    accessor: "memes",
-    width: 200,
-    type: "text",
-  },
-  {
-    name: "True",
-    accessor: "true",
-    width: 200,
-    type: "checkbox",
-  },
-];
+interface ItemTable {
+  additiveColumns: ColumnData[];
+  initItems: CollectionItemType[];
+}
 
-const data = [
-  {
-    id: "1488229",
-    name: "Как стать богатым и счастливым",
-    tags: ["lol", "okay"],
-    memes: "Nooo",
-    true: "No",
-  },
-  {
-    id: "1488227",
-    name: "Как стать богатым и счастливым",
-    tags: ["lol", "okay"],
-    memes: "Nooo",
-    true: "Yes",
-  },
-  {
-    id: "1488228",
-    name: "Как стать богатым и счастливым",
-    tags: ["lol", "okay", "no", "no", "nooooo", "no", "no"],
-    memes: "Nooo",
-    true: "Yes",
-  },
-];
-
-const ItemTable = () => {
+const ItemTable: React.FC<ItemTable> = ({ additiveColumns, initItems }) => {
   const intl = useIntl();
 
   const nameIntl = intl.formatMessage({ id: "name" });
@@ -125,7 +93,7 @@ const ItemTable = () => {
   };
 
   React.useEffect(() => {
-    dispatch(setData(data));
+    dispatch(setData(initItems));
     dispatch(
       setAdditiveColumns({ init: initialColumns, add: additiveColumns })
     );
@@ -149,7 +117,6 @@ const ItemTable = () => {
             <div className="space-y-1">
               <IconSpan
                 onClick={() => {
-                  console.log(row);
                   dispatch(setRowForEdit(row.original));
                   dispatch(setItemModalActive(true));
                 }}
@@ -158,10 +125,11 @@ const ItemTable = () => {
                 text={editIntl}
               />
               <IconSpan
-                onClick={() => {
+                onClick={async () => {
                   if (
                     confirm(deleteWarningIntl + " '" + row.original.name + "'?")
                   ) {
+                    await Api().deleteItem(row.original.id);
                     dispatch(removeRow(row.original.id));
                   }
                 }}

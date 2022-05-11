@@ -9,6 +9,7 @@ import {
   setRowForEdit,
   updateRow,
 } from "@redux/tableSlice";
+import { Api } from "@api";
 
 interface TBodyProps {
   tData: {
@@ -21,18 +22,25 @@ interface TBodyProps {
 }
 
 const TBody: React.FC<TBodyProps> = ({ tData }) => {
+  const id = useAppSelector((state) => state.collectionSlice.collection!.id);
+
   const { getTableBodyProps, rows, prepareRow } = tData;
 
   const dispatch = useAppDispatch();
   const { isForEdit, isItemModalActive } = useAppSelector(
     (state) => state.tableSlice
   );
-  const handleItemSubmitClick = (obj: any) => {
+  const handleItemSubmitClick = async (obj: any) => {
     if (isForEdit) {
-      dispatch(updateRow(obj));
+      const { item } = await Api().editItem(obj);
+      dispatch(updateRow(item));
       dispatch(setRowForEdit(null));
     } else {
-      dispatch(addRow(obj));
+      const { item } = await Api().createItem({
+        ...obj,
+        collectionId: id,
+      });
+      dispatch(addRow(item));
     }
   };
 

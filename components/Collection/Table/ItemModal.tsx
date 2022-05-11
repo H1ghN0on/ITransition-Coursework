@@ -12,8 +12,6 @@ const ItemModal: React.FC<ItemModalProps> = ({ closeModal, onSubmit }) => {
   const intl = useIntl();
 
   const { isForEdit, columns } = useAppSelector((state) => state.tableSlice);
-  const noIntl = intl.formatMessage({ id: "no" });
-  const yesIntl = intl.formatMessage({ id: "yes" });
   const [tags, setTags] = React.useState<Tag[]>(
     isForEdit
       ? isForEdit.tags.map((tag: Tag) => ({
@@ -23,16 +21,29 @@ const ItemModal: React.FC<ItemModalProps> = ({ closeModal, onSubmit }) => {
       : []
   );
 
+  const setInitValue = (type: string, accessor: string) => {
+    if (isForEdit) {
+      if (type === "checkbox") {
+        return isForEdit[accessor] === "true";
+      } else {
+        return isForEdit[accessor];
+      }
+    } else {
+      if (type === "checkbox") {
+        return false;
+      } else {
+        return "";
+      }
+    }
+  };
+
   const [inputValue, setInputValue] = React.useState<any>(() =>
     columns
       .map((obj) => ({
         accessor: obj.accessor,
         name: obj.name,
-        value: isForEdit
-          ? isForEdit[obj.accessor]
-          : obj.type === "checkbox"
-          ? noIntl
-          : "",
+
+        value: setInitValue(obj.type, obj.accessor),
         type: obj.type,
       }))
       .filter(
@@ -48,7 +59,7 @@ const ItemModal: React.FC<ItemModalProps> = ({ closeModal, onSubmit }) => {
       inputValue.map((input: any) => {
         if (input.accessor == e.target.name) {
           if (input.type === "checkbox") {
-            input.value = e.target.checked ? yesIntl : noIntl;
+            input.value = e.target.checked;
           } else {
             input.value = e.target.value;
           }
@@ -57,15 +68,22 @@ const ItemModal: React.FC<ItemModalProps> = ({ closeModal, onSubmit }) => {
       })
     );
   };
+
   const handleSubmitClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const row = inputValue.map((values: any) => [
-      values.accessor,
-      values.value,
-    ]);
 
+    const row = inputValue.map((values: any) => ({
+      accessor: values.accessor,
+      value: values.value,
+      type: values.type,
+      name: values.name,
+    }));
+    const name = inputValue.find(
+      (values: any) => values.accessor === "name"
+    ).value;
     onSubmit({
-      ...Object.fromEntries(row),
+      info: row.filter((value: any) => value.accessor !== "name"),
+      name,
       tags: tags.map((tag: Tag) => tag.text),
       id: isForEdit ? isForEdit.id : 1488228,
     });
@@ -105,7 +123,7 @@ const ItemModal: React.FC<ItemModalProps> = ({ closeModal, onSubmit }) => {
                 onChange={handleTextChange}
                 value={input.value}
                 name={input.accessor}
-                checked={input.type === "checkbox" && input.value === yesIntl}
+                checked={input.type === "checkbox" && input.value}
                 label={
                   input.accessor == "name"
                     ? intl.formatMessage({ id: "name" })

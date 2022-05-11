@@ -63,7 +63,6 @@ const AddCollectionModal: React.FC<ModalProps> = ({ closeModal }) => {
       if (collection) dispatch(addCollection(collection));
     } else {
       const collection = await Api().editCollection(+forEdit.id, formData);
-      console.log(collection);
       if (collection) dispatch(editCollection(collection));
     }
     setIsLoading(false);

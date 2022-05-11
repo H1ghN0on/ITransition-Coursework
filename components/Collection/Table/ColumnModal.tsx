@@ -1,11 +1,12 @@
 import { Button, CustomDropdown, Input, Modal } from "@components/Common";
+import { useAppSelector } from "@redux/hooks";
 import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 export type ModalColumn = {
   name: string;
-  init: string;
-  type: "checkbox" | "date" | "text" | "number" | "textarea";
+  init: string | boolean;
+  type: "checkbox" | "date" | "string" | "number" | "text";
 };
 
 interface ColumnModalProps {
@@ -14,6 +15,12 @@ interface ColumnModalProps {
 }
 
 const ColumnModal: React.FC<ColumnModalProps> = ({ closeModal, onSubmit }) => {
+  const tableColumnNames = useAppSelector(
+    (state) => state.tableSlice.columns
+  ).map((obj) => obj.name.toLowerCase());
+
+  const [error, setError] = React.useState<string>("");
+
   const intl = useIntl();
 
   const itemCheckboxIntl = intl.formatMessage({ id: "column_checkbox" });
@@ -26,7 +33,7 @@ const ColumnModal: React.FC<ColumnModalProps> = ({ closeModal, onSubmit }) => {
   const itemNameIntl = intl.formatMessage({ id: "name" });
   const yesIntl = intl.formatMessage({ id: "yes" });
   const noIntl = intl.formatMessage({ id: "no" });
-
+  const sameNameErrorIntl = intl.formatMessage({ id: "column_same_name_err" });
   const types = [
     {
       label: itemCheckboxIntl,
@@ -38,21 +45,21 @@ const ColumnModal: React.FC<ColumnModalProps> = ({ closeModal, onSubmit }) => {
     },
     {
       label: itemNumberIntl,
-      value: "textarea",
+      value: "number",
     },
     {
       label: itemStringIntl,
-      value: "text",
+      value: "string",
     },
     {
       label: itemTextIntl,
-      value: "number",
+      value: "text",
     },
   ];
 
   const [inputValue, setInputValue] = React.useState<ModalColumn>({
     init: "",
-    type: "text",
+    type: "string",
     name: "",
   });
 
@@ -63,8 +70,6 @@ const ColumnModal: React.FC<ColumnModalProps> = ({ closeModal, onSubmit }) => {
         e.target.name === "init"
           ? inputValue.type === "checkbox"
             ? e.target.checked
-              ? yesIntl
-              : noIntl
             : e.target.value
           : e.target.value,
     });
@@ -73,12 +78,20 @@ const ColumnModal: React.FC<ColumnModalProps> = ({ closeModal, onSubmit }) => {
     setInputValue({
       ...inputValue,
       type: option.value,
-      init: option.value === "checkbox" ? "No" : "",
+      init: option.value === "checkbox" ? false : "",
     });
   };
-
+  const validate = () => {
+    if (tableColumnNames.includes(inputValue.name.toLowerCase())) {
+      setError(sameNameErrorIntl);
+      return false;
+    }
+    return true;
+  };
   const handleSubmitClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    setError("");
+    if (!validate()) return;
     onSubmit(inputValue);
     closeModal();
   };
@@ -92,6 +105,7 @@ const ColumnModal: React.FC<ColumnModalProps> = ({ closeModal, onSubmit }) => {
         <FormattedMessage id="new_column" />
       </h1>
       <div className="flex flex-col items-center">
+        {error && <span className="text-sm text-red-600">{error}</span>}
         <form className="flex flex-col w-3/5 mt-3 space-y-3">
           <Input
             className="px-[10px] py-[5px]"
@@ -103,13 +117,23 @@ const ColumnModal: React.FC<ColumnModalProps> = ({ closeModal, onSubmit }) => {
           />
 
           <Input
-            textarea={inputValue.type === "textarea"}
+            textarea={inputValue.type === "text"}
             className="px-[10px] py-[5px]"
             onChange={handleTextChange}
-            value={inputValue.init}
+            value={inputValue.init as string}
+            checked={inputValue.init as boolean}
             name="init"
             label={itemInitValueIntl}
-            type={inputValue.type === "textarea" ? "text" : inputValue.type}
+            type={
+              inputValue.type === "text"
+                ? "text"
+                : (inputValue.type as
+                    | "checkbox"
+                    | "text"
+                    | "date"
+                    | "password"
+                    | "number")
+            }
           />
 
           <CustomDropdown

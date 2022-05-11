@@ -37,7 +37,11 @@ const tableSlice = createSlice({
         ...action.payload.add.map((column) => ({
           ...column,
           id: column.name,
-          Header: () => <EditableColumn name={column.name} />,
+          Header: () => (
+            <EditableColumn
+              obj={{ name: column.name, type: column.type, init: "" }}
+            />
+          ),
           Cell: ({ value }: any) => <span>{value}</span>,
         })),
       ];
@@ -55,7 +59,16 @@ const tableSlice = createSlice({
     addColumn(state, action: PayloadAction<Column>) {
       const column = {
         ...action.payload,
-        Cell: ({ value }: any) => <span>{value}</span>,
+
+        Cell: ({ value }: any) => (
+          <span>
+            {action.payload.type === "checkbox"
+              ? value
+                ? "true"
+                : "false"
+              : value}
+          </span>
+        ),
       };
       state.columns = [
         ...state.columns.slice(0, -1),
@@ -85,10 +98,8 @@ const tableSlice = createSlice({
       });
     },
 
-    removeRow(state, action: PayloadAction<string>) {
-      state.data = state.data.filter(
-        (data) => data.id != action.payload.toLowerCase()
-      );
+    removeRow(state, action: PayloadAction<number>) {
+      state.data = state.data.filter((data) => data.id != action.payload);
     },
 
     setColumnModalActive(state, action: PayloadAction<boolean>) {

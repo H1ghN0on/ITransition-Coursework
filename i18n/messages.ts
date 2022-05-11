@@ -50,6 +50,7 @@ export const messages = {
     username_exists: "This username is already used. Try another one",
     email_exists: "This email is already used. Try another one",
     user_not_found: "User was not found",
+    column_same_name_err: "Column with same name already exists",
   },
   [LOCALES.RUSSIAN]: {
     //Auth
@@ -100,5 +101,6 @@ export const messages = {
     username_exists: "Это имя пользователя уже занято",
     email_exists: "Эта почта уже зарегистрирована",
     user_not_found: "Пользователь не был найден",
+    column_same_name_err: "Колонка с таким именем уже существует",
   },
 };

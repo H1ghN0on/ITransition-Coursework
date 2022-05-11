@@ -9,6 +9,17 @@ export interface CollectionType {
   items: number;
 }
 
+export interface ItemAdditiveType {
+  type: "checkbox" | "text" | "string" | "date" | "number";
+  name: string;
+  accessor: string;
+  value: any;
+}
 export interface CollectionItemType {
   id: number;
+  belongsTo: number;
+  name: string;
+  tags: string[];
+  createdAt: string;
+  info: ItemAdditiveType[];
 }
