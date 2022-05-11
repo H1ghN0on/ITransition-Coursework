@@ -3,6 +3,16 @@ import { AxiosInstance } from "axios";
 
 const CollectionApi = (instance: AxiosInstance) => {
   return {
+    getItemById: async (id: number) => {
+      try {
+        const { data } = await instance.get(`/get-collection-data/${id}`);
+        return data;
+      } catch (error) {
+        console.log(error);
+        return [];
+      }
+    },
+
     getCollectionData: async (collectionId: number) => {
       try {
         const { data } = await instance.get(

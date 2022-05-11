@@ -1,4 +1,4 @@
-import { IconSpan } from "@components/Common";
+import { IconSpan, Tag } from "@components/Common";
 
 import React from "react";
 import { PencilFill, Plus, TrashFill } from "react-bootstrap-icons";
@@ -68,12 +68,7 @@ const ItemTable: React.FC<ItemTable> = ({ additiveColumns, initItems }) => {
           <div className="hidden"></div>
           {value &&
             value.map((tag: string, index: number) => (
-              <span
-                key={index}
-                className="text-xs md:text-xs mr-3 cursor-pointer border border-[#d8d8d8] rounded-full bg-white px-4 py-1"
-              >
-                {tag}
-              </span>
+              <Tag text={tag} key={index} />
             ))}
         </div>
       ),

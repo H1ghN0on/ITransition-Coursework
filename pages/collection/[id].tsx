@@ -40,6 +40,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
     await checkUserAuth(store, ctx);
     const { collection } = await Api(ctx).getCollectionById(+ctx.query.id!);
     const { items, columns } = await Api(ctx).getCollectionData(+ctx.query.id!);
+    console.log(collection);
     store.dispatch(setCollection(collection));
     return {
       props: {

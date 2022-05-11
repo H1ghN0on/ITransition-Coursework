@@ -63,12 +63,12 @@ const Input: React.FC<Input> = ({
           placeholder={placeholder}
           id={name}
           value={value}
-          className={`border border-[#c7c7c7] px-[15px] py-[20px] rounded text-black ${className}`}
+          className={`border border-[#c7c7c7] outline-none px-[15px] py-[20px] rounded text-black ${className}`}
           name={name}
         />
       ) : (
         <input
-          className={`border border-[#c7c7c7] px-[15px] py-[20px] rounded text-black ${className}`}
+          className={`border border-[#c7c7c7] outline-none px-[15px] py-[20px] rounded text-black ${className}`}
           onChange={onChange}
           placeholder={placeholder}
           id={name}
