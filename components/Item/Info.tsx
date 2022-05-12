@@ -6,6 +6,13 @@ import { setLike } from "@redux/itemSlice";
 import React from "react";
 import { Heart, HeartFill } from "react-bootstrap-icons";
 
+import dynamic from "next/dynamic";
+
+const Markdown = dynamic(
+  () => import("@uiw/react-markdown-preview"!).then((mod) => mod.default),
+  { ssr: false }
+) as any;
+
 const Info = () => {
   const dispatch = useAppDispatch();
 
@@ -29,7 +36,12 @@ const Info = () => {
         <PropertyList
           properties={info.map((property) => ({
             field: property.name,
-            value: property.value,
+            value:
+              property.type === "text" ? (
+                <Markdown source={property.value} />
+              ) : (
+                property.value
+              ),
           }))}
         />
 

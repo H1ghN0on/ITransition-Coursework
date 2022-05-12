@@ -9,6 +9,7 @@ const PropertyList: React.FC<PropertyList> = ({ properties }) => {
   const intl = useIntl();
   const yesIntl = intl.formatMessage({ id: "yes" });
   const noIntl = intl.formatMessage({ id: "no" });
+
   return (
     <ul className="space-y-3 text-sm md:text-base">
       {properties.map((property, index) => (
