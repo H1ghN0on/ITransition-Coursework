@@ -13,7 +13,7 @@ const Modal: React.FC<ModalProps> = ({ className, children, closeModal }) => {
   return (
     <>
       <Mask />
-      <div className="fixed top-0 left-0 z-1000 flex justify-center items-center w-screen h-screen">
+      <div className="fixed top-0 left-0 z-1000 flex justify-center items-center w-screen h-screen overflow-y-visible">
         <div
           className={clsx(
             "bg-[#f7f7f8]  rounded shadow-inner relative",

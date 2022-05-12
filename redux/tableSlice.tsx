@@ -4,6 +4,12 @@ import {
   EditableColumn,
 } from "@components/Collection/Table/THeader";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import dynamic from "next/dynamic";
+
+const Markdown = dynamic(
+  () => import("@uiw/react-markdown-preview"!).then((mod) => mod.default),
+  { ssr: false }
+) as any;
 
 interface TableState {
   isItemModalActive: boolean;
@@ -42,7 +48,19 @@ const tableSlice = createSlice({
               obj={{ name: column.name, type: column.type, init: "" }}
             />
           ),
-          Cell: ({ value }: any) => <span>{value}</span>,
+          Cell: ({ value }: any) => {
+            if (column.type === "checkbox") {
+              value = value ? "True" : "False";
+            }
+            if (column.type === "text") {
+              return (
+                <div className="text-left">
+                  <Markdown source={value} />{" "}
+                </div>
+              );
+            }
+            return <span>{value}</span>;
+          },
         })),
       ];
     },
@@ -60,15 +78,27 @@ const tableSlice = createSlice({
       const column = {
         ...action.payload,
 
-        Cell: ({ value }: any) => (
-          <span>
-            {action.payload.type === "checkbox"
-              ? value
-                ? "true"
-                : "false"
-              : value}
-          </span>
-        ),
+        Cell: ({ value }: any) => {
+          if (action.payload.type === "checkbox") {
+            value = value ? "True" : "False";
+          }
+          if (action.payload.type === "text") {
+            return (
+              <div className="align-left">
+                <Markdown source={value} />
+              </div>
+            );
+          }
+          return (
+            <span>
+              {action.payload.type === "checkbox"
+                ? value
+                  ? "true"
+                  : "false"
+                : value}
+            </span>
+          );
+        },
       };
       state.columns = [
         ...state.columns.slice(0, -1),

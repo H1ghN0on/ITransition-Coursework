@@ -1,4 +1,9 @@
 /** @type {import('next').NextConfig} */
+
+const withCSS = require("@zeit/next-css");
+
+const removeImports = require("next-remove-imports")();
+
 const nextConfig = {
   reactStrictMode: false,
   styledComponents: true,
@@ -6,5 +11,4 @@ const nextConfig = {
     AXIOS_BASE_URL: "http://localhost:3001",
   },
 };
-
-module.exports = nextConfig;
+module.exports = removeImports(nextConfig);

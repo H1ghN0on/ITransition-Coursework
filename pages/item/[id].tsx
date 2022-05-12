@@ -10,7 +10,7 @@ import React from "react";
 import socket from "@core/socket";
 import { useRouter } from "next/router";
 import { useBeforeunload } from "react-beforeunload";
-
+import ReactMarkdown from "react-markdown";
 const ItemInfo: NextPage = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -24,11 +24,10 @@ const ItemInfo: NextPage = () => {
         })
       );
     });
+    return () => {
+      socket.emit("disconnected", router.query.id);
+    };
   }, []);
-
-  useBeforeunload(() => {
-    socket.emit("disconnected", router.query.id);
-  });
 
   return (
     <div className="flex justify-center w-full pt-[2vh] md:pt-[10vh]">
@@ -37,6 +36,7 @@ const ItemInfo: NextPage = () => {
           <ProfileBrief imageSrc={"/avatar.jpg"} name="H1ghN0on_" />
           <Toolbar />
         </div>
+
         <div className="w-4/5 md:w-2/3 flex space-y-2 flex-col bg-white rounded shadow-inner md:px-5">
           <Info />
           <Comments />

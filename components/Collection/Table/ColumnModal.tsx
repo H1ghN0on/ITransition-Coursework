@@ -1,7 +1,17 @@
 import { Button, CustomDropdown, Input, Modal } from "@components/Common";
 import { useAppSelector } from "@redux/hooks";
+
 import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
+import "@uiw/react-md-editor/markdown-editor.css";
+import "@uiw/react-markdown-preview/markdown.css";
+import dynamic from "next/dynamic";
+import { InputLabel } from "@components/Common/Input";
+
+const MDEditor = dynamic(
+  () => import("@uiw/react-md-editor"!).then((mod) => mod.default),
+  { ssr: false }
+) as any;
 
 export type ModalColumn = {
   name: string;
@@ -31,8 +41,6 @@ const ColumnModal: React.FC<ColumnModalProps> = ({ closeModal, onSubmit }) => {
   const itemTypeIntl = intl.formatMessage({ id: "column_type" });
   const itemInitValueIntl = intl.formatMessage({ id: "column_init_value" });
   const itemNameIntl = intl.formatMessage({ id: "name" });
-  const yesIntl = intl.formatMessage({ id: "yes" });
-  const noIntl = intl.formatMessage({ id: "no" });
   const sameNameErrorIntl = intl.formatMessage({ id: "column_same_name_err" });
   const types = [
     {
@@ -74,6 +82,14 @@ const ColumnModal: React.FC<ColumnModalProps> = ({ closeModal, onSubmit }) => {
           : e.target.value,
     });
   };
+
+  const handleMarkdownChange = (value: any) => {
+    setInputValue({
+      ...inputValue,
+      init: value,
+    });
+  };
+
   const handleDropdownChange = (option: any) => {
     setInputValue({
       ...inputValue,
@@ -115,26 +131,37 @@ const ColumnModal: React.FC<ColumnModalProps> = ({ closeModal, onSubmit }) => {
             label={itemNameIntl}
             type="text"
           />
-
-          <Input
-            textarea={inputValue.type === "text"}
-            className="px-[10px] py-[5px]"
-            onChange={handleTextChange}
-            value={inputValue.init as string}
-            checked={inputValue.init as boolean}
-            name="init"
-            label={itemInitValueIntl}
-            type={
-              inputValue.type === "text"
-                ? "text"
-                : (inputValue.type as
-                    | "checkbox"
-                    | "text"
-                    | "date"
-                    | "password"
-                    | "number")
-            }
-          />
+          {inputValue.type === "text" ? (
+            <>
+              <InputLabel htmlFor={inputValue.name}>
+                {inputValue.name}
+              </InputLabel>
+              <MDEditor
+                onChange={handleMarkdownChange}
+                value={inputValue.init as string}
+                textareaProps={{
+                  name: inputValue.name,
+                }}
+              />
+            </>
+          ) : (
+            <Input
+              className="px-[10px] py-[5px]"
+              onChange={handleTextChange}
+              value={inputValue.init as string}
+              checked={inputValue.init as boolean}
+              name="init"
+              label={itemInitValueIntl}
+              type={
+                inputValue.type as
+                  | "checkbox"
+                  | "text"
+                  | "date"
+                  | "password"
+                  | "number"
+              }
+            />
+          )}
 
           <CustomDropdown
             label={itemTypeIntl}

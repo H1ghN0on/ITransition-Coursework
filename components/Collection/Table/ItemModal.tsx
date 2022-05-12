@@ -3,6 +3,15 @@ import { useAppSelector } from "@redux/hooks";
 import React from "react";
 import { Tag } from "react-tag-input";
 import { FormattedMessage, useIntl } from "react-intl";
+import "@uiw/react-md-editor/markdown-editor.css";
+import "@uiw/react-markdown-preview/markdown.css";
+import dynamic from "next/dynamic";
+import { InputLabel } from "@components/Common/Input";
+
+const MDEditor = dynamic(
+  () => import("@uiw/react-md-editor"!).then((mod) => mod.default),
+  { ssr: false }
+) as any;
 interface ItemModalProps {
   closeModal: () => void;
   onSubmit: (obj: any) => void;
@@ -69,6 +78,21 @@ const ItemModal: React.FC<ItemModalProps> = ({ closeModal, onSubmit }) => {
     );
   };
 
+  const handleMarkdownChange = (
+    value: string,
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setInputValue(
+      inputValue.map((input: any) => {
+        if (input.accessor == e.target.name) {
+          input.value = value;
+        }
+
+        return input;
+      })
+    );
+  };
+
   const handleSubmitClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
@@ -85,7 +109,7 @@ const ItemModal: React.FC<ItemModalProps> = ({ closeModal, onSubmit }) => {
       info: row.filter((value: any) => value.accessor !== "name"),
       name,
       tags: tags.map((tag: Tag) => tag.text),
-      id: isForEdit ? isForEdit.id : 1488228,
+      id: isForEdit ? isForEdit.id : 0,
     });
 
     closeModal();
@@ -115,23 +139,37 @@ const ItemModal: React.FC<ItemModalProps> = ({ closeModal, onSubmit }) => {
       <div className="flex flex-col items-center">
         <form className="flex flex-col w-3/5 mt-3 space-y-3">
           {inputValue &&
-            inputValue.map((input: any, index: number) => (
-              <Input
-                key={index}
-                textarea={input.type === "textarea"}
-                className="px-[10px] py-[5px]"
-                onChange={handleTextChange}
-                value={input.value}
-                name={input.accessor}
-                checked={input.type === "checkbox" && input.value}
-                label={
-                  input.accessor == "name"
-                    ? intl.formatMessage({ id: "name" })
-                    : input.name
-                }
-                type={input.type === "textarea" ? "text" : input.type}
-              />
-            ))}
+            inputValue.map((input: any, index: number) =>
+              input.type === "text" ? (
+                <>
+                  <InputLabel htmlFor={input.accessor}>{input.name}</InputLabel>
+                  <MDEditor
+                    id={input.accessor}
+                    onChange={handleMarkdownChange}
+                    value={input.value as string}
+                    textareaProps={{
+                      name: input.accessor,
+                    }}
+                  />
+                </>
+              ) : (
+                <Input
+                  key={index}
+                  textarea={input.type === "textarea"}
+                  className="px-[10px] py-[5px]"
+                  onChange={handleTextChange}
+                  value={input.value}
+                  name={input.accessor}
+                  checked={input.type === "checkbox" && input.value}
+                  label={
+                    input.accessor == "name"
+                      ? intl.formatMessage({ id: "name" })
+                      : input.name
+                  }
+                  type={input.type === "textarea" ? "text" : input.type}
+                />
+              )
+            )}
           <TagInput
             onAdd={handleAddition}
             onDelete={handleDelete}
