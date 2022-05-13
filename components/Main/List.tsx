@@ -1,10 +1,10 @@
 import React from "react";
-import { Collection, AddedItem } from "@components/Main";
+import { Collection, Item } from "@components/Main";
 import { CollectionItemType, CollectionType } from "@types";
 
 interface ListProps {
   title?: string;
-  type: "collection" | "item";
+  type: "collection" | "search-item" | "added-item";
   className?: string;
   items: CollectionType[] | CollectionItemType[];
 }
@@ -17,9 +17,14 @@ const List: React.FC<ListProps> = ({ title, type, className, items }) => {
       case "collection": {
         return <Collection data={data as CollectionType} />;
       }
-      case "item": {
-        return <AddedItem />;
+      case "added-item": {
+        return <Item type="recent" data={data as CollectionItemType} />;
       }
+
+      case "search-item": {
+        return <Item type="search" data={data as CollectionItemType} />;
+      }
+
       default: {
         return null;
       }

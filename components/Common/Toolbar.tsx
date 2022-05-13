@@ -49,17 +49,16 @@ const Toolbar = () => {
           </a>
         </Link>
       )}
-
-      <IconSpan
-        onClick={() => {
-          console.log("Search!");
-        }}
-        text={searchIntl}
-        icon={Search}
-        textClassName={textClassName}
-        iconClassName={iconClassName}
-      />
-
+      <Link href="/search">
+        <a>
+          <IconSpan
+            text={searchIntl}
+            icon={Search}
+            textClassName={textClassName}
+            iconClassName={iconClassName}
+          />
+        </a>
+      </Link>
       <BrightnessHighFill className={iconClassName} fill="#FFC700" />
       <object
         type="image/svg+xml"
