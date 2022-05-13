@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 interface TagProps {
@@ -6,9 +7,13 @@ interface TagProps {
 
 const Tag: React.FC<TagProps> = ({ text }) => {
   return (
-    <span className="text-xs md:text-xs mr-3 cursor-pointer border border-[#d8d8d8] rounded-full bg-white px-4 py-1">
-      {text}
-    </span>
+    <Link href={{ pathname: "/search", query: { tag: encodeURI(text) } }}>
+      <a>
+        <div className="text-xs rounded-full mt-3 mr-3 px-3 py-1 border-2 shadow-inner-md">
+          {text}
+        </div>
+      </a>
+    </Link>
   );
 };
 
