@@ -113,11 +113,12 @@ const Search: NextPage<SearchProps> = ({ initValue, initItems, initType }) => {
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
+  /*@ts-ignore*/
   (store) => async (ctx: GetServerSidePropsContext) => {
     await checkUserAuth(store, ctx);
     if (ctx.query.tag) {
       const value = decodeURI(ctx.query.tag as string);
-      const { items } = await Api().searchByTag(ctx.query.tag as string);
+      const { items } = await Api(ctx).searchByTag(ctx.query.tag as string);
       return {
         props: {
           initValue: value,
