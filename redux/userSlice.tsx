@@ -5,12 +5,14 @@ interface UserState {
   id: number;
   username: string;
   avatarURL: string;
+  status: "user" | "admin" | "";
 }
 
 const initialState = {
   username: "",
   avatarURL: "",
   id: -1,
+  status: "",
 } as UserState;
 
 const userSlice = createSlice({
@@ -18,16 +20,18 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser(state, action: PayloadAction<any>) {
-      const { id, username, avatarURL } = action.payload;
+      const { id, username, avatarURL, status } = action.payload;
       state.id = id;
       state.username = username;
       state.avatarURL = avatarURL;
+      state.status = status;
     },
 
     clearUser(state) {
       state.id = -1;
       state.username = "";
       state.avatarURL = "";
+      state.status = "";
     },
   },
   extraReducers: {

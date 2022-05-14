@@ -44,3 +44,13 @@ export interface CommentType {
     avatarURL: string;
   };
 }
+
+export interface UserType {
+  id: number;
+  createdAt: string;
+  status: "admin" | "user" | "block";
+  username: string;
+  password: string;
+  vkID: number;
+  avatarURL: string;
+}
