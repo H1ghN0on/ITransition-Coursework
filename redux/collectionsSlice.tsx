@@ -60,14 +60,6 @@ const collectionsSlice = createSlice({
       );
     },
   },
-  extraReducers: {
-    [HYDRATE]: (state, action) => {
-      return {
-        ...state,
-        ...action.payload.collectionsSlice,
-      };
-    },
-  },
 });
 
 export const {

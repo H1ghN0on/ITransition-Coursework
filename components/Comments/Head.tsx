@@ -4,8 +4,14 @@ import socket from "@core/socket";
 import { useAppDispatch, useAppSelector } from "@redux/hooks";
 import { addComment } from "@redux/itemSlice";
 import React from "react";
+import { useIntl } from "react-intl";
 
 const Head = () => {
+  const intl = useIntl();
+  const commentsIntl = intl.formatMessage({ id: "comments" });
+  const writeYourCommentIntl = intl.formatMessage({ id: "write_your_comment" });
+  const yourCommentIntl = intl.formatMessage({ id: "your_comment" });
+
   const dispatch = useAppDispatch();
   const [isLoading, setLoading] = React.useState<boolean>(false);
   const comments = useAppSelector((state) => state.itemSlice.comments);
@@ -25,7 +31,7 @@ const Head = () => {
   return (
     <div className="py-3">
       <h3 className="text-black text-2xl font-bold mb-3">
-        {comments.length} Comments
+        {comments.length} {commentsIntl}
       </h3>
       <form>
         <Input
@@ -36,8 +42,8 @@ const Head = () => {
           value={value}
           name="comment"
           type="text"
-          label="Write your comment"
-          placeholder="Your comment..."
+          label={writeYourCommentIntl}
+          placeholder={yourCommentIntl}
           iconBtn
           loading={isLoading}
           iconClassName="cursor-pointer ml-3 text-lg"

@@ -1,15 +1,15 @@
 import { Api } from "@api";
-import { CustomDropdown, Wrapper } from "@components/Common";
+import { CustomDropdown, Toolbar, Wrapper } from "@components/Common";
 import socket from "@core/socket";
 import { useComponentWillMount } from "@hooks";
-import { useAppDispatch, wrapper } from "@redux/store";
+import { useAppDispatch } from "@redux/store";
 import { clearUser, setUser } from "@redux/userSlice";
 import { UserType } from "@types";
-import { checkUserAuth, formatDate } from "@utils";
+import { formatDate } from "@utils";
 import { GetServerSidePropsContext, NextPage } from "next";
 import Link from "next/link";
 import React from "react";
-import { Cell, Row, useTable } from "react-table";
+import { Cell, useTable } from "react-table";
 
 interface TableProps {
   columns: any;
@@ -30,52 +30,56 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
 
   return (
     <Wrapper>
-      <table
-        className="w-full divide-gray-200 border border-gray"
-        {...getTableProps()}
-      >
-        <thead className="bg-[#F0F0F0]">
-          {headerGroups.map((headerGroup, index) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th
-                  className="text-center px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  {...column.getHeaderProps()}
-                >
-                  {column.render("Header")}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody
-          className="bg-white divide-y divide-gray-200"
-          {...getTableBodyProps()}
+      <div className="flex flex-col items-center w-screen space-y-3">
+        <div className="flex flex-col justify-center">
+          <Toolbar />
+        </div>
+        <table
+          className="w-full divide-gray-200 border border-gray"
+          {...getTableProps()}
         >
-          {rows.map((row, i) => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => (
-                  <td
-                    className="text-center text-sm  border-r border-gray last:border-0"
-                    {...cell.getCellProps()}
+          <thead className="bg-[#F0F0F0]">
+            {headerGroups.map((headerGroup, index) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <th
+                    className="text-center px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    {...column.getHeaderProps()}
                   >
-                    {cell.render("Cell")}
-                  </td>
+                    {column.render("Header")}
+                  </th>
                 ))}
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
+            ))}
+          </thead>
+          <tbody
+            className="bg-white divide-y divide-gray-200"
+            {...getTableBodyProps()}
+          >
+            {rows.map((row, i) => {
+              prepareRow(row);
+              return (
+                <tr {...row.getRowProps()}>
+                  {row.cells.map((cell) => (
+                    <td
+                      className="text-center text-sm  border-r border-gray last:border-0"
+                      {...cell.getCellProps()}
+                    >
+                      {cell.render("Cell")}
+                    </td>
+                  ))}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </Wrapper>
   );
 };
 
 const AdminPage: NextPage<AdminProps> = ({ users, user }) => {
   const dispatch = useAppDispatch();
-
   useComponentWillMount(() => {
     dispatch(user ? setUser(user) : clearUser());
   });

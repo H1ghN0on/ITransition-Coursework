@@ -48,14 +48,6 @@ const itemSlice = createSlice({
       }
     },
   },
-  extraReducers: {
-    [HYDRATE]: (state, action) => {
-      return {
-        ...state,
-        ...action.payload.itemSlice,
-      };
-    },
-  },
 });
 
 export const { setItem, addComment, setLike } = itemSlice.actions;

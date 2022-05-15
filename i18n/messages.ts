@@ -51,6 +51,17 @@ export const messages = {
     email_exists: "This email is already used. Try another one",
     user_not_found: "User was not found",
     column_same_name_err: "Column with same name already exists",
+
+    comments: "Comments",
+    write_your_comment: "Write your comment",
+    your_comment: "Your comment...",
+    from: "From",
+
+    values: "Values",
+    type: "Type",
+    enter_somethine_here: "Enter something here",
+    no_items: "No items?",
+    no_query: "No query?",
   },
   [LOCALES.RUSSIAN]: {
     //Auth
@@ -102,5 +113,16 @@ export const messages = {
     email_exists: "Эта почта уже зарегистрирована",
     user_not_found: "Пользователь не был найден",
     column_same_name_err: "Колонка с таким именем уже существует",
+
+    comments: "Комментарии",
+    write_your_comment: "Напишите свой комментарий",
+    your_comment: "Ваш комментарий...",
+    from: "Из",
+
+    values: "Значения",
+    type: "Тип",
+    enter_somethine_here: "Введите что-нибудь сюда",
+    no_items: "Нет данных?",
+    no_query: "Нет запроса?",
   },
 };

@@ -1,21 +1,13 @@
 import { Api } from "@api";
 import { CustomDropdown, Input, Toolbar, Wrapper } from "@components/Common";
-import Dropdown from "@components/Common/Dropdown";
-import { List } from "@components/Main";
 import { Result } from "@components/Search";
 import { useComponentWillMount } from "@hooks";
 import { useAppDispatch } from "@redux/hooks";
-import { wrapper } from "@redux/store";
 import { clearUser, setUser } from "@redux/userSlice";
 import { CollectionItemType, UserType } from "@types";
-import { checkUserAuth } from "@utils";
 import { GetServerSidePropsContext, NextPage } from "next";
 import React from "react";
-
-const types = [
-  { label: "Tags", value: "tag" },
-  { label: "Values", value: "value" },
-];
+import { useIntl } from "react-intl";
 
 interface SearchProps {
   initValue?: string;
@@ -30,6 +22,20 @@ const Search: NextPage<SearchProps> = ({
   initItems,
   initType,
 }) => {
+  const intl = useIntl();
+  const tagsIntl = intl.formatMessage({ id: "item_tags" });
+  const typeIntl = intl.formatMessage({ id: "type" });
+  const valuesIntl = intl.formatMessage({ id: "values" });
+  const searchIntl = intl.formatMessage({ id: "search" });
+  const enterSomethingHereIntl = intl.formatMessage({
+    id: "enter_somethine_here",
+  });
+
+  const types = [
+    { label: tagsIntl, value: "tag" },
+    { label: valuesIntl, value: "value" },
+  ];
+
   const dispatch = useAppDispatch();
   const [isLoading, setLoading] = React.useState<boolean>(false);
   const [type, setType] = React.useState<"tag" | "value">(initType ?? "value");
@@ -74,19 +80,19 @@ const Search: NextPage<SearchProps> = ({
         </div>
         <div className="flex justify-center w-[50vw] items-center">
           <CustomDropdown
-            label="Type"
+            label={typeIntl}
             list={types}
             name="type"
             onChange={handleDropdownChange}
-            defaultValue={type}
+            defaultValue={valuesIntl}
           />
           <Input
-            label="Search"
+            label={searchIntl}
             name="search"
             iconBtn
             className="ml-3 w-full h-[30px]"
             value={value}
-            placeholder="Enter something here..."
+            placeholder={enterSomethingHereIntl}
             iconClassName="ml-3 cursor-pointer"
             onIconClick={handleSubmitClick}
             loading={isLoading}

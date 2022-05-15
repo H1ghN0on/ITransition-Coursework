@@ -1,5 +1,6 @@
 import { Title } from "@components/Main/Collection";
 import React from "react";
+import { useIntl } from "react-intl";
 
 interface HeadProps {
   from: string;
@@ -7,10 +8,11 @@ interface HeadProps {
 }
 
 const Head: React.FC<HeadProps> = ({ from, name }) => {
+  const fromIntl = useIntl().formatMessage({ id: "from" });
   return (
     <>
       <div>
-        From <span className="underline">{from}</span>
+        {fromIntl} <span className="underline">{from}</span>
       </div>
 
       <div>

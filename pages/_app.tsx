@@ -16,7 +16,6 @@ import React from "react";
 function MyApp({ Component, pageProps }: AppProps) {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.userSlice);
-  const locale = LOCALES.RUSSIAN;
 
   React.useEffect(() => {
     socket.emit("connected", user?.id);
@@ -28,8 +27,8 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <IntlProvider
-      messages={messages[locale]}
-      locale={locale}
+      messages={messages[user.locale]}
+      locale={user.locale}
       defaultLocale={LOCALES.ENGLISH}
     >
       <Component {...pageProps} />

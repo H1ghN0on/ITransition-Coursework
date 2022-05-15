@@ -26,14 +26,6 @@ const collectionSlice = createSlice({
       }
     },
   },
-  extraReducers: {
-    [HYDRATE]: (state, action) => {
-      return {
-        ...state,
-        ...action.payload.collectionSlice,
-      };
-    },
-  },
 });
 
 export const { setCollection, setItemsNumber } = collectionSlice.actions;

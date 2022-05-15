@@ -23,7 +23,11 @@ import {
 import { useIntl } from "react-intl";
 import { CollectionItemType } from "@types";
 import { EditCell, TagCell } from "./Cells";
-import { Addable } from "@components/Collection/Table/Headers";
+import {
+  Addable,
+  NameHeader,
+  TagsHeader,
+} from "@components/Collection/Table/Headers";
 
 interface ItemTable {
   additiveColumns: ColumnData[];
@@ -38,9 +42,6 @@ const ItemTable: React.FC<ItemTable> = ({
 }) => {
   const intl = useIntl();
 
-  const nameIntl = intl.formatMessage({ id: "name" });
-  const tagsIntl = intl.formatMessage({ id: "item_tags" });
-
   const initialColumns: Column[] = [
     {
       name: "ID",
@@ -51,7 +52,7 @@ const ItemTable: React.FC<ItemTable> = ({
     },
     {
       name: "Name",
-      Header: nameIntl,
+      Header: NameHeader,
       accessor: "name",
       minWidth: 200,
       width: 300,
@@ -59,7 +60,7 @@ const ItemTable: React.FC<ItemTable> = ({
     },
 
     {
-      Header: tagsIntl,
+      Header: TagsHeader,
       accessor: "tags",
       width: 350,
       minWidth: 200,

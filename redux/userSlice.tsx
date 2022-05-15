@@ -1,3 +1,4 @@
+import { LOCALES } from "@locales/locales";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { diff } from "jsondiffpatch";
 import { HYDRATE } from "next-redux-wrapper";
@@ -7,6 +8,7 @@ interface UserState {
   username: string;
   avatarURL: string;
   status: "user" | "admin" | "" | "block";
+  locale: any;
 }
 
 const initialState = {
@@ -14,6 +16,7 @@ const initialState = {
   avatarURL: "",
   id: -1,
   status: "",
+  locale: LOCALES.ENGLISH,
 } as UserState;
 
 const userSlice = createSlice({
@@ -37,16 +40,11 @@ const userSlice = createSlice({
     setStatus(state, action: PayloadAction<"admin" | "user" | "block">) {
       state.status = action.payload;
     },
-  },
-  extraReducers: {
-    [HYDRATE]: (state, action) => {
-      return {
-        ...state, // use previous state
-        ...action.payload.userSlice, // apply delta from hydration
-      };
+    setLocale(state, action: PayloadAction<any>) {
+      state.locale = action.payload;
     },
   },
 });
 
-export const { setUser, clearUser, setStatus } = userSlice.actions;
+export const { setUser, clearUser, setStatus, setLocale } = userSlice.actions;
 export default userSlice.reducer;
