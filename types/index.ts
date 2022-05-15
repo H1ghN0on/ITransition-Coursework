@@ -3,7 +3,7 @@ export interface CollectionType {
   name: string;
   description: string;
   avatarURL: string;
-  belongsTo: number;
+  belongsTo: UserType;
   topics: string[];
   createdAt: string;
   items: number;
@@ -23,7 +23,7 @@ export interface LikeType {
 
 export interface CollectionItemType {
   id: number;
-  belongsTo: number;
+  belongsTo: CollectionType;
   name: string;
   tags: string[];
   createdAt: string;

@@ -43,12 +43,6 @@ const Input: React.FC<Input> = ({
   iconClassName,
   loading,
 }) => {
-  const isMounted = useHasMounted();
-
-  if (!isMounted) {
-    return null;
-  }
-
   return (
     <div className={`flex flex-col ${blockClassName} w-full`}>
       {label && <InputLabel htmlFor={name}>{label}</InputLabel>}

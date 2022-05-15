@@ -1,5 +1,5 @@
 import { Api } from "@api";
-import { CustomDropdown, Input, Toolbar } from "@components/Common";
+import { CustomDropdown, Input, Toolbar, Wrapper } from "@components/Common";
 import Dropdown from "@components/Common/Dropdown";
 import { List } from "@components/Main";
 import { Result } from "@components/Search";
@@ -53,7 +53,7 @@ const Search: NextPage<SearchProps> = ({ initValue, initItems, initType }) => {
   };
 
   return (
-    <div className="flex justify-center w-full pt-[2vh] md:pt-[10vh]">
+    <Wrapper>
       <div className="flex flex-col items-center w-screen space-y-3">
         <div className="flex flex-col items-center md:flex-row space-y-5 md:space-y-0 w-2/3 justify-end mb-10">
           <Toolbar />
@@ -85,7 +85,7 @@ const Search: NextPage<SearchProps> = ({ initValue, initItems, initType }) => {
 
         <Result items={items} />
       </div>
-    </div>
+    </Wrapper>
   );
 };
 

@@ -1,5 +1,5 @@
 import { Api } from "@api";
-import { Toolbar } from "@components/Common";
+import { Toolbar, Wrapper } from "@components/Common";
 import { CustomTagCloud, List } from "@components/Main";
 import { wrapper } from "@redux/store";
 import { CollectionItemType, CollectionType } from "@types";
@@ -7,6 +7,7 @@ import { checkUserAuth } from "@utils";
 import type { GetServerSidePropsContext, NextPage } from "next";
 import React from "react";
 import { useIntl } from "react-intl";
+import { ToastContainer } from "react-toastify";
 
 interface MainProps {
   items: CollectionItemType[];
@@ -19,7 +20,7 @@ const Main: NextPage<MainProps> = ({ collections, tags, items }) => {
   const recentlyAddedIntl = intl.formatMessage({ id: "recently_added" });
 
   return (
-    <div className="flex justify-center w-full pt-[2vh] md:pt-[10vh]">
+    <Wrapper>
       <div className="flex flex-col items-center  md:w-[80vw]">
         <div className="md:self-end mb-10  px-5">
           <Toolbar />
@@ -41,7 +42,7 @@ const Main: NextPage<MainProps> = ({ collections, tags, items }) => {
           />
         </div>
       </div>
-    </div>
+    </Wrapper>
   );
 };
 

@@ -7,7 +7,6 @@ import { useAppDispatch, useAppSelector } from "@redux/hooks";
 import {
   addColumn,
   addColumnInData,
-  removeColumn,
   setColumnModalActive,
 } from "@redux/tableSlice";
 import { Api } from "@api";
@@ -16,9 +15,10 @@ import { Column } from "@types";
 
 interface THeaderProps {
   data: any[];
+  editable: boolean;
 }
 
-const THeader: React.FC<THeaderProps> = ({ data }) => {
+const THeader: React.FC<THeaderProps> = ({ data, editable }) => {
   const dispatch = useAppDispatch();
   const tData = useAppSelector((state) => state.tableSlice);
   const collectionId = useAppSelector(
@@ -31,7 +31,8 @@ const THeader: React.FC<THeaderProps> = ({ data }) => {
   const handleColumnSubmitClick = async (obj: ModalColumn) => {
     const column: Column = {
       name: obj.name,
-      Header: () => <Editable obj={obj} />,
+      Header: () =>
+        editable ? <Editable obj={obj} /> : <span>{obj.name}</span>,
       accessor: obj.name.toLowerCase(),
       minWidth: 250,
       width: 10 * obj.name.length,

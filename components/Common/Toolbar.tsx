@@ -7,7 +7,7 @@ import {
   DoorClosed,
 } from "react-bootstrap-icons";
 import { useIntl } from "react-intl";
-import { IconSpan } from "@components/Common";
+import { IconSpan, Logo } from "@components/Common";
 import { useAppDispatch, useAppSelector } from "@redux/hooks";
 import { clearUser } from "@redux/userSlice";
 import Cookies from "js-cookie";
@@ -31,6 +31,7 @@ const Toolbar = () => {
 
   return (
     <div className="flex space-x-5 items-center">
+      <Logo />
       {userData && userData.id != -1 ? (
         <Link href={`/profile/${userData.id}`}>
           <a>

@@ -25,7 +25,7 @@ const Info = () => {
             editable={false}
             position="end"
             quantity={items.toString()}
-            owner={belongsTo.toString()}
+            owner={belongsTo}
             date={createdAt}
           />
         </div>

@@ -28,9 +28,14 @@ import { Addable } from "@components/Collection/Table/Headers";
 interface ItemTable {
   additiveColumns: ColumnData[];
   initItems: CollectionItemType[];
+  editable: boolean;
 }
 
-const ItemTable: React.FC<ItemTable> = ({ additiveColumns, initItems }) => {
+const ItemTable: React.FC<ItemTable> = ({
+  additiveColumns,
+  initItems,
+  editable,
+}) => {
   const intl = useIntl();
 
   const nameIntl = intl.formatMessage({ id: "name" });
@@ -76,18 +81,25 @@ const ItemTable: React.FC<ItemTable> = ({ additiveColumns, initItems }) => {
   React.useEffect(() => {
     dispatch(setData(initItems));
     dispatch(
-      setAdditiveColumns({ init: initialColumns, add: additiveColumns })
-    );
-    dispatch(
-      addColumnToEnd({
-        name: "add",
-        accessor: "add",
-        Header: Addable,
-        Cell: EditCell,
-        width: 200,
-        type: "checkbox",
+      setAdditiveColumns({
+        init: initialColumns,
+        add: additiveColumns,
+        editable,
       })
     );
+    if (editable) {
+      dispatch(
+        addColumnToEnd({
+          name: "add",
+          accessor: "add",
+          Header: Addable,
+          Cell: EditCell,
+          width: 200,
+          type: "checkbox",
+        })
+      );
+    }
+
     return () => {
       dispatch(clearTable());
     };
@@ -108,9 +120,12 @@ const ItemTable: React.FC<ItemTable> = ({ additiveColumns, initItems }) => {
           className="w-full divide-gray-200 border border-gray"
           {...getTableProps()}
         >
-          <THeader data={headerGroups} />
+          <THeader editable={editable} data={headerGroups} />
 
-          <TBody tData={{ getTableBodyProps, rows, prepareRow }} />
+          <TBody
+            editable={editable}
+            tData={{ getTableBodyProps, rows, prepareRow }}
+          />
         </table>
       </div>
       <div

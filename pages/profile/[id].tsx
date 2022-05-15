@@ -1,4 +1,4 @@
-import { Toolbar, ProfileBrief, IconSpan } from "@components/Common";
+import { Toolbar, ProfileBrief, IconSpan, Wrapper } from "@components/Common";
 import { List } from "@components/Main";
 import { GetServerSidePropsContext, NextPage } from "next";
 import { Plus } from "react-bootstrap-icons";
@@ -32,7 +32,7 @@ const Profile: NextPage<ProfileProps> = ({ profileId }) => {
           }}
         />
       )}
-      <div className="flex justify-center w-full pt-[2vh] md:pt-[10vh]">
+      <Wrapper>
         <div className="flex flex-col items-center w-screen  space-y-3">
           <div className="flex flex-col items-center md:flex-row space-y-5 md:space-y-0 w-2/3 justify-between mb-10">
             <ProfileBrief imageSrc={"/avatar.jpg"} name="H1ghN0on_" />
@@ -45,7 +45,7 @@ const Profile: NextPage<ProfileProps> = ({ profileId }) => {
             className="flex flex-col w-2/3"
           />
         </div>
-      </div>
+      </Wrapper>
     </>
   );
 };

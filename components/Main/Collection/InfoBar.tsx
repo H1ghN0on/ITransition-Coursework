@@ -6,7 +6,9 @@ import {
   setModal,
 } from "@redux/collectionsSlice";
 import { useAppDispatch } from "@redux/hooks";
+import { UserType } from "@types";
 import { formatDate } from "@utils";
+import Link from "next/link";
 import React from "react";
 import {
   CardText,
@@ -21,7 +23,7 @@ interface InfoBarProps {
   id: number;
   date?: string;
   quantity?: string;
-  owner?: string;
+  owner?: UserType;
   position: string;
   editable: boolean;
 }
@@ -78,19 +80,22 @@ const InfoBar: React.FC<InfoBarProps> = ({
         />
       )}
       {owner && (
-        <IconSpan
-          iconClassName={iconClassName}
-          textClassName={textClassName}
-          text={owner}
-          icon={PersonFill}
-        />
+        <Link href={`/profile/${owner.id}`}>
+          <IconSpan
+            className="cursor-pointer hover:underline"
+            iconClassName={iconClassName}
+            textClassName={textClassName}
+            text={owner.username}
+            icon={PersonFill}
+          />
+        </Link>
       )}
       {editable && (
         <IconSpan
+          className="cursor-pointer hover:underline"
           onClick={handleEditClick}
           iconClassName={iconClassName}
           textClassName={textClassName}
-          className={"cursor-pointer"}
           text={editIntl}
           icon={PencilFill}
         />
@@ -98,10 +103,10 @@ const InfoBar: React.FC<InfoBarProps> = ({
 
       {editable && (
         <IconSpan
+          className="cursor-pointer hover:underline"
           onClick={handleDeleteClick}
           iconClassName={iconClassName}
           textClassName={textClassName}
-          className={"cursor-pointer"}
           text={deleteIntl}
           icon={TrashFill}
         />

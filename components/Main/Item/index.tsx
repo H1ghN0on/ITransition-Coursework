@@ -22,7 +22,14 @@ const AddedItem: React.FC<ItemProps> = ({ data, type }) => {
             {type === "recent" ? "added to" : "from"}
           </span>
 
-          <span className="text-lg ">{data.belongsTo.toString()}</span>
+          <div className="text-lg inline-flex">
+            <Link href={`/collection/${data.belongsTo.id}`}>
+              <span className="cursor-pointer hover:underline">
+                {data.belongsTo.name}
+              </span>
+            </Link>
+          </div>
+
           {/* 
       <InfoBar position="center" date="17.04.2022" owner="Masekoi" /> */}
         </div>

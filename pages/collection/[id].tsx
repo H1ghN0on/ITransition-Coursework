@@ -1,22 +1,30 @@
 import { Api } from "@api";
 import { Info, ItemTable } from "@components/Collection";
-import { ColumnData } from "@components/Collection/Table/THeader";
-import { ProfileBrief, Toolbar } from "@components/Common";
+import { CollectionType, ColumnData } from "@types";
+import { ProfileBrief, Toolbar, Wrapper } from "@components/Common";
 import { setCollection } from "@redux/collectionSlice";
 import { wrapper } from "@redux/store";
-import { CollectionItemType, ItemAdditiveType } from "@types";
+import { CollectionItemType } from "@types";
 import { checkUserAuth } from "@utils";
 import { GetServerSidePropsContext, NextPage } from "next";
 import React from "react";
+import { useAppSelector } from "@redux/hooks";
 
 interface CollectionInfoProps {
+  collection: CollectionType;
   items: CollectionItemType[];
   columns: ColumnData[];
 }
 
-const CollectionInfo: NextPage<CollectionInfoProps> = ({ items, columns }) => {
+const CollectionInfo: NextPage<CollectionInfoProps> = ({
+  collection,
+  items,
+  columns,
+}) => {
+  const user = useAppSelector((state) => state.userSlice);
+
   return (
-    <div className="flex justify-center w-full pt-[2vh] md:pt-[10vh]">
+    <Wrapper>
       <div className="flex flex-col items-center w-screen  space-y-3">
         <div className="flex flex-col items-center md:flex-row space-y-5 md:space-y-0 w-2/3 justify-between mb-10">
           <ProfileBrief imageSrc={"/avatar.jpg"} name="H1ghN0on_" />
@@ -27,11 +35,15 @@ const CollectionInfo: NextPage<CollectionInfoProps> = ({ items, columns }) => {
             <Info />
           </div>
           <div className="mt-3">
-            <ItemTable additiveColumns={columns} initItems={items} />
+            <ItemTable
+              editable={user.id === collection.belongsTo.id}
+              additiveColumns={columns}
+              initItems={items}
+            />
           </div>
         </div>
       </div>
-    </div>
+    </Wrapper>
   );
 };
 
@@ -44,6 +56,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
     store.dispatch(setCollection(collection));
     return {
       props: {
+        collection,
         items,
         columns: columns.map((obj: any) => ({
           ...obj,

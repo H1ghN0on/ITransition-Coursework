@@ -5,7 +5,7 @@ interface UserState {
   id: number;
   username: string;
   avatarURL: string;
-  status: "user" | "admin" | "";
+  status: "user" | "admin" | "" | "block";
 }
 
 const initialState = {
@@ -33,6 +33,9 @@ const userSlice = createSlice({
       state.avatarURL = "";
       state.status = "";
     },
+    setStatus(state, action: PayloadAction<"admin" | "user" | "block">) {
+      state.status = action.payload;
+    },
   },
   extraReducers: {
     [HYDRATE]: (state, action) => {
@@ -44,5 +47,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { setUser, clearUser } = userSlice.actions;
+export const { setUser, clearUser, setStatus } = userSlice.actions;
 export default userSlice.reducer;

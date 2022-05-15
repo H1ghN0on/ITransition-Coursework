@@ -1,7 +1,7 @@
 import { Head, InfoBar, PropertyList, TagList } from "@components/Item";
 import { useAppSelector } from "@redux/hooks";
 import React from "react";
-
+import Link from "next/link";
 import dynamic from "next/dynamic";
 import Like from "./Like";
 import { formatDate } from "@utils";
@@ -25,11 +25,15 @@ const Info = () => {
   return (
     <div className="flex flex-col md:justify-between  md:flex-row w-full ">
       <div className="flex flex-col justify-center md:ml-2 space-y-4 md:w-3/4 text-left p-5">
-        <Head from={belongsTo.toString()} name={name} />
+        <Link href={`/collection/${belongsTo.id}`}>
+          <a>
+            <Head from={belongsTo.name.toString()} name={name} />
+          </a>
+        </Link>
 
         <PropertyList
           properties={info.map((property) => {
-            let value: any;
+            let value = property.value;
             if (property.type === "text") {
               value = <Markdown source={property.value} />;
             } else if (property.type === "date") {

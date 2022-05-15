@@ -32,18 +32,25 @@ const tableSlice = createSlice({
     },
     setAdditiveColumns(
       state,
-      action: PayloadAction<{ init: Column[]; add: ColumnData[] }>
+      action: PayloadAction<{
+        init: Column[];
+        add: ColumnData[];
+        editable: boolean;
+      }>
     ) {
       state.columns = [
         ...action.payload.init,
         ...action.payload.add.map((column) => ({
           ...column,
           id: column.name,
-          Header: () => (
-            <Editable
-              obj={{ name: column.name, type: column.type, init: "" }}
-            />
-          ),
+          Header: () =>
+            action.payload.editable ? (
+              <Editable
+                obj={{ name: column.name, type: column.type, init: "" }}
+              />
+            ) : (
+              <span>{column.name}</span>
+            ),
           Cell: ({ value }: any) => {
             if (column.type === "date") {
               return <DateCell value={value} />;

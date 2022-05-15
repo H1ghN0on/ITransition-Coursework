@@ -1,6 +1,6 @@
 import { Api } from "@api";
 import { Comments } from "@components/Comments";
-import { ProfileBrief, Toolbar } from "@components/Common";
+import { ProfileBrief, Toolbar, Wrapper } from "@components/Common";
 import { Info } from "@components/Item";
 import { addComment, setItem } from "@redux/itemSlice";
 import { useAppDispatch, wrapper } from "@redux/store";
@@ -14,7 +14,7 @@ const ItemInfo: NextPage = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   React.useEffect(() => {
-    socket.emit("connected", router.query.id);
+    socket.emit("connected-to-item", router.query.id);
     socket.on("new-comment", (comment: any) => {
       dispatch(
         addComment({
@@ -29,7 +29,7 @@ const ItemInfo: NextPage = () => {
   }, []);
 
   return (
-    <div className="flex justify-center w-full pt-[2vh] md:pt-[10vh]">
+    <Wrapper>
       <div className="flex flex-col items-center w-screen space-y-3">
         <div className="flex flex-col items-center md:flex-row space-y-5 md:space-y-0 w-2/3 justify-between mb-10">
           <ProfileBrief imageSrc={"/avatar.jpg"} name="H1ghN0on_" />
@@ -41,7 +41,7 @@ const ItemInfo: NextPage = () => {
           <Comments />
         </div>
       </div>
-    </div>
+    </Wrapper>
   );
 };
 

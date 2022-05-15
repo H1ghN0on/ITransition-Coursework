@@ -11,6 +11,7 @@ import {
 } from "@redux/tableSlice";
 import { Api } from "@api";
 import { setItemsNumber } from "@redux/collectionSlice";
+import Link from "next/link";
 
 interface TBodyProps {
   tData: {
@@ -20,9 +21,10 @@ interface TBodyProps {
     rows: Row<any>[];
     prepareRow: (row: Row<any>) => void;
   };
+  editable: boolean;
 }
 
-const TBody: React.FC<TBodyProps> = ({ tData }) => {
+const TBody: React.FC<TBodyProps> = ({ tData, editable }) => {
   const id = useAppSelector((state) => state.collectionSlice.collection!.id);
 
   const { getTableBodyProps, rows, prepareRow } = tData;
@@ -66,14 +68,18 @@ const TBody: React.FC<TBodyProps> = ({ tData }) => {
           prepareRow(row);
           return (
             <tr {...row.getRowProps()}>
-              {row.cells.map((cell) => (
-                <td
-                  className="text-center truncate text-xs px-6 py-4 whitespace-nowrap border-r border-gray last:border-0"
-                  {...cell.getCellProps()}
-                >
-                  {cell.render("Cell")}
-                </td>
-              ))}
+              <Link href={`/item/${row.original.id}`}>
+                <a>
+                  {row.cells.map((cell) => (
+                    <td
+                      className="text-center truncate text-xs px-6 py-4 whitespace-nowrap border-r border-gray last:border-0"
+                      {...cell.getCellProps()}
+                    >
+                      {cell.render("Cell")}
+                    </td>
+                  ))}
+                </a>
+              </Link>
             </tr>
           );
         })}

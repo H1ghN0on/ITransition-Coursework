@@ -16,7 +16,7 @@ interface CollectionProps {
 
 const Collection: React.FC<CollectionProps> = ({ data }) => {
   const user = useAppSelector((state) => state.userSlice);
-  const isEditable = user && user.id === data.belongsTo;
+  const isEditable = user && user.id === data.belongsTo.id;
 
   return (
     <Link href={`/collection/${data.id}`}>
@@ -38,7 +38,7 @@ const Collection: React.FC<CollectionProps> = ({ data }) => {
                 id={data.id}
                 position="end"
                 quantity={data.items.toString()}
-                owner={data.belongsTo.toString()}
+                owner={data.belongsTo}
                 date={data.createdAt}
                 editable={isEditable}
               />

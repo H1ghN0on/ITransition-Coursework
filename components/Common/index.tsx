@@ -10,3 +10,5 @@ export { default as CustomDropdown } from "./Dropdown";
 export { default as TagInput } from "./TagInput";
 export { default as Tag } from "./Tag";
 export { default as Error } from "./Error";
+export { default as Logo } from "./Logo";
+export { default as Wrapper } from "./Wrapper";
