@@ -83,6 +83,16 @@ const CollectionApi = (instance: AxiosInstance) => {
         return null;
       }
     },
+
+    getLastAdded: async () => {
+      try {
+        const { data } = await instance.get(`/get-last-added`);
+        return data;
+      } catch (error) {
+        console.log(error);
+        return null;
+      }
+    },
   };
 };
 

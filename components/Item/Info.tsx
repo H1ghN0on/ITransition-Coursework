@@ -1,12 +1,11 @@
-import { Api } from "@api";
-import { IconSpan, Tag } from "@components/Common";
 import { Head, InfoBar, PropertyList, TagList } from "@components/Item";
-import { useAppDispatch, useAppSelector } from "@redux/hooks";
-import { setLike } from "@redux/itemSlice";
+import { useAppSelector } from "@redux/hooks";
 import React from "react";
-import { Heart, HeartFill } from "react-bootstrap-icons";
 
 import dynamic from "next/dynamic";
+import Like from "./Like";
+import { formatDate } from "@utils";
+import { useIntl } from "react-intl";
 
 const Markdown = dynamic(
   () => import("@uiw/react-markdown-preview"!).then((mod) => mod.default),
@@ -14,19 +13,14 @@ const Markdown = dynamic(
 ) as any;
 
 const Info = () => {
-  const dispatch = useAppDispatch();
+  const intl = useIntl();
+
+  const yesIntl = intl.formatMessage({ id: "yes" });
+  const noIntl = intl.formatMessage({ id: "no" });
 
   const { id, name, tags, createdAt, belongsTo, info, likes } = useAppSelector(
     (state) => state.itemSlice.item!
   );
-
-  const user = useAppSelector((state) => state.userSlice!);
-  const isLiked = likes.findIndex((like) => like.user_id === user.id) !== -1;
-
-  const handleLikeClick = async () => {
-    await Api().setLike({ item_id: id, user_id: user.id });
-    dispatch(setLike({ user_id: user.id, type: isLiked ? "remove" : "add" }));
-  };
 
   return (
     <div className="flex flex-col md:justify-between  md:flex-row w-full ">
@@ -34,15 +28,20 @@ const Info = () => {
         <Head from={belongsTo.toString()} name={name} />
 
         <PropertyList
-          properties={info.map((property) => ({
-            field: property.name,
-            value:
-              property.type === "text" ? (
-                <Markdown source={property.value} />
-              ) : (
-                property.value
-              ),
-          }))}
+          properties={info.map((property) => {
+            let value: any;
+            if (property.type === "text") {
+              value = <Markdown source={property.value} />;
+            } else if (property.type === "date") {
+              value = formatDate(value);
+            } else if (property.type === "checkbox") {
+              value = value === "true" ? yesIntl : noIntl;
+            }
+            return {
+              field: property.name,
+              value,
+            };
+          })}
         />
 
         <div className="flex justify-center md:justify-start flex-wrap max-w-[60vw] gap-1">
@@ -52,14 +51,7 @@ const Info = () => {
       </div>
 
       <div className="w-full flex justify-center md:w-1/5 self-center ">
-        <IconSpan
-          onClick={handleLikeClick}
-          className="cursor-pointer"
-          iconClassName={"text-black text-3xl"}
-          textClassName={"text-black text-3xl"}
-          icon={isLiked ? HeartFill : Heart}
-          text={likes.length.toString()}
-        />
+        <Like item_id={id} likes={likes} />
       </div>
     </div>
   );

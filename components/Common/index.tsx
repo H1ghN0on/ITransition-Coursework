@@ -9,3 +9,4 @@ export { default as Modal } from "./Modal";
 export { default as CustomDropdown } from "./Dropdown";
 export { default as TagInput } from "./TagInput";
 export { default as Tag } from "./Tag";
+export { default as Error } from "./Error";

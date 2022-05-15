@@ -1,15 +1,11 @@
 import {
-  Column,
-  ColumnData,
-  EditableColumn,
-} from "@components/Collection/Table/THeader";
+  CheckboxCell,
+  DateCell,
+  TextCell,
+} from "@components/Collection/Table/Cells";
+import { Column, ColumnData } from "@types";
+import { Editable } from "@components/Collection/Table/Headers";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import dynamic from "next/dynamic";
-
-const Markdown = dynamic(
-  () => import("@uiw/react-markdown-preview"!).then((mod) => mod.default),
-  { ssr: false }
-) as any;
 
 interface TableState {
   isItemModalActive: boolean;
@@ -44,20 +40,19 @@ const tableSlice = createSlice({
           ...column,
           id: column.name,
           Header: () => (
-            <EditableColumn
+            <Editable
               obj={{ name: column.name, type: column.type, init: "" }}
             />
           ),
           Cell: ({ value }: any) => {
+            if (column.type === "date") {
+              return <DateCell value={value} />;
+            }
             if (column.type === "checkbox") {
-              value = value ? "True" : "False";
+              return <CheckboxCell value={value} />;
             }
             if (column.type === "text") {
-              return (
-                <div className="text-left">
-                  <Markdown source={value} />{" "}
-                </div>
-              );
+              return <TextCell value={value} />;
             }
             return <span>{value}</span>;
           },
@@ -79,25 +74,16 @@ const tableSlice = createSlice({
         ...action.payload,
 
         Cell: ({ value }: any) => {
+          if (column.type === "date") {
+            return <DateCell value={value} />;
+          }
           if (action.payload.type === "checkbox") {
-            value = value ? "True" : "False";
+            return <CheckboxCell value={value} />;
           }
           if (action.payload.type === "text") {
-            return (
-              <div className="align-left">
-                <Markdown source={value} />
-              </div>
-            );
+            return <TextCell value={value} />;
           }
-          return (
-            <span>
-              {action.payload.type === "checkbox"
-                ? value
-                  ? "true"
-                  : "false"
-                : value}
-            </span>
-          );
+          return <span>{value}</span>;
         },
       };
       state.columns = [

@@ -1,7 +1,7 @@
 import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useHasMounted } from "@hooks";
-import { Button, ImageInput, Input } from "@components/Common";
+import { Button, ImageInput, Input, Error } from "@components/Common";
 import { AuthTitle } from "@styles/components";
 import { NewUserContext } from "@contexts/NewUserContext";
 import { Axios } from "core/axios";
@@ -69,14 +69,14 @@ const Password = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center w-11/12 lg:w-7/12">
+    <>
       <AuthTitle className="text-3xl md:text-5xl md-5 md:mb-10">
         <FormattedMessage id="username_title" />
       </AuthTitle>
       {error && (
-        <span className="text-sm text-red-600">
+        <Error>
           <FormattedMessage id="username_exists" />
-        </span>
+        </Error>
       )}
       <ImageInput
         rounded
@@ -111,7 +111,7 @@ const Password = () => {
           <FormattedMessage id="continue" />
         )}
       </Button>
-    </div>
+    </>
   );
 };
 

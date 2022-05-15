@@ -5,4 +5,5 @@ export { default as PasswordValidationField } from "./Register/Password/Password
 export { default as FragmentSwitcher } from "./Register/FragmentSwitcher";
 export { default as Password } from "./Register/Password";
 export { default as Introduce } from "./Register/Introduce";
-export { default as LoginForm } from "./LoginForm";
+export { default as LoginForm } from "./Login/LoginForm";
+export { default as SocialForm } from "./SocialForm";

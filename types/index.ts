@@ -16,7 +16,7 @@ export interface ItemAdditiveType {
   value: any;
 }
 
-interface LikeType {
+export interface LikeType {
   item_id: number;
   user_id: number;
 }
@@ -53,4 +53,19 @@ export interface UserType {
   password: string;
   vkID: number;
   avatarURL: string;
+}
+
+export interface ColumnData {
+  name: string;
+  accessor: string;
+  width: number;
+  maxWidth?: number;
+  minWidth?: number;
+  type: "checkbox" | "date" | "string" | "number" | "text";
+  init?: any;
+}
+
+export interface Column extends ColumnData {
+  Header: (() => JSX.Element) | string;
+  Cell?: (value: any) => JSX.Element;
 }

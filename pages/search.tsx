@@ -2,6 +2,7 @@ import { Api } from "@api";
 import { CustomDropdown, Input, Toolbar } from "@components/Common";
 import Dropdown from "@components/Common/Dropdown";
 import { List } from "@components/Main";
+import { Result } from "@components/Search";
 import { wrapper } from "@redux/store";
 import { CollectionItemType } from "@types";
 import { checkUserAuth } from "@utils";
@@ -51,30 +52,6 @@ const Search: NextPage<SearchProps> = ({ initValue, initItems, initType }) => {
     setType(option.value);
   };
 
-  const Items = () => {
-    if (!items) {
-      return (
-        <div className="flex items-center">
-          <img className="w-[100px] h-[100px]" src="no.jpg" alt="no" />
-          <span className="ml-3 text-xl text-black font-bold">No items?</span>
-        </div>
-      );
-    }
-    if (items.length == 0) {
-      return (
-        <div className="flex items-center">
-          <img className="w-[100px] h-[100px]" src="no.jpg" alt="no" />
-          <span className="ml-3 text-xl text-black font-bold">No items?</span>
-        </div>
-      );
-    }
-    return (
-      <div className=" w-[50vw]">
-        <List type="search-item" items={items} />
-      </div>
-    );
-  };
-
   return (
     <div className="flex justify-center w-full pt-[2vh] md:pt-[10vh]">
       <div className="flex flex-col items-center w-screen space-y-3">
@@ -106,7 +83,7 @@ const Search: NextPage<SearchProps> = ({ initValue, initItems, initType }) => {
           />
         </div>
 
-        <Items />
+        <Result items={items} />
       </div>
     </div>
   );

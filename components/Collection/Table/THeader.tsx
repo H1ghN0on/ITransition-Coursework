@@ -10,63 +10,15 @@ import {
   removeColumn,
   setColumnModalActive,
 } from "@redux/tableSlice";
-import { useIntl } from "react-intl";
 import { Api } from "@api";
-
-export interface ColumnData {
-  name: string;
-  accessor: string;
-  width: number;
-  maxWidth?: number;
-  minWidth?: number;
-  type: "checkbox" | "date" | "string" | "number" | "text";
-  init?: any;
-}
-
-export interface Column extends ColumnData {
-  Header: (() => JSX.Element) | string;
-  Cell?: (value: any) => JSX.Element;
-}
+import { Editable } from "@components/Collection/Table/Headers";
+import { Column } from "@types";
 
 interface THeaderProps {
   data: any[];
 }
 
-interface EditableColumnProps {
-  obj: ModalColumn;
-}
-
-export const EditableColumn: React.FC<EditableColumnProps> = ({ obj }) => {
-  const dispatch = useAppDispatch();
-  const intl = useIntl();
-
-  const deleteWarningIntl = intl.formatMessage({ id: "delete_warning" });
-  const collectionId = useAppSelector(
-    (state) => state.collectionSlice.collection!.id
-  );
-  return (
-    <div className="flex justify-center items-center space-x-2">
-      <span>{obj.name}</span>
-
-      <TrashFill
-        className="cursor-pointer"
-        onClick={async () => {
-          if (confirm(`${deleteWarningIntl} ${obj.name}?`)) {
-            await Api().deleteColumn({
-              collectionId,
-              accessor: obj.name.toLowerCase(),
-              type: obj.type,
-            });
-            dispatch(removeColumn(obj.name));
-          }
-        }}
-      />
-    </div>
-  );
-};
-
 const THeader: React.FC<THeaderProps> = ({ data }) => {
-  // const tableData = React.useContext(TableContext);
   const dispatch = useAppDispatch();
   const tData = useAppSelector((state) => state.tableSlice);
   const collectionId = useAppSelector(
@@ -79,7 +31,7 @@ const THeader: React.FC<THeaderProps> = ({ data }) => {
   const handleColumnSubmitClick = async (obj: ModalColumn) => {
     const column: Column = {
       name: obj.name,
-      Header: () => <EditableColumn obj={obj} />,
+      Header: () => <Editable obj={obj} />,
       accessor: obj.name.toLowerCase(),
       minWidth: 250,
       width: 10 * obj.name.length,

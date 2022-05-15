@@ -32,7 +32,7 @@ const Password = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center w-11/12 lg:w-7/12">
+    <>
       <AuthTitle className="text-3xl md:text-5xl md-5 md:mb-10">
         <FormattedMessage id="password_title" />
       </AuthTitle>
@@ -56,7 +56,7 @@ const Password = () => {
       >
         <FormattedMessage id="continue" />
       </Button>
-    </div>
+    </>
   );
 };
 

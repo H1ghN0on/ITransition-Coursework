@@ -12,6 +12,7 @@ const MDEditor = dynamic(
   () => import("@uiw/react-md-editor"!).then((mod) => mod.default),
   { ssr: false }
 ) as any;
+
 interface ItemModalProps {
   closeModal: () => void;
   onSubmit: (obj: any) => void;

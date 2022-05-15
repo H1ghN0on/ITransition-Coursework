@@ -11,6 +11,7 @@ import { Api } from "@api";
 
 import { setCollections, setModal } from "@redux/collectionsSlice";
 import { useAppSelector } from "@redux/hooks";
+import AddCollectionButton from "@components/Profile/AddCollectionButton";
 
 interface ProfileProps {
   profileId: number;
@@ -21,13 +22,6 @@ const Profile: NextPage<ProfileProps> = ({ profileId }) => {
   const user = useAppSelector((state) => state.userSlice);
   const isEditable = user && user.id == profileId;
   const dispatch = useAppDispatch();
-
-  const intl = useIntl();
-  const addCollectionIntl = intl.formatMessage({ id: "add_collection" });
-
-  const handleAddClick = () => {
-    dispatch(setModal(true));
-  };
 
   return (
     <>
@@ -44,21 +38,7 @@ const Profile: NextPage<ProfileProps> = ({ profileId }) => {
             <ProfileBrief imageSrc={"/avatar.jpg"} name="H1ghN0on_" />
             <Toolbar />
           </div>
-          {isEditable && (
-            <div
-              onClick={handleAddClick}
-              className="flex justify-center items-center bg-white rounded shadow-inner-md py-5 w-2/3 cursor-pointer"
-            >
-              <div className="flex">
-                <IconSpan
-                  iconClassName="text-black font-bold text-xl md:text-3xl "
-                  textClassName="text-black font-bold text-base md:text-xl"
-                  text={addCollectionIntl}
-                  icon={Plus}
-                />
-              </div>
-            </div>
-          )}
+          <AddCollectionButton editable={isEditable} />
           <List
             items={collectionsData.collections}
             type="collection"

@@ -9,8 +9,7 @@ import { GetServerSidePropsContext, NextPage } from "next";
 import React from "react";
 import socket from "@core/socket";
 import { useRouter } from "next/router";
-import { useBeforeunload } from "react-beforeunload";
-import ReactMarkdown from "react-markdown";
+
 const ItemInfo: NextPage = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
