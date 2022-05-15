@@ -5,7 +5,7 @@ import { IntlProvider } from "react-intl";
 import { messages } from "@locales/messages";
 import { LOCALES } from "@locales/locales";
 import { Provider } from "react-redux";
-import store, { wrapper } from "@redux/store";
+import { wrapper } from "@redux/store";
 import socket from "@core/socket";
 import { useAppDispatch, useAppSelector } from "@redux/hooks";
 import { setStatus } from "@redux/userSlice";
@@ -17,6 +17,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.userSlice);
   const locale = LOCALES.RUSSIAN;
+
   React.useEffect(() => {
     socket.emit("connected", user?.id);
     socket.on("status-changed", (obj) => {
@@ -26,15 +27,13 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, []);
 
   return (
-    <Provider store={store}>
-      <IntlProvider
-        messages={messages[locale]}
-        locale={locale}
-        defaultLocale={LOCALES.ENGLISH}
-      >
-        <Component {...pageProps} />
-      </IntlProvider>
-    </Provider>
+    <IntlProvider
+      messages={messages[locale]}
+      locale={locale}
+      defaultLocale={LOCALES.ENGLISH}
+    >
+      <Component {...pageProps} />
+    </IntlProvider>
   );
 }
 

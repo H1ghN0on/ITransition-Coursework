@@ -2,7 +2,10 @@ import Link from "next/link";
 
 const TagOfCloud = (tag: any, size: number, color: string) => {
   return (
-    <Link href={{ pathname: "/search", query: { tag: encodeURI(tag.value) } }}>
+    <Link
+      key={tag.value}
+      href={{ pathname: "/search", query: { tag: encodeURI(tag.value) } }}
+    >
       <a>
         <span
           key={tag.value}

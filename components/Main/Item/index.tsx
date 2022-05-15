@@ -1,6 +1,6 @@
 import React from "react";
 
-import { InfoBar, Title } from "@components/Main/Collection";
+import { Title } from "@components/Main/Collection";
 import TagList from "./TagList";
 import { CollectionItemType } from "@types";
 import Link from "next/link";
@@ -12,28 +12,35 @@ interface ItemProps {
 
 const AddedItem: React.FC<ItemProps> = ({ data, type }) => {
   return (
-    <Link href={`/item/${data.id}`}>
-      <div className="flex items-center  bg-white rounded shadow-inner-md p-5 ">
-        <div className="flex flex-col space-y-3 w-full">
-          <TagList tags={data.tags} />
-          <Title text={data.name} />
+    <Link href={`/item/[id]`} as={`item/${data.id}`}>
+      <a>
+        <div className="flex items-center  bg-white rounded shadow-inner-md p-5 ">
+          <div className="flex flex-col space-y-3 w-full">
+            <TagList tags={data.tags} />
+            <Title text={data.name} />
 
-          <span className="text-sm md:text-base ">
-            {type === "recent" ? "added to" : "from"}
-          </span>
+            <span className="text-sm md:text-base ">
+              {type === "recent" ? "added to" : "from"}
+            </span>
 
-          <div className="text-lg inline-flex">
-            <Link href={`/collection/${data.belongsTo.id}`}>
-              <span className="cursor-pointer hover:underline">
-                {data.belongsTo.name}
-              </span>
-            </Link>
-          </div>
+            <div className="text-lg inline-flex">
+              <Link
+                href={`/collection/[id]`}
+                as={`collection/${data.belongsTo.id}`}
+              >
+                <a>
+                  <span className="cursor-pointer hover:underline">
+                    {data.belongsTo.name}
+                  </span>
+                </a>
+              </Link>
+            </div>
 
-          {/* 
+            {/* 
       <InfoBar position="center" date="17.04.2022" owner="Masekoi" /> */}
+          </div>
         </div>
-      </div>
+      </a>
     </Link>
   );
 };

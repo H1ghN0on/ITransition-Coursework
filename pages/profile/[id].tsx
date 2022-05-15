@@ -12,16 +12,30 @@ import { Api } from "@api";
 import { setCollections, setModal } from "@redux/collectionsSlice";
 import { useAppSelector } from "@redux/hooks";
 import AddCollectionButton from "@components/Profile/AddCollectionButton";
+import { CollectionType, UserType } from "@types";
+import { clearUser, setUser } from "@redux/userSlice";
+import { useComponentWillMount } from "@hooks";
 
 interface ProfileProps {
   profileId: number;
+  initUser: UserType;
+  collections: CollectionType[];
 }
 
-const Profile: NextPage<ProfileProps> = ({ profileId }) => {
+const Profile: NextPage<ProfileProps> = ({
+  profileId,
+  initUser,
+  collections,
+}) => {
   const collectionsData = useAppSelector((state) => state.collectionsSlice);
   const user = useAppSelector((state) => state.userSlice);
-  const isEditable = user && user.id == profileId;
+  const isEditable = (user && user.id == profileId) || user.status === "admin";
   const dispatch = useAppDispatch();
+
+  useComponentWillMount(() => {
+    dispatch(setCollections(collections));
+    dispatch(initUser ? setUser(initUser) : clearUser());
+  });
 
   return (
     <>
@@ -50,17 +64,13 @@ const Profile: NextPage<ProfileProps> = ({ profileId }) => {
   );
 };
 
-export const getServerSideProps = wrapper.getServerSideProps(
-  (store) => async (ctx: GetServerSidePropsContext) => {
-    await checkUserAuth(store, ctx);
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const initUser = await Api(ctx).getMe();
 
-    const collections = await Api(ctx).getUserCollections(+ctx.query.id!);
-
-    store.dispatch(setCollections(collections));
-    return {
-      props: { profileId: ctx.query.id }, // will be passed to the page component as props
-    };
-  }
-);
+  const collections = await Api(ctx).getUserCollections(+ctx.query.id!);
+  return {
+    props: { profileId: ctx.query.id, initUser, collections },
+  };
+};
 
 export default Profile;

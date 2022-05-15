@@ -128,19 +128,21 @@ const ItemTable: React.FC<ItemTable> = ({
           />
         </table>
       </div>
-      <div
-        onClick={handleAddClick}
-        className="flex justify-center items-center cursor-pointer p-3"
-      >
-        <div className="flex">
-          <IconSpan
-            iconClassName="font-bold text-2xl md:text-3xl "
-            textClassName="font-bold text-base md:text-lg"
-            text={addItemIntl}
-            icon={Plus}
-          />
+      {editable && (
+        <div
+          onClick={handleAddClick}
+          className="flex justify-center items-center cursor-pointer p-3"
+        >
+          <div className="flex">
+            <IconSpan
+              iconClassName="font-bold text-2xl md:text-3xl "
+              textClassName="font-bold text-base md:text-lg"
+              text={addItemIntl}
+              icon={Plus}
+            />
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 };

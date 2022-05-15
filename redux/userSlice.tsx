@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { diff } from "jsondiffpatch";
 import { HYDRATE } from "next-redux-wrapper";
 
 interface UserState {
@@ -40,8 +41,8 @@ const userSlice = createSlice({
   extraReducers: {
     [HYDRATE]: (state, action) => {
       return {
-        ...state,
-        ...action.payload.userSlice,
+        ...state, // use previous state
+        ...action.payload.userSlice, // apply delta from hydration
       };
     },
   },

@@ -15,8 +15,10 @@ const Like: React.FC<LikeProps> = ({ item_id, likes }) => {
   const dispatch = useAppDispatch();
   const isLiked = likes.findIndex((like) => like.user_id === user.id) !== -1;
   const handleLikeClick = async () => {
-    await Api().setLike({ item_id, user_id: user.id });
-    dispatch(setLike({ user_id: user.id, type: isLiked ? "remove" : "add" }));
+    if (user.id != -1) {
+      await Api().setLike({ item_id, user_id: user.id });
+      dispatch(setLike({ user_id: user.id, type: isLiked ? "remove" : "add" }));
+    }
   };
 
   return (

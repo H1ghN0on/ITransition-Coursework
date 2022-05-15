@@ -80,14 +80,16 @@ const InfoBar: React.FC<InfoBarProps> = ({
         />
       )}
       {owner && (
-        <Link href={`/profile/${owner.id}`}>
-          <IconSpan
-            className="cursor-pointer hover:underline"
-            iconClassName={iconClassName}
-            textClassName={textClassName}
-            text={owner.username}
-            icon={PersonFill}
-          />
+        <Link href={`/profile/[id]`} as={`/profile/${owner.id}`}>
+          <a>
+            <IconSpan
+              className="cursor-pointer hover:underline"
+              iconClassName={iconClassName}
+              textClassName={textClassName}
+              text={owner.username}
+              icon={PersonFill}
+            />
+          </a>
         </Link>
       )}
       {editable && (

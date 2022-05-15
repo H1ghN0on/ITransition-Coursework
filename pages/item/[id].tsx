@@ -9,10 +9,24 @@ import { GetServerSidePropsContext, NextPage } from "next";
 import React from "react";
 import socket from "@core/socket";
 import { useRouter } from "next/router";
+import { CollectionItemType, CommentType, UserType } from "@types";
+import { clearUser, setUser } from "@redux/userSlice";
+import { useComponentWillMount } from "@hooks";
 
-const ItemInfo: NextPage = () => {
+interface ItemInfoProps {
+  item: CollectionItemType;
+  comments: CommentType[];
+  user: UserType;
+}
+
+const ItemInfo: NextPage<ItemInfoProps> = ({ user, item, comments }) => {
   const dispatch = useAppDispatch();
   const router = useRouter();
+  useComponentWillMount(() => {
+    dispatch(user ? setUser(user) : clearUser());
+    dispatch(setItem({ item, comments }));
+  });
+
   React.useEffect(() => {
     socket.emit("connected-to-item", router.query.id);
     socket.on("new-comment", (comment: any) => {
@@ -26,7 +40,7 @@ const ItemInfo: NextPage = () => {
     return () => {
       socket.emit("disconnected", router.query.id);
     };
-  }, []);
+  }, [router.query.id, dispatch]);
 
   return (
     <Wrapper>
@@ -45,16 +59,13 @@ const ItemInfo: NextPage = () => {
   );
 };
 
-export const getServerSideProps = wrapper.getServerSideProps(
-  (store) => async (ctx: GetServerSidePropsContext) => {
-    await checkUserAuth(store, ctx);
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const user = await Api(ctx).getMe();
 
-    const { item } = await Api(ctx).getItemById(+ctx.query.id!);
-    const { comments } = await Api(ctx).getItemComments(+ctx.query.id!);
+  const { item } = await Api(ctx).getItemById(+ctx.query.id!);
+  const { comments } = await Api(ctx).getItemComments(+ctx.query.id!);
 
-    store.dispatch(setItem({ item, comments }));
-    return { props: {} };
-  }
-);
+  return { props: { item, comments, user } };
+};
 
 export default ItemInfo;

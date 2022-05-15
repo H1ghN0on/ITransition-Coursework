@@ -1,10 +1,12 @@
 import { Api } from "@api";
 import { CustomDropdown, Wrapper } from "@components/Common";
 import socket from "@core/socket";
-import { wrapper } from "@redux/store";
+import { useComponentWillMount } from "@hooks";
+import { useAppDispatch, wrapper } from "@redux/store";
+import { clearUser, setUser } from "@redux/userSlice";
 import { UserType } from "@types";
 import { checkUserAuth, formatDate } from "@utils";
-import { NextPage } from "next";
+import { GetServerSidePropsContext, NextPage } from "next";
 import Link from "next/link";
 import React from "react";
 import { Cell, Row, useTable } from "react-table";
@@ -16,6 +18,7 @@ interface TableProps {
 
 interface AdminProps {
   users: UserType[];
+  user: UserType[];
 }
 
 const Table: React.FC<TableProps> = ({ columns, data }) => {
@@ -70,7 +73,12 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
   );
 };
 
-const AdminPage: NextPage<AdminProps> = ({ users }) => {
+const AdminPage: NextPage<AdminProps> = ({ users, user }) => {
+  const dispatch = useAppDispatch();
+
+  useComponentWillMount(() => {
+    dispatch(user ? setUser(user) : clearUser());
+  });
   const columns = React.useMemo(
     () => [
       {
@@ -150,24 +158,21 @@ const AdminPage: NextPage<AdminProps> = ({ users }) => {
   );
 };
 
-export const getServerSideProps = wrapper.getServerSideProps(
-  /*@ts-ignore*/
-  (store) => async (ctx: GetServerSidePropsContext) => {
-    await checkUserAuth(store, ctx);
-    const user = store.getState().userSlice;
-    if (!user || user.status !== "admin") {
-      return {
-        redirect: {
-          permanent: false,
-          destination: "/",
-        },
-      };
-    }
-    const { users } = await Api(ctx).getAllUsers();
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const user = await Api(ctx).getMe();
+
+  if (!user || user.status !== "admin") {
     return {
-      props: { users }, // will be passed to the page component as props
+      redirect: {
+        permanent: false,
+        destination: "/",
+      },
     };
   }
-);
+  const { users } = await Api(ctx).getAllUsers();
+  return {
+    props: { user, users }, // will be passed to the page component as props
+  };
+};
 
 export default AdminPage;

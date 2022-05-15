@@ -16,10 +16,11 @@ interface CollectionProps {
 
 const Collection: React.FC<CollectionProps> = ({ data }) => {
   const user = useAppSelector((state) => state.userSlice);
-  const isEditable = user && user.id === data.belongsTo.id;
+  const isEditable =
+    (user && user.id === data.belongsTo.id) || user.status === "admin";
 
   return (
-    <Link href={`/collection/${data.id}`}>
+    <Link href={`/collection/[id]`} as={`/collection/${data.id}`}>
       <a>
         <div className="flex flex-col md:flex-row justify-center items-center  bg-white rounded shadow-inner-md px-3">
           <div className="w-1/3 md:w-1/5">

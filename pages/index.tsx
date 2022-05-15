@@ -1,28 +1,35 @@
 import { Api } from "@api";
 import { Toolbar, Wrapper } from "@components/Common";
 import { CustomTagCloud, List } from "@components/Main";
-import { wrapper } from "@redux/store";
-import { CollectionItemType, CollectionType } from "@types";
+import { useComponentWillMount } from "@hooks";
+import { useAppDispatch, wrapper } from "@redux/store";
+import { clearUser, setUser } from "@redux/userSlice";
+import { CollectionItemType, CollectionType, UserType } from "@types";
 import { checkUserAuth } from "@utils";
 import type { GetServerSidePropsContext, NextPage } from "next";
 import React from "react";
 import { useIntl } from "react-intl";
-import { ToastContainer } from "react-toastify";
 
 interface MainProps {
   items: CollectionItemType[];
   collections: CollectionType[];
   tags: any[];
+  user: UserType;
 }
 
-const Main: NextPage<MainProps> = ({ collections, tags, items }) => {
+const Main: NextPage<MainProps> = ({ user, collections, tags, items }) => {
+  const dispatch = useAppDispatch();
   const intl = useIntl();
   const recentlyAddedIntl = intl.formatMessage({ id: "recently_added" });
+
+  useComponentWillMount(() => {
+    dispatch(user ? setUser(user) : clearUser());
+  });
 
   return (
     <Wrapper>
       <div className="flex flex-col items-center  md:w-[80vw]">
-        <div className="md:self-end mb-10  px-5">
+        <div className="md:self-end mb-10 px-5">
           <Toolbar />
         </div>
         <div>
@@ -48,14 +55,12 @@ const Main: NextPage<MainProps> = ({ collections, tags, items }) => {
 
 export default Main;
 
-export const getServerSideProps = wrapper.getServerSideProps(
-  (store) => async (ctx: GetServerSidePropsContext) => {
-    await checkUserAuth(store, ctx);
-    const collections = await Api(ctx).getTopCollections();
-    const { tags } = await Api(ctx).countTags();
-    const { items } = await Api(ctx).getLastAdded();
-    return {
-      props: { collections, items, tags }, // will be passed to the page component as props
-    };
-  }
-);
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const user = await Api(ctx).getMe();
+  const collections = await Api(ctx).getTopCollections();
+  const { tags } = await Api(ctx).countTags();
+  const { items } = await Api(ctx).getLastAdded();
+  return {
+    props: { user, collections, items, tags },
+  };
+};

@@ -3,8 +3,11 @@ import { CustomDropdown, Input, Toolbar, Wrapper } from "@components/Common";
 import Dropdown from "@components/Common/Dropdown";
 import { List } from "@components/Main";
 import { Result } from "@components/Search";
+import { useComponentWillMount } from "@hooks";
+import { useAppDispatch } from "@redux/hooks";
 import { wrapper } from "@redux/store";
-import { CollectionItemType } from "@types";
+import { clearUser, setUser } from "@redux/userSlice";
+import { CollectionItemType, UserType } from "@types";
 import { checkUserAuth } from "@utils";
 import { GetServerSidePropsContext, NextPage } from "next";
 import React from "react";
@@ -18,15 +21,26 @@ interface SearchProps {
   initValue?: string;
   initItems?: CollectionItemType[];
   initType?: "tag" | "value";
+  user: UserType | null;
 }
 
-const Search: NextPage<SearchProps> = ({ initValue, initItems, initType }) => {
+const Search: NextPage<SearchProps> = ({
+  user,
+  initValue,
+  initItems,
+  initType,
+}) => {
+  const dispatch = useAppDispatch();
   const [isLoading, setLoading] = React.useState<boolean>(false);
   const [type, setType] = React.useState<"tag" | "value">(initType ?? "value");
   const [value, setValue] = React.useState<string>(initValue ?? "");
   const [items, setItems] = React.useState<CollectionItemType[] | null>(
     initItems ?? null
   );
+
+  useComponentWillMount(() => {
+    dispatch(user ? setUser(user) : clearUser());
+  });
 
   const handleSubmitClick = async () => {
     if (value != "") {
@@ -89,25 +103,23 @@ const Search: NextPage<SearchProps> = ({ initValue, initItems, initType }) => {
   );
 };
 
-export const getServerSideProps = wrapper.getServerSideProps(
-  /*@ts-ignore*/
-  (store) => async (ctx: GetServerSidePropsContext) => {
-    await checkUserAuth(store, ctx);
-    if (ctx.query.tag) {
-      const value = decodeURI(ctx.query.tag as string);
-      const { items } = await Api(ctx).searchByTag(ctx.query.tag as string);
-      return {
-        props: {
-          initValue: value,
-          initItems: items,
-          initType: "tag",
-        },
-      };
-    }
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const user = await Api(ctx).getMe();
+  if (ctx.query.tag) {
+    const value = decodeURI(ctx.query.tag as string);
+    const { items } = await Api(ctx).searchByTag(ctx.query.tag as string);
     return {
-      props: {}, // will be passed to the page component as props
+      props: {
+        user,
+        initValue: value,
+        initItems: items,
+        initType: "tag",
+      },
     };
   }
-);
+  return {
+    props: { user }, // will be passed to the page component as props
+  };
+};
 
 export default Search;

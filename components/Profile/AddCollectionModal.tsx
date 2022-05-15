@@ -3,6 +3,7 @@ import { Button, ImageInput, Input, Modal } from "@components/Common";
 import { Topics } from "@components/Profile";
 import { addCollection, editCollection } from "@redux/collectionsSlice";
 import { useAppDispatch, useAppSelector } from "@redux/hooks";
+import router, { useRouter } from "next/router";
 import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
@@ -11,6 +12,7 @@ interface ModalProps {
 }
 
 const AddCollectionModal: React.FC<ModalProps> = ({ closeModal }) => {
+  const router = useRouter();
   const forEdit = useAppSelector((state) => state.collectionsSlice.isForEdit);
   const dispatch = useAppDispatch();
 
@@ -54,6 +56,7 @@ const AddCollectionModal: React.FC<ModalProps> = ({ closeModal }) => {
 
     const { name, description, topics, imageValue } = inputValue;
     const formData = new FormData();
+    formData.append("belongsTo", router.query.id as string);
     formData.append("name", name);
     formData.append("description", description);
     formData.append("topics", JSON.stringify(topics));
