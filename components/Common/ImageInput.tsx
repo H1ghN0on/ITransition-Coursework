@@ -2,6 +2,9 @@ import React from "react";
 import Image from "next/image";
 import styled from "styled-components";
 import { useHasMounted } from "@hooks";
+import Dropzone from "react-dropzone";
+import IconSpan from "./IconSpan";
+import { CloudArrowUp } from "react-bootstrap-icons";
 
 const AvatarLabel = styled.label`
   cursor: pointer;
@@ -23,7 +26,7 @@ interface ImageInputProps {
   width: number;
   height: number;
   label?: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (file: FileList | File[]) => void;
   rounded?: boolean;
   name?: string;
 }
@@ -45,34 +48,81 @@ const ImageInput: React.FC<ImageInputProps> = ({
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(e);
     if (e.target.files) {
-      const img = URL.createObjectURL(e.target.files[0]);
+      const file = e.target.files;
+      onChange(file);
+      if (file) {
+        const img = URL.createObjectURL(file[0]);
+        setSrc(img);
+      }
+    }
+  };
+
+  const handleDrop = (acceptedFiles: File[]) => {
+    const file = acceptedFiles;
+    onChange(acceptedFiles);
+    if (file) {
+      const img = URL.createObjectURL(file[0]);
       setSrc(img);
     }
   };
 
   return (
-    <div>
-      <AvatarLabel
-        className="flex flex-col justify-center items-center"
-        htmlFor="upload"
-      >
-        <div className={imgClassName}>
-          <Image
-            width={width}
-            height={height}
-            className={rounded ? "rounded-full" : ""}
-            src={src}
-            alt="avatar"
-          />
+    <Dropzone onDrop={handleDrop}>
+      {({ getRootProps, getInputProps, isDragActive }) => (
+        <div {...getRootProps()}>
+          {isDragActive ? (
+            <AvatarLabel
+              className="flex flex-col justify-center items-center"
+              htmlFor="upload"
+            >
+              <Image
+                width={width}
+                height={height}
+                className={rounded ? "rounded-full" : "" + " opacity-20"}
+                src={src}
+                alt="avatar"
+              />
+              <Sign>
+                <span className="text-xs md:text-base text-center">
+                  Drop here
+                </span>
+              </Sign>
+            </AvatarLabel>
+          ) : (
+            <>
+              <AvatarLabel
+                className="flex flex-col justify-center items-center"
+                htmlFor="upload"
+              >
+                <div className={imgClassName}>
+                  <Image
+                    width={width}
+                    height={height}
+                    className={rounded ? "rounded-full" : ""}
+                    src={src}
+                    alt="avatar"
+                  />
+                </div>
+                <Sign>
+                  <span className="text-xs md:text-base text-center">
+                    {label}
+                  </span>
+                </Sign>
+              </AvatarLabel>
+
+              <Upload
+                {...getInputProps()}
+                onChange={handleChange}
+                id="upload"
+                type="file"
+                name={name}
+              />
+            </>
+          )}
         </div>
-        <Sign>
-          <span className="text-xs md:text-base text-center">{label}</span>
-        </Sign>
-      </AvatarLabel>
-      <Upload onChange={handleChange} id="upload" type="file" name={name} />
-    </div>
+      )}
+    </Dropzone>
   );
 };
 

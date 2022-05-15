@@ -7,11 +7,12 @@ interface ModalProps {
   className: string;
   children: React.ReactNode;
   closeModal: () => void;
+  hoverable?: boolean;
 }
 
 const Modal: React.FC<ModalProps> = ({ className, children, closeModal }) => {
   return (
-    <>
+    <div>
       <Mask />
       <div className="fixed top-0 left-0 z-1000 flex justify-center items-center w-screen h-screen overflow-y-visible">
         <div
@@ -27,7 +28,7 @@ const Modal: React.FC<ModalProps> = ({ className, children, closeModal }) => {
           {children}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

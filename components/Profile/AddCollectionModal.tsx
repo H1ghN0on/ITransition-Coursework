@@ -34,9 +34,9 @@ const AddCollectionModal: React.FC<ModalProps> = ({ closeModal }) => {
     imageValue: null,
   });
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setInputValue({ ...inputValue, imageValue: e.target.files[0] });
+  const handleImageChange = (file: FileList | File[]) => {
+    if (file) {
+      setInputValue({ ...inputValue, imageValue: file[0] });
     }
   };
 

@@ -25,9 +25,9 @@ const Password = () => {
     return null;
   }
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setImageValue(e.target.files[0]);
+  const handleImageChange = (file: FileList | File[]) => {
+    if (file) {
+      setImageValue(file[0]);
     }
   };
 
