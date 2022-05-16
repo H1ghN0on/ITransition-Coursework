@@ -8,7 +8,7 @@ const SocialForm = () => {
   const handleVKClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const win = window.open(
-      "http://localhost:3001/auth/vk",
+      process.env.AXIOS_BASE_URL + "/auth/vk",
       "Registration",
       "width=692,height=524,left"
     );
