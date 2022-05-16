@@ -97,6 +97,7 @@ const AddCollectionModal: React.FC<ModalProps> = ({ closeModal }) => {
             <ImageInput
               width={200}
               height={200}
+              initSrc={forEdit ? forEdit.avatarURL : undefined}
               label={chooseAvatarIntl}
               onChange={handleImageChange}
               name="avatar"

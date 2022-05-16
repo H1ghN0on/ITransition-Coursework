@@ -29,6 +29,7 @@ interface ImageInputProps {
   onChange: (file: FileList | File[]) => void;
   rounded?: boolean;
   name?: string;
+  initSrc?: string;
 }
 
 const ImageInput: React.FC<ImageInputProps> = ({
@@ -39,8 +40,9 @@ const ImageInput: React.FC<ImageInputProps> = ({
   onChange,
   rounded,
   name,
+  initSrc,
 }) => {
-  const [src, setSrc] = React.useState<string>("/Skittle.jpg");
+  const [src, setSrc] = React.useState<string>(initSrc ?? "/Vladimir.jpg");
   const isMounted = useHasMounted();
 
   if (!isMounted) {
@@ -76,7 +78,7 @@ const ImageInput: React.FC<ImageInputProps> = ({
               className="flex flex-col justify-center items-center"
               htmlFor="upload"
             >
-              <Image
+              <img
                 width={width}
                 height={height}
                 className={rounded ? "rounded-full" : "" + " opacity-20"}
@@ -96,7 +98,7 @@ const ImageInput: React.FC<ImageInputProps> = ({
                 htmlFor="upload"
               >
                 <div className={imgClassName}>
-                  <Image
+                  <img
                     width={width}
                     height={height}
                     className={rounded ? "rounded-full" : ""}

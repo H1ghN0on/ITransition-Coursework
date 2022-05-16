@@ -6,7 +6,11 @@ import { addComment } from "@redux/itemSlice";
 import React from "react";
 import { useIntl } from "react-intl";
 
-const Head = () => {
+interface HeadProps {
+  editable: boolean;
+}
+
+const Head: React.FC<HeadProps> = ({ editable }) => {
   const intl = useIntl();
   const commentsIntl = intl.formatMessage({ id: "comments" });
   const writeYourCommentIntl = intl.formatMessage({ id: "write_your_comment" });
@@ -33,23 +37,25 @@ const Head = () => {
       <h3 className="text-black text-2xl font-bold mb-3 dark:text-white">
         {comments.length} {commentsIntl}
       </h3>
-      <form>
-        <Input
-          onChange={(e) => {
-            setValue(e.target.value);
-          }}
-          className="h-5 rounded-full text-sm w-[50%] max-w-[100%]"
-          value={value}
-          name="comment"
-          type="text"
-          label={writeYourCommentIntl}
-          placeholder={yourCommentIntl}
-          iconBtn
-          loading={isLoading}
-          iconClassName="cursor-pointer ml-3 text-lg"
-          onIconClick={handleSubmit}
-        />
-      </form>
+      {editable && (
+        <form>
+          <Input
+            onChange={(e) => {
+              setValue(e.target.value);
+            }}
+            className="h-5 rounded-full text-sm w-[50%] max-w-[100%]"
+            value={value}
+            name="comment"
+            type="text"
+            label={writeYourCommentIntl}
+            placeholder={yourCommentIntl}
+            iconBtn
+            loading={isLoading}
+            iconClassName="cursor-pointer ml-3 text-lg"
+            onIconClick={handleSubmit}
+          />
+        </form>
+      )}
     </div>
   );
 };

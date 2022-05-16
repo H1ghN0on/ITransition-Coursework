@@ -42,6 +42,7 @@ const Main: NextPage<MainProps> = ({ user, collections, tags, items }) => {
             items={collections}
             editable={false}
           />
+
           <List
             className="flex flex-col w-screen xs:w-full md:w-1/3 relative"
             type="added-item"

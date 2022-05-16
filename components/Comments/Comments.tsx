@@ -8,7 +8,7 @@ const Comments = () => {
 
   return (
     <div className="flex flex-col p-5 space-y-3">
-      {user.id !== -1 && <Head />}
+      {<Head editable={user.id !== -1} />}
       <div className="space-y-3">
         {comments &&
           comments.map((comment) => (
