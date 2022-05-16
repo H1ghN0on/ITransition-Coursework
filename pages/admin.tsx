@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 import { Api } from "@api";
 import { CustomDropdown, Toolbar, Wrapper } from "@components/Common";
 import socket from "@core/socket";

@@ -49,7 +49,10 @@ const Profile: NextPage<ProfileProps> = ({
       <Wrapper>
         <div className="flex flex-col items-center w-screen  space-y-3">
           <div className="flex flex-col items-center md:flex-row space-y-5 md:space-y-0 w-2/3 justify-between mb-10">
-            <ProfileBrief imageSrc={"/avatar.jpg"} name={profile.username} />
+            <ProfileBrief
+              imageSrc={profile.avatarURL}
+              name={profile.username}
+            />
             <Toolbar />
           </div>
           <AddCollectionButton editable={isEditable} />

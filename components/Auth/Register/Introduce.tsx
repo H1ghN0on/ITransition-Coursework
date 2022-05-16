@@ -43,7 +43,7 @@ const Password = () => {
       if (data.status === "Error") {
         setError(true);
       } else {
-        Cookies.set("token", data.token);
+        Cookies.set("token", data.userData.token);
         router.push("/");
       }
     } catch (error) {

@@ -12,6 +12,7 @@ import {
 import { Api } from "@api";
 import { setItemsNumber } from "@redux/collectionSlice";
 import Link from "next/link";
+import Router from "next/router";
 
 interface TBodyProps {
   tData: {
@@ -67,19 +68,25 @@ const TBody: React.FC<TBodyProps> = ({ tData, editable }) => {
         {rows.map((row) => {
           prepareRow(row);
           return (
-            <tr {...row.getRowProps()}>
-              <Link href={`/item/${row.original.id}`}>
-                <a>
-                  {row.cells.map((cell) => (
-                    <td
-                      className="dark:bg-[#712B75] dark:text-white text-center truncate text-xs px-6 py-4 whitespace-nowrap border-r dark:border-[#46244C] last:border-0"
-                      {...cell.getCellProps()}
-                    >
-                      {cell.render("Cell")}
-                    </td>
-                  ))}
-                </a>
-              </Link>
+            <tr
+              onClick={(e: React.MouseEvent<HTMLTableRowElement>) => {
+                if (
+                  (e.target as any).textContent !== "Edit" &&
+                  (e.target as any).textContent !== "Delete"
+                ) {
+                  Router.push(`/item/${row.original.id}`);
+                }
+              }}
+              {...row.getRowProps()}
+            >
+              {row.cells.map((cell) => (
+                <td
+                  className="dark:bg-[#712B75] dark:text-white text-center truncate text-xs px-6 py-4 whitespace-nowrap border-r dark:border-[#46244C] last:border-0"
+                  {...cell.getCellProps()}
+                >
+                  {cell.render("Cell")}
+                </td>
+              ))}
             </tr>
           );
         })}

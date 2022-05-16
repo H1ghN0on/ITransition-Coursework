@@ -17,6 +17,7 @@ const Comments = () => {
               text={comment.comment.text}
               owner={comment.user.username}
               date={comment.comment.createdAt}
+              imageURL={comment.user.avatarURL}
             />
           ))}
       </div>

@@ -13,7 +13,7 @@
     "@uiw/react-markdown-editor": "^4.0.3",
     "@uiw/react-md-editor": "^3.12.3",
     "@zeit/next-css": "^1.0.1",
-    "autoprefixer": "^10.4.4",
+    "autoprefixer": "^10.4.7",
     "axios": "^0.27.2",
     "clsx": "^1.1.1",
     "dotenv": "^16.0.0",

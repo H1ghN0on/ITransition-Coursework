@@ -4,14 +4,12 @@ import "@styles/tags.css";
 import { IntlProvider } from "react-intl";
 import { messages } from "@locales/messages";
 import { LOCALES } from "@locales/locales";
-import { Provider } from "react-redux";
 import { wrapper } from "@redux/store";
 import socket from "@core/socket";
 import { useAppDispatch, useAppSelector } from "@redux/hooks";
 import { setStatus, setTheme } from "@redux/userSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { ThemeProvider } from "styled-components";
 import React from "react";
 
 function MyApp({ Component, pageProps }: AppProps) {

@@ -1,2 +1,2 @@
 export { default as useHasMounted } from "./MountHook";
-export { default as useComponentWillMount } from "./WIllMountHook";
+export { default as useComponentWillMount } from "./WillMountHook";

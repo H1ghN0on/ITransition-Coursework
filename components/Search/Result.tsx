@@ -16,7 +16,7 @@ const Result: React.FC<ResultProps> = ({ items }) => {
   }
   return (
     <div className=" w-[50vw]">
-      <List type="search-item" items={items} />
+      <List editable={false} type="search-item" items={items} />
     </div>
   );
 };

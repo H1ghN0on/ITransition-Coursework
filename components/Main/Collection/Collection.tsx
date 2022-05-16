@@ -25,7 +25,7 @@ const Collection: React.FC<CollectionProps> = ({ editable, data }) => {
     <Link href={`/collection/[id]`} as={`/collection/${data.id} `}>
       <div className="flex flex-col md:flex-row justify-center items-center  bg-white rounded shadow-inner-md px-3 dark:bg-[#3F3351]">
         <div className="w-1/3 md:w-1/5">
-          <img src="/chiaki-sleep.png" alt="collection avatar" />
+          <img src={data.avatarURL} alt="collection avatar" />
         </div>
 
         <div className="flex flex-col md:ml-2 space-y-2 w-full md:w-3/4 text-center md:text-left">
