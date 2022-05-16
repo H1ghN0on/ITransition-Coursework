@@ -171,7 +171,7 @@ const ColumnModal: React.FC<ColumnModalProps> = ({ closeModal, onSubmit }) => {
             defaultValue={inputValue.type}
           />
           <Button
-            disabled={!inputValue.type || !inputValue.name}
+            disabled={!inputValue.type || !inputValue.name || !inputValue.init}
             className="w-2/3 self-center"
             onClick={handleSubmitClick}
           >
