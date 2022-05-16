@@ -27,7 +27,7 @@ const CollectionInfo: NextPage<CollectionInfoProps> = ({
 }) => {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.userSlice);
-  React.useEffect(() => {}, []);
+
   useComponentWillMount(() => {
     dispatch(initUser ? setUser(initUser) : clearUser());
     dispatch(setCollection(collection));
