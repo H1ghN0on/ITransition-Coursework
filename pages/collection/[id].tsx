@@ -61,6 +61,14 @@ const CollectionInfo: NextPage<CollectionInfoProps> = ({
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const initUser = await Api(ctx).getMe();
   const { collection } = await Api(ctx).getCollectionById(+ctx.query.id!);
+  if (!collection) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/",
+      },
+    };
+  }
   const { items, columns } = await Api(ctx).getCollectionData(+ctx.query.id!);
   return {
     props: {

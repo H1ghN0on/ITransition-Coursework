@@ -62,6 +62,14 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const user = await Api(ctx).getMe();
 
   const { item } = await Api(ctx).getItemById(+ctx.query.id!);
+  if (!item) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/",
+      },
+    };
+  }
   const { comments } = await Api(ctx).getItemComments(+ctx.query.id!);
 
   return { props: { item, comments, user } };
