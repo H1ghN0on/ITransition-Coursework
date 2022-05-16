@@ -10,7 +10,9 @@ const Logo: React.FC<LogoProps> = ({ className }) => {
   return (
     <Link href="/">
       <a>
-        <SlashSquare className={"text-black text-xl " + className} />
+        <SlashSquare
+          className={"text-black text-xl dark:text-white " + className}
+        />
       </a>
     </Link>
   );

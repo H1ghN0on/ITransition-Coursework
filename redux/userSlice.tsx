@@ -9,12 +9,14 @@ interface UserState {
   avatarURL: string;
   status: "user" | "admin" | "" | "block";
   locale: any;
+  theme: "light" | "dark";
 }
 
 const initialState = {
   username: "",
   avatarURL: "",
   id: -1,
+  theme: "light",
   status: "",
   locale: LOCALES.ENGLISH,
 } as UserState;
@@ -43,8 +45,13 @@ const userSlice = createSlice({
     setLocale(state, action: PayloadAction<any>) {
       state.locale = action.payload;
     },
+
+    setTheme(state, action: PayloadAction<"dark" | "light">) {
+      state.theme = action.payload;
+    },
   },
 });
 
-export const { setUser, clearUser, setStatus, setLocale } = userSlice.actions;
+export const { setUser, clearUser, setStatus, setLocale, setTheme } =
+  userSlice.actions;
 export default userSlice.reducer;

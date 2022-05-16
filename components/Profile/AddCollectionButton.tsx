@@ -24,12 +24,12 @@ const AddCollectionButton: React.FC<AddCollectionButtonProps> = ({
   return editable ? (
     <div
       onClick={handleAddClick}
-      className="flex justify-center items-center bg-white rounded shadow-inner-md py-5 w-2/3 cursor-pointer"
+      className="flex justify-center items-center bg-white rounded shadow-inner-md py-5 w-2/3 cursor-pointer dark:bg-[#3F3351]"
     >
       <div className="flex">
         <IconSpan
-          iconClassName="text-black font-bold text-xl md:text-3xl "
-          textClassName="text-black font-bold text-base md:text-xl"
+          iconClassName="text-black font-bold text-xl md:text-3xl dark:text-white"
+          textClassName="text-black font-bold text-base md:text-xl dark:text-white"
           text={addCollectionIntl}
           icon={Plus}
         />

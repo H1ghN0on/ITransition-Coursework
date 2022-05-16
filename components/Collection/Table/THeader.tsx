@@ -66,7 +66,7 @@ const THeader: React.FC<THeaderProps> = ({ data, editable }) => {
             {headerGroup.headers.map((column: any, index: number) => (
               <th
                 key={index}
-                className="text-center px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="dark:bg-[#46244C]  dark:text-white text-center px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider"
                 {...column.getHeaderProps()}
               >
                 {column.render("Header")}

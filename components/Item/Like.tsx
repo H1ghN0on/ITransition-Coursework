@@ -25,8 +25,8 @@ const Like: React.FC<LikeProps> = ({ item_id, likes }) => {
     <IconSpan
       onClick={handleLikeClick}
       className="cursor-pointer"
-      iconClassName={"text-black text-3xl"}
-      textClassName={"text-black text-3xl"}
+      iconClassName={"text-black text-3xl dark:text-white"}
+      textClassName={"text-black text-3xl dark:text-white"}
       icon={isLiked ? HeartFill : Heart}
       text={likes.length.toString()}
     />

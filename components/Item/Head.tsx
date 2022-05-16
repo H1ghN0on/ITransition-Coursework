@@ -11,8 +11,8 @@ const Head: React.FC<HeadProps> = ({ from, name }) => {
   const fromIntl = useIntl().formatMessage({ id: "from" });
   return (
     <>
-      <div>
-        {fromIntl} <span className="underline">{from}</span>
+      <div className="dark:text-white">
+        {fromIntl} <span className="underline ">{from}</span>
       </div>
 
       <div>

@@ -9,7 +9,7 @@ const PropertyList: React.FC<PropertyList> = ({ properties }) => {
   const intl = useIntl();
 
   return (
-    <ul className="space-y-3 text-sm md:text-base">
+    <ul className="space-y-3 text-sm md:text-base dark:text-white">
       {properties.map((property, index) => (
         <li key={index}>
           <span>

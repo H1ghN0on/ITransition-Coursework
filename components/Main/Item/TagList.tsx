@@ -8,7 +8,7 @@ interface TagListProps {
 
 const TagList: React.FC<TagListProps> = ({ tags }) => {
   return (
-    <div className="flex flex-wrap justify-center mb-4">
+    <div className="flex flex-wrap justify-center mb-4 dark:text-white">
       {tags &&
         tags
           .slice(0, 8)

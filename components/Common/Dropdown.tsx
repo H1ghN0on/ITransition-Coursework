@@ -24,7 +24,11 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
 }) => {
   return (
     <div className="flex flex-col">
-      {label && <InputLabel htmlFor={name}>{label}</InputLabel>}
+      {label && (
+        <InputLabel className=" dark:text-white " htmlFor={name}>
+          {label}
+        </InputLabel>
+      )}
       <Dropdown
         options={list}
         onChange={onChange}

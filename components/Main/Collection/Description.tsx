@@ -5,7 +5,9 @@ interface TitleProps {
 }
 
 const Title: React.FC<TitleProps> = ({ text }) => {
-  return <h3 className="text-sm lg:text-base truncate">{text}</h3>;
+  return (
+    <h3 className="text-sm lg:text-base truncate dark:text-white">{text}</h3>
+  );
 };
 
 export default Title;

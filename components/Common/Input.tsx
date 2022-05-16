@@ -45,7 +45,11 @@ const Input: React.FC<Input> = ({
 }) => {
   return (
     <div className={`flex flex-col ${blockClassName} w-full`}>
-      {label && <InputLabel htmlFor={name}>{label}</InputLabel>}
+      {label && (
+        <InputLabel className="dark:text-white" htmlFor={name}>
+          {label}
+        </InputLabel>
+      )}
       {iconBtn ? (
         <div className="flex items-center">
           {textarea ? (
@@ -87,7 +91,10 @@ const Input: React.FC<Input> = ({
               />
             </svg>
           ) : (
-            <Send className={iconClassName} onClick={onIconClick} />
+            <Send
+              className={iconClassName + " dark:text-white"}
+              onClick={onIconClick}
+            />
           )}
         </div>
       ) : textarea ? (
@@ -96,7 +103,7 @@ const Input: React.FC<Input> = ({
           placeholder={placeholder}
           id={name}
           value={value}
-          className={`border border-[#c7c7c7] outline-none px-[15px] py-[20px] rounded text-black ${className}`}
+          className={`border border-[#c7c7c7] outline-none px-[15px] py-[20px] rounded text-black ${className} `}
           name={name}
         />
       ) : (

@@ -38,8 +38,8 @@ const InfoBar: React.FC<InfoBarProps> = ({
   const editIntl = intl.formatMessage({ id: "edit" });
   const deleteIntl = intl.formatMessage({ id: "delete" });
 
-  const iconClassName = "text-[0.8rem]";
-  const textClassName = "text-xs lg:text-sm";
+  const iconClassName = "text-[0.8rem] dark:text-white";
+  const textClassName = "text-xs lg:text-sm dark:text-white";
 
   const handleEditClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();

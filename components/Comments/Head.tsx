@@ -30,7 +30,7 @@ const Head = () => {
 
   return (
     <div className="py-3">
-      <h3 className="text-black text-2xl font-bold mb-3">
+      <h3 className="text-black text-2xl font-bold mb-3 dark:text-white">
         {comments.length} {commentsIntl}
       </h3>
       <form>

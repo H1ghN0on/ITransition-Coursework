@@ -7,15 +7,22 @@ interface ListProps {
   type: "collection" | "search-item" | "added-item";
   className?: string;
   items: CollectionType[] | CollectionItemType[];
+  editable: boolean;
 }
 
-const List: React.FC<ListProps> = ({ title, type, className, items }) => {
+const List: React.FC<ListProps> = ({
+  editable,
+  title,
+  type,
+  className,
+  items,
+}) => {
   const Fragment: React.FC<{ data: CollectionType | CollectionItemType }> = ({
     data,
   }) => {
     switch (type) {
       case "collection": {
-        return <Collection data={data as CollectionType} />;
+        return <Collection editable={editable} data={data as CollectionType} />;
       }
       case "added-item": {
         return <Item type="recent" data={data as CollectionItemType} />;
@@ -33,7 +40,7 @@ const List: React.FC<ListProps> = ({ title, type, className, items }) => {
   return (
     <div className={className}>
       {title && (
-        <h6 className="self-center absolute -top-6 text-black font-bold">
+        <h6 className="self-center absolute -top-6 text-black font-bold dark:text-white">
           {title}
         </h6>
       )}

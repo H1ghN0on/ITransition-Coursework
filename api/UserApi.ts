@@ -12,6 +12,16 @@ const UserApi = (instance: AxiosInstance) => {
       }
     },
 
+    getUser: async (id: number) => {
+      try {
+        const { data } = await instance.get(`/get-user/${id}`);
+        return data;
+      } catch (error) {
+        console.log(error);
+        return null;
+      }
+    },
+
     setStatus: async (id: number, status: string) => {
       try {
         const { data } = await instance.get(`/set-user-status/${id}/${status}`);

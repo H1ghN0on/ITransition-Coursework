@@ -9,9 +9,12 @@ interface TitleProps {
 const Title: React.FC<TitleProps> = ({ text, unbold }) => {
   return (
     <h1
-      className={clsx("text-lg lg:text-2xl text-black truncate", {
-        ["font-bold"]: !unbold,
-      })}
+      className={clsx(
+        "text-lg lg:text-2xl text-black truncate dark:text-white",
+        {
+          ["font-bold"]: !unbold,
+        }
+      )}
     >
       {text}
     </h1>

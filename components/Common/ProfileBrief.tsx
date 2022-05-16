@@ -15,7 +15,7 @@ const ProfileBrief: React.FC<ProfileBriefProps> = ({ name, imageSrc }) => {
           alt="avatar"
         />
       </div>
-      <span className="ml-2 font-bold text-black text-base md:text-lg">
+      <span className="ml-2 font-bold text-black text-base md:text-lg  dark:text-white">
         {name}
       </span>
     </div>

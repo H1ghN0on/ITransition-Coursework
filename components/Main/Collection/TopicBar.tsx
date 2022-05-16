@@ -7,8 +7,9 @@ interface TopicBarProps {
 }
 
 const TopicBar: React.FC<TopicBarProps> = ({ topics }) => {
-  const iconClassName = "text-[0.4rem] lg:text-[0.5rem]";
-  const textClassName = "text-sm lg:text-base text-[#333] font-bold";
+  const iconClassName = "text-[0.4rem] lg:text-[0.5rem] dark:text-white";
+  const textClassName =
+    "text-sm lg:text-base text-[#333] font-bold dark:text-white";
   return (
     <div className="flex space-x-5 justify-center md:justify-start truncate">
       {topics &&

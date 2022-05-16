@@ -5,11 +5,14 @@ import {
   DoorOpen,
   BrightnessHighFill,
   DoorClosed,
+  Moon,
+  MoonFill,
+  MoonStarsFill,
 } from "react-bootstrap-icons";
 import { useIntl } from "react-intl";
 import { IconSpan, Logo } from "@components/Common";
 import { useAppDispatch, useAppSelector } from "@redux/hooks";
-import { clearUser, setLocale } from "@redux/userSlice";
+import { clearUser, setLocale, setTheme } from "@redux/userSlice";
 import Cookies from "js-cookie";
 import { LOCALES } from "@locales/locales";
 const Toolbar = () => {
@@ -22,8 +25,10 @@ const Toolbar = () => {
   const searchIntl = intl.formatMessage({ id: "search" });
   const logoutIntl = intl.formatMessage({ id: "logout" });
 
-  const iconClassName = "text-base sm:text-lg text-black font-bold ";
-  const textClassName = "text-base sm:text-lg text-black  font-bold";
+  const iconClassName =
+    "text-base sm:text-lg text-black font-bold dark:text-white cursor-pointer";
+  const textClassName =
+    "text-base sm:text-lg text-black  font-bold dark:text-white";
 
   const handleLogoutClick = () => {
     dispatch(clearUser());
@@ -38,8 +43,13 @@ const Toolbar = () => {
     }
   };
 
+  const handleThemeChange = () => {
+    console.log("cock");
+    dispatch(setTheme(userData.theme === "light" ? "dark" : "light"));
+  };
+
   return (
-    <div className="flex space-x-5 items-center">
+    <div className="flex space-x-5 items-center ">
       <Logo />
       {userData && userData.id != -1 ? (
         <Link href={`/profile/${userData.id}`}>
@@ -69,7 +79,14 @@ const Toolbar = () => {
           />
         </a>
       </Link>
-      <BrightnessHighFill className={iconClassName} fill="#FFC700" />
+      <div onClick={handleThemeChange}>
+        {userData.theme === "light" ? (
+          <BrightnessHighFill className={iconClassName} fill="#FFC700" />
+        ) : (
+          <MoonStarsFill className={iconClassName} />
+        )}
+      </div>
+
       <div className="cursor-pointer" onClick={handleLocaleChange}>
         {userData.locale === LOCALES.RUSSIAN ? (
           <svg

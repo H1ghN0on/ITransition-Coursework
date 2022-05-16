@@ -118,7 +118,7 @@ const ItemTable: React.FC<ItemTable> = ({
     <>
       <div className="overflow-x-auto ">
         <table
-          className="w-full divide-gray-200 border border-gray"
+          className="w-full divide-gray-200 border dark:border-[#46244C] "
           {...getTableProps()}
         >
           <THeader editable={editable} data={headerGroups} />
@@ -136,8 +136,8 @@ const ItemTable: React.FC<ItemTable> = ({
         >
           <div className="flex">
             <IconSpan
-              iconClassName="font-bold text-2xl md:text-3xl "
-              textClassName="font-bold text-base md:text-lg"
+              iconClassName="font-bold text-2xl md:text-3xl dark:text-white"
+              textClassName="font-bold text-base md:text-lg dark:text-white"
               text={addItemIntl}
               icon={Plus}
             />

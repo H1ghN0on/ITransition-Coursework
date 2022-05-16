@@ -33,7 +33,7 @@ const Wrapper: React.FC<WrapperProps> = ({ children }) => {
     );
   } else {
     return (
-      <div className="flex justify-center w-full pt-[2vh] md:pt-[10vh]">
+      <div className="flex justify-center min-h-[100vh] w-[100vw] h-[100%] pt-[2vh] md:pt-[10vh] dark:bg-[#1F1D36]">
         {children}
         <ToastContainer
           position="bottom-left"

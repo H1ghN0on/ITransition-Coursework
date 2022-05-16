@@ -72,7 +72,7 @@ const TBody: React.FC<TBodyProps> = ({ tData, editable }) => {
                 <a>
                   {row.cells.map((cell) => (
                     <td
-                      className="text-center truncate text-xs px-6 py-4 whitespace-nowrap border-r border-gray last:border-0"
+                      className="dark:bg-[#712B75] dark:text-white text-center truncate text-xs px-6 py-4 whitespace-nowrap border-r dark:border-[#46244C] last:border-0"
                       {...cell.getCellProps()}
                     >
                       {cell.render("Cell")}

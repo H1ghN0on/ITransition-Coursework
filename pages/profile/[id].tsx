@@ -17,19 +17,19 @@ import { clearUser, setUser } from "@redux/userSlice";
 import { useComponentWillMount } from "@hooks";
 
 interface ProfileProps {
-  profileId: number;
   initUser: UserType;
   collections: CollectionType[];
+  profile: UserType;
 }
 
 const Profile: NextPage<ProfileProps> = ({
-  profileId,
   initUser,
   collections,
+  profile,
 }) => {
   const collectionsData = useAppSelector((state) => state.collectionsSlice);
   const user = useAppSelector((state) => state.userSlice);
-  const isEditable = (user && user.id == profileId) || user.status === "admin";
+  const isEditable = (user && user.id == profile.id) || user.status === "admin";
   const dispatch = useAppDispatch();
 
   useComponentWillMount(() => {
@@ -49,11 +49,12 @@ const Profile: NextPage<ProfileProps> = ({
       <Wrapper>
         <div className="flex flex-col items-center w-screen  space-y-3">
           <div className="flex flex-col items-center md:flex-row space-y-5 md:space-y-0 w-2/3 justify-between mb-10">
-            <ProfileBrief imageSrc={"/avatar.jpg"} name="H1ghN0on_" />
+            <ProfileBrief imageSrc={"/avatar.jpg"} name={profile.username} />
             <Toolbar />
           </div>
           <AddCollectionButton editable={isEditable} />
           <List
+            editable={true}
             items={collectionsData.collections}
             type="collection"
             className="flex flex-col w-2/3"
@@ -66,10 +67,11 @@ const Profile: NextPage<ProfileProps> = ({
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const initUser = await Api(ctx).getMe();
-
   const collections = await Api(ctx).getUserCollections(+ctx.query.id!);
+  const { user } = await Api(ctx).getUser(+ctx.query.id!);
+
   return {
-    props: { profileId: ctx.query.id, initUser, collections },
+    props: { initUser, collections, profile: user },
   };
 };
 

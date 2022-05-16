@@ -12,16 +12,18 @@ import Link from "next/link";
 
 interface CollectionProps {
   data: CollectionType;
+  editable: boolean;
 }
 
-const Collection: React.FC<CollectionProps> = ({ data }) => {
+const Collection: React.FC<CollectionProps> = ({ editable, data }) => {
   const user = useAppSelector((state) => state.userSlice);
   const isEditable =
-    (user && user.id === data.belongsTo.id) || user.status === "admin";
+    editable &&
+    ((user && user.id === data.belongsTo.id) || user.status === "admin");
 
   return (
-    <Link href={`/collection/[id]`} as={`/collection/${data.id}`}>
-      <div className="flex flex-col md:flex-row justify-center items-center  bg-white rounded shadow-inner-md px-3">
+    <Link href={`/collection/[id]`} as={`/collection/${data.id} `}>
+      <div className="flex flex-col md:flex-row justify-center items-center  bg-white rounded shadow-inner-md px-3 dark:bg-[#3F3351]">
         <div className="w-1/3 md:w-1/5">
           <img src="/chiaki-sleep.png" alt="collection avatar" />
         </div>
