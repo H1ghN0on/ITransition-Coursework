@@ -9,9 +9,9 @@ interface TopicBarProps {
 const TopicBar: React.FC<TopicBarProps> = ({ topics }) => {
   const iconClassName = "text-[0.4rem] lg:text-[0.5rem] dark:text-white";
   const textClassName =
-    "text-sm lg:text-base text-[#333] font-bold dark:text-white";
+    "text-sm lg:text-base text-[#333] font-bold dark:text-white  mr-3";
   return (
-    <div className="flex space-x-5 justify-center md:justify-start truncate">
+    <div className="flex justify-center md:justify-start truncate flex-wrap">
       {topics &&
         topics.map((topic: string, index: number) => (
           <IconSpan

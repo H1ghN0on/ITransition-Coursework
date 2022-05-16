@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { Plus } from "react-bootstrap-icons";
 import { IconSpan } from "@components/Common";
 import { FormattedMessage, useIntl } from "react-intl";
+import { TopicType } from "@types";
 
 const TopicLabel = styled.label`
   font-size: 14px;
@@ -11,9 +12,9 @@ const TopicLabel = styled.label`
 `;
 
 interface TopicsProps {
-  topics: string[];
-  onTopicClick: (type: "add" | "remove", value: string) => void;
-  activeTopics: string[];
+  topics: TopicType[];
+  onTopicClick: (type: "add" | "remove", value: TopicType) => void;
+  activeTopics: TopicType[];
 }
 
 const Topics: React.FC<TopicsProps> = ({
@@ -23,6 +24,7 @@ const Topics: React.FC<TopicsProps> = ({
 }) => {
   const intl = useIntl();
   const addTopicIntl = intl.formatMessage({ id: "add_topic" });
+
   const [isChoiceActive, setChoiceActive] = React.useState<boolean>(false);
   return (
     <div>
@@ -32,7 +34,7 @@ const Topics: React.FC<TopicsProps> = ({
       <div className="flex space-y-2 space-x-3 flex-wrap justify-center items-center relative">
         <div className="hidden"></div>
         {activeTopics &&
-          activeTopics.map((topic: string, index: number) => (
+          activeTopics.map((topic: TopicType, index: number) => (
             <div
               onClick={(e: React.MouseEvent<HTMLDivElement>) => {
                 onTopicClick("remove", topic);
@@ -40,7 +42,7 @@ const Topics: React.FC<TopicsProps> = ({
               key={index}
               className="border border-[#d8d8d8] rounded-full bg-white px-4 py-1 cursor-pointer text-sm md:text-base"
             >
-              {topic}
+              {topic.value}
             </div>
           ))}
         {activeTopics.length != 0 ? (
@@ -65,11 +67,15 @@ const Topics: React.FC<TopicsProps> = ({
         <div className="relative w-full">
           {isChoiceActive && (
             <TopicChoice
-              onTopicClick={(topic: string) => {
+              onTopicClick={(topic: TopicType) => {
                 onTopicClick("add", topic);
               }}
               topics={topics.filter(
-                (topic: string) => !activeTopics.includes(topic)
+                (topic: TopicType) =>
+                  activeTopics.findIndex(
+                    (activeTopic: TopicType) =>
+                      topic.accessor === activeTopic.accessor
+                  ) === -1
               )}
             />
           )}

@@ -16,6 +16,7 @@ import { useAppDispatch, useAppSelector } from "@redux/hooks";
 import {
   addColumnToEnd,
   clearTable,
+  removeColumn,
   setAdditiveColumns,
   setData,
   setItemModalActive,

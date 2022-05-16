@@ -6,8 +6,10 @@ import {
 } from "@components/Main/Collection";
 import { useAppSelector } from "@redux/hooks";
 import React from "react";
+import { useIntl } from "react-intl";
 
 const Info = () => {
+  const intl = useIntl();
   const {
     items,
     belongsTo,
@@ -21,7 +23,9 @@ const Info = () => {
   return (
     <div className="flex flex-col md:justify-center  md:flex-row w-full  ">
       <div className="order-last md:order-start flex flex-col justify-center md:ml-2 space-y-2 md:w-3/4 text-left p-5">
-        <TopicBar topics={topics} />
+        <TopicBar
+          topics={topics.map((topic) => intl.formatMessage({ id: topic }))}
+        />
         <div>
           <Title text={name} />
         </div>

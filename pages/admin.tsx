@@ -36,7 +36,7 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
           <Toolbar />
         </div>
         <table
-          className="w-full divide-gray-200 border border-gray"
+          className="w-full divide-gray-200 border border-gray "
           {...getTableProps()}
         >
           <thead className="bg-[#F0F0F0]">
@@ -54,7 +54,7 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
             ))}
           </thead>
           <tbody
-            className="bg-white divide-y divide-gray-200"
+            className="bg-white divide-y divide-gray-200 "
             {...getTableBodyProps()}
           >
             {rows.map((row, i) => {
@@ -157,7 +157,7 @@ const AdminPage: NextPage<AdminProps> = ({ users, user }) => {
   );
 
   return (
-    <div className="mt-5 mx-5 p-3 overflow-x-auto">
+    <div className="mt-5 mx-5 p-3">
       <Table columns={columns} data={users} />
     </div>
   );

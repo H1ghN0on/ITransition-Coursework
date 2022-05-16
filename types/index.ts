@@ -69,3 +69,8 @@ export interface Column extends ColumnData {
   Header: (() => JSX.Element) | string;
   Cell?: (value: any) => JSX.Element;
 }
+
+export interface TopicType {
+  accessor: string;
+  value: string;
+}

@@ -3,6 +3,7 @@ import { Button, ImageInput, Input, Modal } from "@components/Common";
 import { Topics } from "@components/Profile";
 import { addCollection, editCollection } from "@redux/collectionsSlice";
 import { useAppDispatch, useAppSelector } from "@redux/hooks";
+import { TopicType } from "@types";
 import router, { useRouter } from "next/router";
 import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -17,6 +18,23 @@ const AddCollectionModal: React.FC<ModalProps> = ({ closeModal }) => {
   const dispatch = useAppDispatch();
 
   const intl = useIntl();
+
+  const availableTopics = [
+    { accessor: "auto", value: intl.formatMessage({ id: "auto" }) },
+    { accessor: "culture", value: intl.formatMessage({ id: "culture" }) },
+    { accessor: "art", value: intl.formatMessage({ id: "art" }) },
+    { accessor: "property", value: intl.formatMessage({ id: "property" }) },
+    { accessor: "rest", value: intl.formatMessage({ id: "rest" }) },
+    { accessor: "hobby", value: intl.formatMessage({ id: "hobby" }) },
+    { accessor: "buisness", value: intl.formatMessage({ id: "buisness" }) },
+    { accessor: "science", value: intl.formatMessage({ id: "science" }) },
+    { accessor: "job", value: intl.formatMessage({ id: "job" }) },
+    { accessor: "health", value: intl.formatMessage({ id: "health" }) },
+    { accessor: "society", value: intl.formatMessage({ id: "society" }) },
+    { accessor: "sports", value: intl.formatMessage({ id: "sports" }) },
+    { accessor: "computers", value: intl.formatMessage({ id: "computers" }) },
+  ];
+
   const chooseAvatarIntl = intl.formatMessage({ id: "choose_the_avatar" });
   const nameIntl = intl.formatMessage({ id: "name" });
   const descriptionIntl = intl.formatMessage({ id: "description" });
@@ -27,12 +45,17 @@ const AddCollectionModal: React.FC<ModalProps> = ({ closeModal }) => {
   const [inputValue, setInputValue] = React.useState<{
     name: string;
     description: string;
-    topics: string[];
+    topics: TopicType[];
     imageValue: null | File;
   }>({
     name: forEdit ? forEdit.name : "",
     description: forEdit ? forEdit.description : "",
-    topics: forEdit ? forEdit.topics : [],
+    topics: forEdit
+      ? forEdit.topics.map((topic: string) => ({
+          value: intl.formatMessage({ id: topic }),
+          accessor: topic,
+        }))
+      : [],
     imageValue: null,
   });
 
@@ -59,7 +82,10 @@ const AddCollectionModal: React.FC<ModalProps> = ({ closeModal }) => {
     formData.append("belongsTo", router.query.id as string);
     formData.append("name", name);
     formData.append("description", description);
-    formData.append("topics", JSON.stringify(topics));
+    formData.append(
+      "topics",
+      JSON.stringify(topics.map((topic) => topic.accessor))
+    );
     formData.append("avatar", imageValue ?? "");
     if (!forEdit) {
       const collection = await Api().createCollection(formData);
@@ -72,11 +98,13 @@ const AddCollectionModal: React.FC<ModalProps> = ({ closeModal }) => {
     closeModal();
   };
 
-  const handleTopicChoose = (type: "add" | "remove", value: string) => {
+  const handleTopicChoose = (type: "add" | "remove", value: TopicType) => {
     if (type == "remove") {
       setInputValue({
         ...inputValue,
-        topics: inputValue.topics.filter((topic: string) => topic != value),
+        topics: inputValue.topics.filter(
+          (topic: TopicType) => topic.accessor != value.accessor
+        ),
       });
     } else if (type == "add") {
       setInputValue({
@@ -125,7 +153,7 @@ const AddCollectionModal: React.FC<ModalProps> = ({ closeModal }) => {
             <Topics
               onTopicClick={handleTopicChoose}
               activeTopics={inputValue.topics}
-              topics={["Future", "Science", "Big", "Shot", "Chance"]}
+              topics={availableTopics}
             />
           </form>
         </div>

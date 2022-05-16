@@ -15,9 +15,10 @@ import { useAppDispatch, useAppSelector } from "@redux/hooks";
 import { clearUser, setLocale, setTheme } from "@redux/userSlice";
 import Cookies from "js-cookie";
 import { LOCALES } from "@locales/locales";
+import { useRouter } from "next/router";
 const Toolbar = () => {
   const dispatch = useAppDispatch();
-
+  const router = useRouter();
   const userData = useAppSelector((state) => state.userSlice);
 
   const intl = useIntl();
@@ -30,7 +31,8 @@ const Toolbar = () => {
   const textClassName =
     "text-base sm:text-lg text-black  font-bold dark:text-white";
 
-  const handleLogoutClick = () => {
+  const handleLogoutClick = async () => {
+    await router.push("/");
     dispatch(clearUser());
     Cookies.remove("token");
   };
@@ -44,7 +46,6 @@ const Toolbar = () => {
   };
 
   const handleThemeChange = () => {
-    console.log("cock");
     dispatch(setTheme(userData.theme === "light" ? "dark" : "light"));
   };
 

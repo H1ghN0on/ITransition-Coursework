@@ -5,7 +5,6 @@ import { useComponentWillMount } from "@hooks";
 import { useAppDispatch, wrapper } from "@redux/store";
 import { clearUser, setUser } from "@redux/userSlice";
 import { CollectionItemType, CollectionType, UserType } from "@types";
-import { checkUserAuth } from "@utils";
 import type { GetServerSidePropsContext, NextPage } from "next";
 import React from "react";
 import { useIntl } from "react-intl";

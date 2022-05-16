@@ -60,8 +60,8 @@ const CollectionInfo: NextPage<CollectionInfoProps> = ({
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const initUser = await Api(ctx).getMe();
-  const { collection } = await Api(ctx).getCollectionById(+ctx.query.id!);
-  if (!collection) {
+  const data = await Api(ctx).getCollectionById(+ctx.query.id!);
+  if (!data) {
     return {
       redirect: {
         permanent: false,
@@ -73,7 +73,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   return {
     props: {
       initUser,
-      collection,
+      collection: data.collection,
       items,
       columns: columns.map((obj: any) => ({
         ...obj,

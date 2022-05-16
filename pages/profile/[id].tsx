@@ -27,6 +27,10 @@ const Profile: NextPage<ProfileProps> = ({
   collections,
   profile,
 }) => {
+  const intl = useIntl();
+  const collectionsNotAddedIntl = intl.formatMessage({
+    id: "collections_not_added",
+  });
   const collectionsData = useAppSelector((state) => state.collectionsSlice);
   const user = useAppSelector((state) => state.userSlice);
   const isEditable = (user && user.id == profile.id) || user.status === "admin";
@@ -56,12 +60,18 @@ const Profile: NextPage<ProfileProps> = ({
             <Toolbar />
           </div>
           <AddCollectionButton editable={isEditable} />
-          <List
-            editable={true}
-            items={collectionsData.collections}
-            type="collection"
-            className="flex flex-col w-2/3"
-          />
+          {collectionsData.collections.length != 0 ? (
+            <List
+              editable={true}
+              items={collectionsData.collections}
+              type="collection"
+              className="flex flex-col w-2/3"
+            />
+          ) : (
+            <h3 className="text-black text-lg font-bold">
+              {collectionsNotAddedIntl}
+            </h3>
+          )}
         </div>
       </Wrapper>
     </>
@@ -71,10 +81,17 @@ const Profile: NextPage<ProfileProps> = ({
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const initUser = await Api(ctx).getMe();
   const collections = await Api(ctx).getUserCollections(+ctx.query.id!);
-  const { user } = await Api(ctx).getUser(+ctx.query.id!);
-
+  const data = await Api(ctx).getUser(+ctx.query.id!);
+  if (!data) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/",
+      },
+    };
+  }
   return {
-    props: { initUser, collections, profile: user },
+    props: { initUser, collections, profile: data.user },
   };
 };
 

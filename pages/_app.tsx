@@ -7,10 +7,11 @@ import { LOCALES } from "@locales/locales";
 import { wrapper } from "@redux/store";
 import socket from "@core/socket";
 import { useAppDispatch, useAppSelector } from "@redux/hooks";
-import { setStatus, setTheme } from "@redux/userSlice";
+import { clearUser, setStatus, setTheme } from "@redux/userSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import React from "react";
+import Cookies from "js-cookie";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const dispatch = useAppDispatch();
@@ -20,13 +21,13 @@ function MyApp({ Component, pageProps }: AppProps) {
     dispatch(setTheme(localStorage.getItem("theme") as "dark" | "light"));
     socket.emit("connected", user?.id);
     socket.on("status-changed", (obj) => {
-      toast(`Your status set to "${obj.status}"`);
-      dispatch(setStatus(obj.status));
+      toast(`Your status set to "${obj.status}". Please relogin.`);
+      dispatch(clearUser());
+      Cookies.remove("token");
     });
   }, []);
 
   React.useEffect(() => {
-    console.log("what");
     if (user.theme === "dark") {
       document.body.classList.add("dark");
       localStorage.setItem("theme", "dark");
