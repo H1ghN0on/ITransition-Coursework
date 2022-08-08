@@ -7,7 +7,7 @@ const removeImports = require("next-remove-imports")();
 const nextConfig = {
   styledComponents: true,
   env: {
-    AXIOS_BASE_URL: "https://it-coursework-server.herokuapp.com",
+    AXIOS_BASE_URL: "https://voenmeh-practice-server.herokuapp.com",
     S3_USER_AVATARS:
       "https://itransition-coursework.s3.amazonaws.com/avatars/users",
     S3_COLLECTION_AVATARS:
